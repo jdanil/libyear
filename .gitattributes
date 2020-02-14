@@ -1,0 +1,11 @@
+# gitattributes
+# https://git-scm.com/docs/gitattributes
+
+# Normalise line endings
+# https://git-scm.com/docs/gitattributes#_end_of_line_conversion
+* text=auto
+
+# Exclude from Archives
+# https://git-scm.com/docs/gitattributes#_code_export_ignore_code
+.gitattributes  export-ignore
+.gitignore      export-ignore

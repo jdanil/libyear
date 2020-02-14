@@ -1,0 +1,41 @@
+{
+  "name": "libyear",
+  "version": "0.1.0",
+  "description": "A simple measure of software dependency freshness",
+  "author": "Josh David <@jdanil>",
+  "contributors": ["Jared Beck <@jaredbeck>", "Leon Miller-Out <@sbleon>"],
+  "license": "LGPL-3.0",
+  "homepage": "https://github.com/jdanil/libyear",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jdanil/libyear.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jdanil/libyear/issues"
+  },
+  "main": "./src",
+  "bin": "./bin/libyear",
+  "types": "./src",
+  "files": ["**/*.d.ts", "**/*.js"],
+  "scripts": {
+    "compile": "tsc",
+    "libyear": "node ./bin/libyear",
+    "prettier": "prettier",
+    "test": "jest"
+  },
+  "dependencies": {
+    "date-fns": "^2.9.0",
+    "execa": "^4.0.0",
+    "mri": "^1.1.4",
+    "semver": "^7.1.3"
+  },
+  "devDependencies": {
+    "@types/mri": "^1.1.0",
+    "@types/node": "^13.7.1",
+    "@types/semver": "^7.1.0",
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "tslib": "^1.10.0",
+    "typescript": "^3.8.1-rc"
+  }
+}
