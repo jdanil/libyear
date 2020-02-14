@@ -17,6 +17,7 @@
   "bin": "./bin/libyear",
   "types": "./src",
   "files": ["**/*.d.ts", "**/*.js"],
+  "keywords": ["dependency", "drift", "fitness", "libyear"],
   "scripts": {
     "compile": "tsc",
     "libyear": "node ./bin/libyear",
