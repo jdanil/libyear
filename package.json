@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "description": "A simple measure of software dependency freshness",
   "author": "Josh David <@jdanil>",
-  "contributors": ["Jared Beck <@jaredbeck>", "Leon Miller-Out <@sbleon>"],
+  "contributors": [
+    "Jared Beck <@jaredbeck>",
+    "Leon Miller-Out <@sbleon>"
+  ],
   "license": "LGPL-3.0",
   "homepage": "https://github.com/jdanil/libyear",
   "repository": {
@@ -16,8 +19,16 @@
   "main": "./src",
   "bin": "./bin/libyear",
   "types": "./src",
-  "files": ["**/*.d.ts", "**/*.js"],
-  "keywords": ["dependency", "drift", "fitness", "libyear"],
+  "files": [
+    "**/*.d.ts",
+    "**/*.js"
+  ],
+  "keywords": [
+    "dependency",
+    "drift",
+    "fitness",
+    "libyear"
+  ],
   "scripts": {
     "compile": "tsc",
     "libyear": "node ./bin/libyear",

@@ -13,7 +13,9 @@ export const getInferredPackageManager = async (): Promise<PackageManager> => {
   }
 };
 
-export const getParsedPackageManager = (packageManager?: string): PackageManager => {
+export const getParsedPackageManager = (
+  packageManager?: string,
+): PackageManager => {
   switch (packageManager) {
     case "berry":
     case "npm":
