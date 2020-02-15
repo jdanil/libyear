@@ -2,7 +2,7 @@
   "name": "libyear",
   "version": "0.1.0",
   "description": "A simple measure of software dependency freshness",
-  "author": "Josh David <@jdanil>",
+  "author": "Joshua David <@jdanil>",
   "contributors": [
     "Jared Beck <@jaredbeck>",
     "Leon Miller-Out <@sbleon>"
@@ -24,10 +24,12 @@
     "**/*.js"
   ],
   "keywords": [
+    "debt",
     "dependency",
     "drift",
     "fitness",
-    "libyear"
+    "libyear",
+    "outdated"
   ],
   "scripts": {
     "compile": "tsc",
