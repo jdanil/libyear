@@ -9,7 +9,6 @@ import {
 export const cli = async () => {
   const argv = process.argv.slice(2);
   const args = mri(argv);
-  console.log(args);
 
   libyear(
     getParsedPackageManager(

@@ -16,8 +16,7 @@ export const libyear = async (
     pulseIndividual?: number;
   },
 ) => {
-  // npm throws an exception with berry as node modules are missing
-  const awaitedDependencies = Object.entries(await getDependencies(packageManager === "berry")).map(
+  const awaitedDependencies = Object.entries(await getDependencies()).map(
     async ([dependency, currentVersion]) => {
       const releaseTime = await getReleaseTime(packageManager, dependency);
 

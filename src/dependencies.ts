@@ -1,21 +1,22 @@
 import * as execa from "execa";
 
-export const getDependencies = async (silent?: boolean) => {
-  const cmd = "npm ls --depth=0 --json" + silent ? " --silent" : "";
+export const npmList = async () => {
+  const cmd = "npm ls --depth=0 --json --silent";
 
   try {
     const { stdout } = await execa.command(cmd);
-    return Object.fromEntries(
-      Object.entries(
-        JSON.parse(stdout).dependencies,
-      ).map(([dependency, data]: [string, { version?: string }]) => [
-        dependency,
-        data.version,
-      ]),
-    );
+    return stdout;
   } catch (error) {
-    process.stderr.write(`Failed to run "${cmd}".\n`);
-    process.stderr.write(error.message);
-    process.exit(1);
+    return error.stdout;
   }
 };
+
+export const getDependencies = async () =>
+  Object.fromEntries(
+    Object.entries(
+      JSON.parse(await npmList()).dependencies,
+    ).map(([dependency, data]: [string, { version?: string, required?: string }]) => [
+      dependency,
+      data.version ?? data.required.replace(/[<=>\^~]/u, ""),
+    ]),
+  );

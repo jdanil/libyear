@@ -111,7 +111,7 @@ Throws an error if any individual pulse metric surpasses the threshold.
 
 ## To Do
 
-- support `berry`
+- support `berry` w/o "required" workaround
 - detect drift threshold violation at dependency level
 - detect pulse threshold violation at dependency level
 - dogfood with ts-node when typescript@3.8 stable is released
