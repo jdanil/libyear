@@ -33,9 +33,12 @@ export const libyear = async (
         releaseTime[latestStableVersion],
       );
       const pulse = calculatePulse(releaseTime[latestAllVersion]);
-      const status = stableVersions.includes(currentVersion)
-        ? "stable"
-        : "pre-release";
+      const status =
+        Object.entries(releaseTime).length === 0
+          ? "symlink"
+          : stableVersions.includes(currentVersion)
+          ? "stable"
+          : "pre-release";
 
       return {
         dependency,

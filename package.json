@@ -1,6 +1,6 @@
 {
   "name": "libyear",
-  "version": "0.1.0",
+  "version": "0.1.6",
   "description": "A simple measure of software dependency freshness",
   "author": "Joshua David <@jdanil>",
   "contributors": [
@@ -17,11 +17,13 @@
     "url": "https://github.com/jdanil/libyear/issues"
   },
   "main": "./src",
-  "bin": "./bin/libyear",
+  "bin": "./bin/libyear.js",
   "types": "./src",
   "files": [
-    "**/*.d.ts",
-    "**/*.js"
+    "bin/**/*.d.ts",
+    "bin/**/*.js",
+    "src/**/*.d.ts",
+    "src/**/*.js"
   ],
   "keywords": [
     "debt",

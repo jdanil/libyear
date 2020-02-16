@@ -23,8 +23,14 @@ export const print = (
     })),
   );
 
-  const totalDrift = dependencies.reduce((acc, { drift }) => acc + drift, 0);
-  const totalPulse = dependencies.reduce((acc, { pulse }) => acc + pulse, 0);
+  const totalDrift = dependencies.reduce(
+    (acc, { drift }) => (isNaN(drift) ? acc : acc + drift),
+    0,
+  );
+  const totalPulse = dependencies.reduce(
+    (acc, { pulse }) => (isNaN(pulse) ? acc : acc + pulse),
+    0,
+  );
 
   const isBreach = (value: number, limit?: number) =>
     limit != null && value > limit;

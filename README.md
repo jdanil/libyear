@@ -111,11 +111,14 @@ Throws an error if any individual pulse metric surpasses the threshold.
 
 ## To Do
 
+- handle `npm ls` UNMET PEER DEPENDENCY
+- fetch "latest" from dist-tags
 - support `berry` w/o "required" workaround
 - detect drift threshold violation at dependency level
 - detect pulse threshold violation at dependency level
 - dogfood with ts-node when typescript@3.8 stable is released
 - linting
+- unit tests
 
 ## Acknowledgements
 

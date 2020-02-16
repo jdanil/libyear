@@ -1,5 +1,4 @@
-import * as execa from "execa";
-
+import { execute } from "./execute";
 import type { PackageManager } from "./types";
 
 export const getReleaseTime = async (
@@ -12,21 +11,20 @@ export const getReleaseTime = async (
     yarn: `yarn info ${packageName} time --json`,
   }[packageManager];
 
-  try {
-    const { stdout } = await execa.command(cmd);
-    const json = JSON.parse(stdout);
-    switch (packageManager) {
-      case "berry":
-        return json.time;
-      case "yarn":
-        return json.data;
-      case "npm":
-      default:
-        return json;
-    }
-  } catch (error) {
-    process.stderr.write(`Failed to run "${cmd}".`);
-    process.stderr.write(error.message);
-    process.exit(1);
+  const stdout = await execute(cmd);
+
+  if (!stdout) {
+    return {};
+  }
+
+  const json = JSON.parse(stdout);
+  switch (packageManager) {
+    case "berry":
+      return json.time;
+    case "yarn":
+      return json.data;
+    case "npm":
+    default:
+      return json;
   }
 };
