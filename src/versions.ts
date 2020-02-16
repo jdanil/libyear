@@ -1,4 +1,4 @@
-import { prerelease } from "semver";
+import { prerelease, valid } from "semver";
 
 /**
  * Filter out "time" metadata about the package.
@@ -6,7 +6,7 @@ import { prerelease } from "semver";
 export const getSanitisedReleases = (releases: { [version: string]: string }) =>
   Object.fromEntries(
     Object.entries(releases).filter(
-      ([version, _]) => !["created", "modified"].includes(version),
+      ([version, _]) => valid(version),
     ),
   );
 
