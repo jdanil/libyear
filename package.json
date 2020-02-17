@@ -1,6 +1,6 @@
 {
   "name": "libyear",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "A simple measure of software dependency freshness",
   "author": "Joshua David <@jdanil>",
   "contributors": [

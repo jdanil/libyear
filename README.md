@@ -8,7 +8,7 @@ It is a single number telling you how up-to-date your dependencies are.
 ## Metrics
 
 - `drift` representing "dependency drift"; the time between the release of the currently used and latest (stable) available versions of a dependency.
-- `pulse` representing an indication of a dependency's activity; the time since the release of the latest available version of a dependency (including pre-release).
+- `pulse` representing "pulse check", an indication of a dependency's activity; the time since the release of the latest available version of a dependency (including pre-release).
 
 All metrics are measured in "libyears" and are calculated against dependencies both collectively and individually.
 
@@ -85,25 +85,25 @@ yarn dlx libyear
 
 Accepts `berry`, `npm`, `yarn`. Default is inferred.
 
-### `--threshold-drift-collective`
+### `--threshold-drift-collective=<libyears>` (`-D=<libyears>`)
 
 Accepts a number. Default `null`.
 
 Throws an error if the total drift metric surpasses the threshold.
 
-### `--threshold-drift-individual`
+### `--threshold-drift-individual=<libyears>` (`-d=<libyears>`)
 
 Accepts a number. Default `null`.
 
 Throws an error if any individual drift metric surpasses the threshold.
 
-### `--threshold-pulse-collective`
+### `--threshold-pulse-collective=<libyears>` (`-P=<libyears>`)
 
 Accepts a number. Default `null`.
 
 Throws an error if the total pulse metric surpasses the threshold.
 
-### `--threshold-pulse-individual`
+### `--threshold-pulse-individual=<libyears>` (`-p=<libyears>`)
 
 Accepts a number. Default `null`.
 
@@ -111,6 +111,8 @@ Throws an error if any individual pulse metric surpasses the threshold.
 
 ## To Do
 
+- prettier logging
+- configure ci
 - handle `npm ls` UNMET PEER DEPENDENCY
 - fetch "latest" from dist-tags
 - support `berry` w/o "required" workaround
@@ -119,6 +121,8 @@ Throws an error if any individual pulse metric surpasses the threshold.
 - dogfood with ts-node when typescript@3.8 stable is released
 - linting
 - unit tests
+- investigate possibility of batching queries
+- track upcoming alpha, beta, next versions
 
 ## Acknowledgements
 
