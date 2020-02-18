@@ -1,8 +1,11 @@
+// TODO [2021-04-01]: replace with `Object.fromEntries()` after dropping node@10.
+import * as fromEntries from "fromentries";
+
 import { execute } from "./execute";
 
-export const getDependencies = async () => {
+export const getDependencies = async (): Promise<{ [key: string]: string }> => {
   const cmd = "npm ls --depth=0 --json --silent";
-  return Object.fromEntries(
+  return fromEntries(
     Object.entries(
       JSON.parse(await execute(cmd)).dependencies,
     ).map(

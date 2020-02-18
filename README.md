@@ -57,10 +57,11 @@ npx libyear
 ### `yarn@1` (`yarn classic`)
 
 ```bash
-yarn install --save-dev libyear
+yarn add --dev libyear
 ```
 
 `package.json`
+
 ```json
 {
   "scripts": {
@@ -123,6 +124,8 @@ Throws an error if any individual pulse metric surpasses the threshold.
 - unit tests
 - investigate possibility of batching queries
 - track upcoming alpha, beta, next versions
+- report number of releases between versions
+- setup cosmiconfig to support config file
 
 ## Acknowledgements
 

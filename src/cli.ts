@@ -17,16 +17,16 @@ export const cli = async () => {
   // validate cli options
   const packageManager = args["package-manager"];
   const driftCollective = validateThreshold(
-    args["threshold-drift-collective"] ?? args["D"]
+    args["threshold-drift-collective"] ?? args["D"],
   );
   const driftIndividual = validateThreshold(
-    args["threshold-drift-individual"] ?? args["d"]
+    args["threshold-drift-individual"] ?? args["d"],
   );
   const pulseCollective = validateThreshold(
-    args["threshold-pulse-collective"] ?? args["P"]
+    args["threshold-pulse-collective"] ?? args["P"],
   );
   const pulseIndividual = validateThreshold(
-    args["threshold-pulse-individual"] ?? args["p"]
+    args["threshold-pulse-individual"] ?? args["p"],
   );
 
   // run libyear

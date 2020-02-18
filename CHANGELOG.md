@@ -8,3 +8,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - support short cli options for threshold
+
+# 0.3.0 (2020-02-18)
+
+### Features
+
+- support node@10
