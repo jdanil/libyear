@@ -33,18 +33,30 @@ export const libyear = async (
         releaseTime[latestStableVersion],
       );
       const pulse = calculatePulse(releaseTime[latestAllVersion]);
+      // const releases = allVersions.slice(
+      //   allVersions.findIndex(version => version === currentVersion),
+      //   allVersions.findIndex(version => version === latestStableVersion),
+      // ).filter(version => stableVersions.includes(version)).length;
       const status =
         Object.entries(releaseTime).length === 0
           ? "symlink"
           : stableVersions.includes(currentVersion)
           ? "stable"
           : "pre-release";
+      const available =
+        latestStableVersion != currentVersion
+          ? latestStableVersion
+          : latestAllVersion != currentVersion
+          ? latestAllVersion
+          : "N/A";
 
       return {
         dependency,
         drift,
         pulse,
+        // releases,
         status,
+        available,
       };
     },
   );

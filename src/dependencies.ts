@@ -18,7 +18,7 @@ export const getDependencies = async (): Promise<{ [key: string]: string }> => {
           (
             (data.required as { version?: string })?.version ||
             (data.required as string)
-          ).replace(/[<=>\^~]/u, ""),
+          ).replace(/[<=>^~]/u, ""),
       ],
     ),
   );

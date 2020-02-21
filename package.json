@@ -37,12 +37,18 @@
     "node": "^10 || ^12 || ^13"
   },
   "scripts": {
+    "audit-ci": "audit-ci --moderate",
     "clean": "rimraf bin/**/*.d.ts src/**/*.d.ts bin/**/*.js src/**/*.js",
     "compile": "tsc",
-    "libyear": "node ./bin/libyear",
+    "libyear": "ts-node ./bin/libyear",
+    "lint": "eslint",
     "prepack": "tsc",
     "prettier": "prettier",
-    "test": "jest"
+    "test": "jest --config .jestrc.json --passWithNoTests",
+    "test:ci": "yarn test --ci",
+    "test:coverage": "yarn test --coverage",
+    "test:precommit": "yarn test --bail --findRelatedTests",
+    "test:pull-request": "yarn test:ci --changedSince=\"master\""
   },
   "dependencies": {
     "date-fns": "^2.9.0",
@@ -53,16 +59,23 @@
   },
   "devDependencies": {
     "@types/mri": "^1.1.0",
-    "@types/node": "^13.7.1",
+    "@types/node": "^13.7.4",
     "@types/semver": "^7.1.0",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
+    "audit-ci": "^2.5.1",
+    "eslint": "^6.8.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
+    "jest-environment-jsdom-sixteen": "^1.0.2",
     "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
-    "tslib": "^1.10.0",
-    "typescript": "^3.8.1-rc"
+    "ts-jest": "^25.2.1",
+    "ts-node": "^8.6.2",
+    "tslib": "^1.11.0",
+    "typescript": "^3.8.2"
   }
 }

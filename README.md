@@ -112,20 +112,28 @@ Throws an error if any individual pulse metric surpasses the threshold.
 
 ## To Do
 
-- prettier logging
+### Now
+
+- report number of releases between versions
 - configure ci
+
+### Next
+
+- prettier logging
 - handle `npm ls` UNMET PEER DEPENDENCY
 - fetch "latest" from dist-tags
 - support `berry` w/o "required" workaround
-- detect drift threshold violation at dependency level
-- detect pulse threshold violation at dependency level
-- dogfood with ts-node when typescript@3.8 stable is released
 - linting
 - unit tests
 - investigate possibility of batching queries
 - track upcoming alpha, beta, next versions
-- report number of releases between versions
 - setup cosmiconfig to support config file
+- consider auditing vulnerabilities
+
+### Later
+
+- `./tsconfig.json` to use `"module": "esnext"` when supported by [ts-node](https://github.com/TypeStrong/ts-node/issues/935)
+- `./bin/libyear.ts` to use top-level await after switching to ES Modules
 
 ## Acknowledgements
 

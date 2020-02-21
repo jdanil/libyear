@@ -1,0 +1,31 @@
+name: ci
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  test:
+    name: Test on node ${{matrix.node}} and ${{matrix.os}}
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        node:
+          - 10
+          - 12
+          - 13
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.node}}
+      - run: yarn install
+      - run: yarn libyear
+      - run: yarn compile
+      - run: yarn test:ci
