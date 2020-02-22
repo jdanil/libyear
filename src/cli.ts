@@ -28,6 +28,12 @@ export const cli = async () => {
   const pulseIndividual = validateThreshold(
     args["threshold-pulse-individual"] ?? args["p"],
   );
+  const releasesCollective = validateThreshold(
+    args["threshold-releases-collective"] ?? args["R"],
+  );
+  const releasesIndividual = validateThreshold(
+    args["threshold-releases-individual"] ?? args["r"],
+  );
 
   // run libyear
   libyear(
@@ -39,6 +45,8 @@ export const cli = async () => {
       driftIndividual,
       pulseCollective,
       pulseIndividual,
+      releasesCollective,
+      releasesIndividual,
     },
   );
 };

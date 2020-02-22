@@ -20,3 +20,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - detect threshold violations at dependency-level
+- support releases metric

@@ -7,10 +7,11 @@ It is a single number telling you how up-to-date your dependencies are.
 
 ## Metrics
 
-- `drift` representing "dependency drift"; the time between the release of the currently used and latest (stable) available versions of a dependency.
-- `pulse` representing "pulse check", an indication of a dependency's activity; the time since the release of the latest available version of a dependency (including pre-release).
+- `drift` representing "dependency drift"; the time between the release of the currently used and latest (stable) available versions of a dependency. Measured in "libyears".
+- `pulse` representing "pulse check", an indication of a dependency's activity; the time since the release of the latest available version of a dependency (including pre-release). Measured in "libyears".
+- `releases` the number of stable releases between the currently used and latest (stable) available versions of a dependency.
 
-All metrics are measured in "libyears" and are calculated against dependencies both collectively and individually.
+All metrics are calculated against dependencies both collectively and individually.
 
 ## Why
 
@@ -38,13 +39,16 @@ Modern stacks **attract developers**.
 `libyear` offers a package-manager-agnostic tool to measure dependency freshness for Node.js environments.
 
 On top of the most commonly referenced "dependency drift" fitness function,
-`libyear` tracks additional metrics like "pulse".
+`libyear` tracks additional metrics like "pulse" and "releases".
 "drift" is useful as a guideline to determine when dependencies should be updated.
 "pulse" is useful for identifying dependencies that may no longer be maintained.
+"releases" is an alternate measure of "drift" based on discrete versions rather than time.
 
 Each metric can be configured with a threshold.
 If configured, a breach of the threshold will exit the process with a failure code.
 This may be used in CI as a quality gate.
+
+If dependencies are already up-to-date, `libyear` tracks upcoming versions of dependencies, providing timely notice to prepare for stable releases.
 
 ## Usage
 
@@ -110,28 +114,37 @@ Accepts a number. Default `null`.
 
 Throws an error if any individual pulse metric surpasses the threshold.
 
+### `--threshold-releases-collective=<count>` (`-R=<count>`)
+
+Accepts a number. Default `null`.
+
+Throws an error if the total pulse metric surpasses the threshold.
+
+### `--threshold-releases-individual=<count>` (`-r=<count>`)
+
+Accepts a number. Default `null`.
+
+Throws an error if any individual pulse metric surpasses the threshold.
+
 ## To Do
 
 ### Now
 
-- report number of releases between versions
-- configure ci
+- configure ci semantic release
+- prettier logging
 
 ### Next
 
-- prettier logging
 - handle `npm ls` UNMET PEER DEPENDENCY
-- fetch "latest" from dist-tags
 - support `berry` w/o "required" workaround
-- linting
 - unit tests
 - investigate possibility of batching queries
-- track upcoming alpha, beta, next versions
 - setup cosmiconfig to support config file
 - consider auditing vulnerabilities
 
 ### Later
 
+- extend linting when eslint@7 is released and supports plugins loaded from config file directory
 - `./tsconfig.json` to use `"module": "esnext"` when supported by [ts-node](https://github.com/TypeStrong/ts-node/issues/935)
 - `./bin/libyear.ts` to use top-level await after switching to ES Modules
 

@@ -1,6 +1,6 @@
 {
   "name": "libyear",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A simple measure of software dependency freshness",
   "author": "Joshua David <@jdanil>",
   "contributors": [
@@ -37,7 +37,7 @@
     "node": "^10 || ^12 || ^13"
   },
   "scripts": {
-    "audit-ci": "audit-ci --moderate",
+    "audit-ci": "audit-ci",
     "clean": "rimraf bin/**/*.d.ts src/**/*.d.ts bin/**/*.js src/**/*.js",
     "compile": "tsc",
     "libyear": "ts-node ./bin/libyear",
@@ -58,11 +58,11 @@
     "semver": "^7.1.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@types/mri": "^1.1.0",
     "@types/node": "^13.7.4",
     "@types/semver": "^7.1.0",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^2.20.0",
     "@typescript-eslint/parser": "^2.20.0",
     "audit-ci": "^2.5.1",

@@ -14,6 +14,8 @@ export const libyear = async (
     driftIndividual?: number;
     pulseCollective?: number;
     pulseIndividual?: number;
+    releasesCollective?: number;
+    releasesIndividual?: number;
   },
 ) => {
   const awaitedDependencies = Object.entries(await getDependencies()).map(
@@ -33,10 +35,12 @@ export const libyear = async (
         releaseTime[latestStableVersion],
       );
       const pulse = calculatePulse(releaseTime[latestAllVersion]);
-      // const releases = allVersions.slice(
-      //   allVersions.findIndex(version => version === currentVersion),
-      //   allVersions.findIndex(version => version === latestStableVersion),
-      // ).filter(version => stableVersions.includes(version)).length;
+      const releases = allVersions
+        .slice(
+          allVersions.findIndex(version => version === currentVersion) + 1,
+          allVersions.findIndex(version => version === latestStableVersion) + 1,
+        )
+        .filter(version => stableVersions.includes(version)).length;
       const status =
         Object.entries(releaseTime).length === 0
           ? "symlink"
@@ -54,7 +58,7 @@ export const libyear = async (
         dependency,
         drift,
         pulse,
-        // releases,
+        releases,
         status,
         available,
       };
