@@ -15,9 +15,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - support node@10
 
-# 0.4.0 (2020-02-24)
+# 0.4.0 (2020-02-22)
 
 ### Features
 
 - detect threshold violations at dependency-level
 - support releases metric
+- style logs with chalk

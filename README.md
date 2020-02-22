@@ -131,13 +131,12 @@ Throws an error if any individual pulse metric surpasses the threshold.
 ### Now
 
 - configure ci semantic release
-- prettier logging
+- unit tests
 
 ### Next
 
 - handle `npm ls` UNMET PEER DEPENDENCY
 - support `berry` w/o "required" workaround
-- unit tests
 - investigate possibility of batching queries
 - setup cosmiconfig to support config file
 - consider auditing vulnerabilities

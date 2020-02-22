@@ -1,3 +1,5 @@
+import * as chalk from "chalk";
+
 import { printFloat } from "./numbers";
 
 type Dependencies = Array<{
@@ -9,6 +11,8 @@ type Dependencies = Array<{
   available: string;
 }>;
 
+type Metric = "drift" | "pulse" | "releases";
+
 type Threshold = {
   driftCollective?: number;
   driftIndividual?: number;
@@ -18,38 +22,47 @@ type Threshold = {
   releasesIndividual?: number;
 };
 
+const ntext = (text: string, plural: string, count: number) =>
+  Math.abs(count) === 1 ? text : plural;
+
+const getMetricUnit = (metric: Metric, count: number) => {
+  switch (metric) {
+    case "releases":
+      return ntext("release", "releases", count);
+    case "drift":
+    case "pulse":
+    default:
+      return ntext("libyear", "libyears", count);
+  }
+};
+
 const isBreach = (value: number, limit?: number) =>
   limit != null && value > limit;
 
 const printIndividual = (dependencies: Dependencies, threshold?: Threshold) => {
+  const printHelper = (
+    metric: Metric,
+    dependency: string,
+    value: number,
+    limit: number,
+  ) => {
+    if (isBreach(value, limit)) {
+      console.error(
+        `${chalk.magenta(metric)}: ${chalk.cyan(dependency)} is ${chalk.red(
+          `${printFloat(value)} ${getMetricUnit(metric, value)}`,
+        )} behind; threshold is ${chalk.yellow(printFloat(limit))}.`,
+      );
+    }
+  };
   dependencies.forEach(({ dependency, drift, pulse, releases }) => {
-    if (isBreach(drift, threshold?.driftIndividual)) {
-      console.error(
-        `drift: ${dependency} is ${printFloat(
-          drift,
-        )} libyears behind; threshold is ${printFloat(
-          threshold?.driftIndividual,
-        )}.`,
-      );
-    }
-    if (isBreach(pulse, threshold?.pulseIndividual)) {
-      console.error(
-        `pulse: ${dependency} is ${printFloat(
-          pulse,
-        )} libyears behind; threshold is ${printFloat(
-          threshold?.pulseIndividual,
-        )}.`,
-      );
-    }
-    if (isBreach(releases, threshold?.releasesIndividual)) {
-      console.error(
-        `releases: ${dependency} is ${printFloat(
-          releases,
-        )} releases behind; threshold is ${printFloat(
-          threshold?.releasesIndividual,
-        )}.`,
-      );
-    }
+    printHelper("drift", dependency, drift, threshold?.driftIndividual);
+    printHelper("pulse", dependency, pulse, threshold?.pulseIndividual);
+    printHelper(
+      "releases",
+      dependency,
+      releases,
+      threshold?.releasesIndividual,
+    );
   });
 };
 
@@ -61,21 +74,18 @@ const printCollective = (
 ) => {
   const logger = (value: number, limit?: number) =>
     isBreach(value, limit) ? console.error : console.log;
-  const message = (
-    type: "drift" | "pulse" | "releases",
-    value: number,
-    limit?: number,
-  ) => {
-    const valueMessage = `${type}: ${
+  const message = (metric: Metric, value: number, limit: number) => {
+    const valueStyler = isBreach(value, limit) ? chalk.red : chalk.greenBright;
+    const valueMessage = `${chalk.magenta(metric)}: ${
       {
         drift: "package is",
         pulse: "dependencies are",
         releases: "dependencies are",
-      }[type]
-    } ${printFloat(value)} ${
-      { drift: "libyears", pulse: "libyears", releases: "releases" }[type]
-    } behind`;
-    const limitMessage = `threshold is ${printFloat(limit)}`;
+      }[metric]
+    } ${valueStyler(
+      `${printFloat(value)} ${getMetricUnit(metric, value)}`,
+    )} behind`;
+    const limitMessage = `threshold is ${chalk.yellow(printFloat(limit))}`;
     return isBreach(value, limit)
       ? `${valueMessage}; ${limitMessage}.`
       : `${valueMessage}.`;
@@ -143,12 +153,12 @@ export const print = (dependencies: Dependencies, threshold?: Threshold) => {
     breaches.pulseIndividual ||
     breaches.releasesIndividual
   ) {
-    console.log("# Individual");
+    console.log(chalk.bold("# Individual"));
     printIndividual(dependencies, threshold);
     console.log();
   }
 
-  console.log("# Collective");
+  console.log(chalk.bold("# Collective"));
   printCollective(totalDrift, totalPulse, totalReleases, threshold);
   console.log();
 
