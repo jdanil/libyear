@@ -1,0 +1,17 @@
+# artifacts
+*.d.ts
+*.js
+*.tgz
+
+# typescript
+*.tsbuildinfo
+
+# yarn
+yarn-debug.log
+yarn-error.log
+yarn.lock
+
+# unsupported
+*.json
+*.md
+LICENSE
