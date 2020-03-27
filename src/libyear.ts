@@ -37,10 +37,11 @@ export const libyear = async (
       const pulse = calculatePulse(releaseTime[latestAllVersion]);
       const releases = allVersions
         .slice(
-          allVersions.findIndex(version => version === currentVersion) + 1,
-          allVersions.findIndex(version => version === latestStableVersion) + 1,
+          allVersions.findIndex((version) => version === currentVersion) + 1,
+          allVersions.findIndex((version) => version === latestStableVersion) +
+            1,
         )
-        .filter(version => stableVersions.includes(version)).length;
+        .filter((version) => stableVersions.includes(version)).length;
       const status =
         Object.entries(releaseTime).length === 0
           ? "symlink"
@@ -66,10 +67,10 @@ export const libyear = async (
   );
 
   Promise.all(awaitedDependencies)
-    .then(dependencies => {
+    .then((dependencies) => {
       print(dependencies, threshold);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error.message);
     });
 };

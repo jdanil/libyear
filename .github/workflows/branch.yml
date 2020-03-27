@@ -1,6 +1,6 @@
-name: ci
+name: branch
 on:
-  push:
+  pull_request:
     branches:
       - master
 jobs:
@@ -22,9 +22,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{matrix.node}}
+      # awaiting https://github.com/actions/checkout/pull/155
+      - run: git -c protocol.version=2 fetch --depth=1 --no-recurse-submodules --no-tags --progress --prune origin ${{github.event.pull_request.base.ref}}:${{github.event.pull_request.base.ref}}
       - run: yarn install
-      - run: yarn libyear
       - run: yarn compile
-      - run: yarn test --ci
-      - run: yarn lint:all
-      - run: yarn prettier:all --check
+      - run: yarn test --ci --changedSince="master"
+      - run: yarn lint:diff
+      - run: yarn prettier:diff --branch --check

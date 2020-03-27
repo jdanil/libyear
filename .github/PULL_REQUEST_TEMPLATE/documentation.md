@@ -11,6 +11,6 @@ Search open/closed similar issues and pull requests before submitting since some
 
 ## ✔️ Checklist
 
-- [ ] This pull request has a corresponding [issue](https://github.com/jdanil/template/issues) which has been linked.
-- [ ] This pull request is not a [duplicate](https://github.com/jdanil/template/pulls).
-- [ ] I have read and adhered to the [contributing](https://github.com/jdanil/template/blob/master/docs/contributing.md) guidelines.
+- [ ] This pull request has a corresponding [issue](https://github.com/jdanil/libyear/issues) which has been linked.
+- [ ] This pull request is not a [duplicate](https://github.com/jdanil/libyear/pulls).
+- [ ] I have read and adhered to the [contributing](https://github.com/jdanil/libyear/blob/master/docs/contributing.md) guidelines.

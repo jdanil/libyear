@@ -1,4 +1,4 @@
-# `libyear`
+# `libyear` &middot; ![](https://github.com/jdanil/libyear/workflows/ci/badge.svg)
 
 A Node.js implementation of [libyear](https://libyear.com/).
 
@@ -130,16 +130,25 @@ Throws an error if any individual pulse metric surpasses the threshold.
 
 ### Now
 
-- configure ci semantic release
+- fix "available" logic
+- ci semantic release
 - unit tests
 
 ### Next
 
-- handle `npm ls` UNMET PEER DEPENDENCY
-- support `berry` w/o "required" workaround
-- investigate possibility of batching queries
-- setup cosmiconfig to support config file
-- consider auditing vulnerabilities
+- fix
+  - handle `npm ls` UNMET PEER DEPENDENCY
+  - support `berry` w/o "required" workaround
+- features
+  - `pnpm` support
+  - cosmiconfig
+  - whitelisting
+  - time extension (amnesty / reprieve / clemency / respite / suspension)
+  - leniency for type definition packages
+  - JSON output
+- rfc
+  - batch queries
+  - audit vulnerabilities
 
 ### Later
 

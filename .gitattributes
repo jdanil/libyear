@@ -3,7 +3,8 @@
 
 # Normalise line endings
 # https://git-scm.com/docs/gitattributes#_end_of_line_conversion
-* text=auto
+# https://prettier.io/docs/en/options.html#end-of-line
+* text=auto eol=lf
 
 # Exclude from Archives
 # https://git-scm.com/docs/gitattributes#_code_export_ignore_code
