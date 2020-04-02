@@ -54,7 +54,7 @@
     "test:pull-request": "yarn test:ci --changedSince=\"master\""
   },
   "dependencies": {
-    "chalk": "^3.0.0",
+    "chalk": "^4.0.0",
     "date-fns": "^2.11.1",
     "execa": "^4.0.0",
     "fromentries": "^1.2.0",
