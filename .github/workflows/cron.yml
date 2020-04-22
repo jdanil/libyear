@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 13
+          node-version: 14
       - run: yarn install
       - run: yarn audit-ci --moderate
       - run: yarn libyear -D=1 -P=10 -R=10 -d=1 -p=5 -r=5

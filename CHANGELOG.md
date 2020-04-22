@@ -22,3 +22,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - detect threshold violations at dependency-level
 - support releases metric
 - style logs with chalk
+
+# 0.4.2 (2020-04-22)
+
+### Bug Fixes
+
+- support node >=10

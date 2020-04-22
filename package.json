@@ -1,6 +1,6 @@
 {
   "name": "libyear",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A simple measure of software dependency freshness",
   "author": "Joshua David <@jdanil>",
   "contributors": [
@@ -34,7 +34,7 @@
     "outdated"
   ],
   "engines": {
-    "node": "^10 || ^12 || ^13"
+    "node": ">=10"
   },
   "scripts": {
     "audit-ci": "audit-ci",
@@ -55,31 +55,31 @@
   },
   "dependencies": {
     "chalk": "^4.0.0",
-    "date-fns": "^2.11.1",
+    "date-fns": "^2.12.0",
     "execa": "^4.0.0",
     "fromentries": "^1.2.0",
     "mri": "^1.1.5",
-    "semver": "^7.1.3"
+    "semver": "^7.3.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@types/mri": "^1.1.0",
-    "@types/node": "^13.9.4",
+    "@types/node": "^13.13.2",
     "@types/semver": "^7.1.0",
-    "@typescript-eslint/eslint-plugin": "^2.25.0",
-    "@typescript-eslint/parser": "^2.25.0",
+    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/parser": "^2.29.0",
     "audit-ci": "^2.5.1",
     "eslint": "^6.8.0",
     "eslint-changeset": "^0.1.1",
-    "husky": "^4.2.3",
-    "jest": "^25.2.3",
+    "husky": "^4.2.5",
+    "jest": "^25.4.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
-    "lint-staged": "^10.0.9",
-    "prettier": "^2.0.2",
+    "lint-staged": "^10.1.7",
+    "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
-    "ts-jest": "^25.2.1",
-    "ts-node": "^8.8.1",
+    "ts-jest": "^25.4.0",
+    "ts-node": "^8.9.0",
     "tslib": "^1.11.1",
     "typescript": "^3.8.3"
   }
