@@ -13,4 +13,4 @@ jobs:
           node-version: 14
       - run: yarn install
       - run: yarn audit-ci --moderate
-      - run: yarn libyear -D=1 -P=10 -R=10 -d=1 -p=5 -r=5
+      - run: yarn libyear

@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Schema for .libyearrc",
+  "definitions": {
+    "optionsDefinition": {
+      "type": "object",
+      "properties": {
+        "threshold": {
+          "properties": {
+            "drift": {
+              "properties": {
+                "collective": {
+                  "description": "Throws an error if the total drift metric surpasses the threshold.",
+                  "default": null,
+                  "type": "number"
+                },
+                "individual": {
+                  "description": "Throws an error if any individual drift metric surpasses the threshold.",
+                  "default": null,
+                  "type": "number"
+                }
+              }
+            },
+            "pulse": {
+              "properties": {
+                "collective": {
+                  "description": "Throws an error if the total pulse metric surpasses the threshold.",
+                  "default": null,
+                  "type": "number"
+                },
+                "individual": {
+                  "description": "Throws an error if any individual pulse metric surpasses the threshold.",
+                  "default": null,
+                  "type": "number"
+                }
+              }
+            },
+            "releases": {
+              "properties": {
+                "collective": {
+                  "description": "Throws an error if the total pulse metric surpasses the threshold.",
+                  "default": null,
+                  "type": "integer"
+                },
+                "individual": {
+                  "description": "Throws an error if any individual pulse metric surpasses the threshold.",
+                  "default": null,
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/optionsDefinition"
+        }
+      ]
+    },
+    {
+      "type": "string"
+    }
+  ]
+}

@@ -2,8 +2,7 @@ import * as execa from "execa";
 
 export const execute = async (cmd: string) => {
   try {
-    const { stdout } = await execa.command(cmd);
-    return stdout;
+    return (await execa.command(cmd)).stdout;
   } catch (error) {
     return error.stdout;
   }

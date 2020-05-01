@@ -28,3 +28,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - support node >=10
+
+# 0.5.0 (2020-05-01)
+
+### Features
+
+- support cosmiconfig
+- support pnpm

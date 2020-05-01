@@ -18,53 +18,52 @@ export const libyear = async (
     releasesIndividual?: number;
   },
 ) => {
-  const awaitedDependencies = Object.entries(await getDependencies()).map(
-    async ([dependency, currentVersion]) => {
-      const releaseTime = await getReleaseTime(packageManager, dependency);
+  const awaitedDependencies = Object.entries(
+    await getDependencies(packageManager),
+  ).map(async ([dependency, currentVersion]) => {
+    const releaseTime = await getReleaseTime(packageManager, dependency);
 
-      const allVersionsObj = getSanitisedReleases(releaseTime);
-      const stableVersionsObj = getStableReleases(allVersionsObj);
-      const allVersions = Object.keys(allVersionsObj);
-      const stableVersions = Object.keys(stableVersionsObj);
+    const allVersionsObj = getSanitisedReleases(releaseTime);
+    const stableVersionsObj = getStableReleases(allVersionsObj);
+    const allVersions = Object.keys(allVersionsObj);
+    const stableVersions = Object.keys(stableVersionsObj);
 
-      const latestAllVersion = sort(allVersions).slice(-1)[0];
-      const latestStableVersion = sort(stableVersions).slice(-1)[0];
+    const latestAllVersion = sort(allVersions).slice(-1)[0];
+    const latestStableVersion = sort(stableVersions).slice(-1)[0];
 
-      const drift = calculateDrift(
-        releaseTime[currentVersion],
-        releaseTime[latestStableVersion],
-      );
-      const pulse = calculatePulse(releaseTime[latestAllVersion]);
-      const releases = allVersions
-        .slice(
-          allVersions.findIndex((version) => version === currentVersion) + 1,
-          allVersions.findIndex((version) => version === latestStableVersion) +
-            1,
-        )
-        .filter((version) => stableVersions.includes(version)).length;
-      const status =
-        Object.entries(releaseTime).length === 0
-          ? "symlink"
-          : stableVersions.includes(currentVersion)
-          ? "stable"
-          : "pre-release";
-      const available =
-        latestStableVersion != currentVersion
-          ? latestStableVersion
-          : latestAllVersion != currentVersion
-          ? latestAllVersion
-          : "N/A";
+    const drift = calculateDrift(
+      releaseTime[currentVersion],
+      releaseTime[latestStableVersion],
+    );
+    const pulse = calculatePulse(releaseTime[latestAllVersion]);
+    const releases = allVersions
+      .slice(
+        allVersions.findIndex((version) => version === currentVersion) + 1,
+        allVersions.findIndex((version) => version === latestStableVersion) + 1,
+      )
+      .filter((version) => stableVersions.includes(version)).length;
+    const status =
+      Object.entries(releaseTime).length === 0
+        ? "symlink"
+        : stableVersions.includes(currentVersion)
+        ? "stable"
+        : "pre-release";
+    const available =
+      latestStableVersion != currentVersion
+        ? latestStableVersion
+        : latestAllVersion != currentVersion
+        ? latestAllVersion
+        : "N/A";
 
-      return {
-        dependency,
-        drift,
-        pulse,
-        releases,
-        status,
-        available,
-      };
-    },
-  );
+    return {
+      dependency,
+      drift,
+      pulse,
+      releases,
+      status,
+      available,
+    };
+  });
 
   Promise.all(awaitedDependencies)
     .then((dependencies) => {

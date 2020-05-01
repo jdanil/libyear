@@ -1,0 +1,17 @@
+{
+  "$schema": "./schema.json",
+  "threshold": {
+    "drift": {
+      "collective": 1,
+      "individual": 1
+    },
+    "pulse": {
+      "collective": 10,
+      "individual": 5
+    },
+    "releases": {
+      "collective": 10,
+      "individual": 5
+    }
+  }
+}

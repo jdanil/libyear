@@ -5,6 +5,7 @@ import {
   getInferredPackageManager,
   getParsedPackageManager,
 } from "./package-manager";
+import { getConfiguration } from "./configuration";
 
 const validateThreshold = (threshold: unknown): number =>
   isNaN(Number(threshold)) ? null : Number(threshold);
@@ -16,24 +17,13 @@ export const cli = async () => {
 
   // validate cli options
   const packageManager = args["package-manager"];
-  const driftCollective = validateThreshold(
-    args["threshold-drift-collective"] ?? args["D"],
-  );
-  const driftIndividual = validateThreshold(
-    args["threshold-drift-individual"] ?? args["d"],
-  );
-  const pulseCollective = validateThreshold(
-    args["threshold-pulse-collective"] ?? args["P"],
-  );
-  const pulseIndividual = validateThreshold(
-    args["threshold-pulse-individual"] ?? args["p"],
-  );
-  const releasesCollective = validateThreshold(
-    args["threshold-releases-collective"] ?? args["R"],
-  );
-  const releasesIndividual = validateThreshold(
-    args["threshold-releases-individual"] ?? args["r"],
-  );
+  const { threshold } = await getConfiguration(args);
+  const driftCollective = validateThreshold(threshold?.drift?.collective);
+  const driftIndividual = validateThreshold(threshold?.drift?.individual);
+  const pulseCollective = validateThreshold(threshold?.pulse?.collective);
+  const pulseIndividual = validateThreshold(threshold?.pulse?.individual);
+  const releasesCollective = validateThreshold(threshold?.releases?.collective);
+  const releasesIndividual = validateThreshold(threshold?.releases?.individual);
 
   // run libyear
   libyear(

@@ -116,15 +116,48 @@ Throws an error if any individual pulse metric surpasses the threshold.
 
 ### `--threshold-releases-collective=<count>` (`-R=<count>`)
 
-Accepts a number. Default `null`.
+Accepts an integer. Default `null`.
 
 Throws an error if the total pulse metric surpasses the threshold.
 
 ### `--threshold-releases-individual=<count>` (`-r=<count>`)
 
-Accepts a number. Default `null`.
+Accepts an integer. Default `null`.
 
 Throws an error if any individual pulse metric surpasses the threshold.
+
+## Configuration
+
+`libyear` can be configured via cosmiconfig-supported formats.
+
+- `package.json` (under `{ "configs": { "libyear": { ... } } }`)
+- `libyearrc`
+- `libyearrc.js`
+- `libyearrc.json`
+- `libyearrc.yaml`
+- `libyearrc.yml`
+- `libyear.config.js`
+
+Configuration is expected in the following structure.
+
+```json5
+{
+  threshold: {
+    drift: {
+      collective: null, // number (default: null)
+      individual: null, // number (default: null)
+    },
+    pulse: {
+      collective: null, // number (default: null)
+      individual: null, // number (default: null)
+    },
+    releases: {
+      collective: null, // integer (default: null)
+      individual: null, // integer (default: null)
+    },
+  },
+}
+```
 
 ## To Do
 
@@ -141,7 +174,6 @@ Throws an error if any individual pulse metric surpasses the threshold.
   - support `berry` w/o "required" workaround
 - features
   - `pnpm` support
-  - cosmiconfig
   - whitelisting
   - time extension (amnesty / reprieve / clemency / respite / suspension)
   - leniency for type definition packages

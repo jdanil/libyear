@@ -1,1 +1,1 @@
-export type PackageManager = "berry" | "npm" | "yarn";
+export type PackageManager = "berry" | "npm" | "pnpm" | "yarn";
