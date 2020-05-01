@@ -27,4 +27,4 @@ jobs:
       - run: yarn compile
       - run: yarn test --ci
       - run: yarn lint:all
-      - run: yarn prettier:all --check
+      - run: yarn fmt:all --check

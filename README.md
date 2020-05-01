@@ -221,7 +221,6 @@ To cater for this case, we can set a more lenient pulse threshold.
   - handle `npm ls` UNMET PEER DEPENDENCY
   - support `berry` w/o "required" workaround
 - features
-  - `pnpm` support
   - JSON output
 - rfc
   - batch queries

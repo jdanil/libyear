@@ -23,6 +23,8 @@ export const getInferredPackageManager = async (): Promise<PackageManager> => {
   if (packageManager.startsWith("yarn")) {
     const { stdout } = await execa.command("yarn --version");
     return satisfies(stdout, "^0 || ^1") ? "yarn" : "berry";
+  } else if (packageManager.startsWith("pnpm")) {
+    return Promise.resolve("pnpm");
   } else {
     return Promise.resolve(getParsedPackageManager(packageManager));
   }

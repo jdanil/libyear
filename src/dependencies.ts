@@ -4,20 +4,38 @@ import * as fromEntries from "fromentries";
 import { execute } from "./execute";
 import type { PackageManager } from "./types";
 
+const getParsedDependencies = async (
+  packageManager: PackageManager,
+  cmd: string,
+): Promise<any> => {
+  const json = JSON.parse(await execute(cmd));
+
+  switch (packageManager) {
+    case "pnpm":
+      return json[0];
+    case "berry":
+    case "npm":
+    case "yarn":
+    default:
+      return json;
+  }
+};
+
 export const getDependencies = async (
   packageManager: PackageManager,
 ): Promise<{ [key: string]: string }> => {
-  const cmd = {
-    berry: "npm ls --depth=0 --json --silent",
-    npm: "npm ls --depth=0 --json --silent",
-    pnpm: "pnpm recursive list --depth=0 --json",
-    yarn: "npm ls --depth=0 --json --silent",
-  }[packageManager];
+  const cmd =
+    {
+      pnpm: "pnpm recursive list --depth=0 --json",
+    }[packageManager] ?? "npm ls --depth=0 --json --silent";
+
+  const json = await getParsedDependencies(packageManager, cmd);
 
   return fromEntries(
-    Object.entries(
-      JSON.parse(await execute(cmd)).dependencies,
-    ).map(
+    Object.entries({
+      ...json.dependencies,
+      ...json.devDependencies,
+    }).map(
       ([dependency, data]: [
         string,
         { version?: string; required?: { version?: string } | string },
