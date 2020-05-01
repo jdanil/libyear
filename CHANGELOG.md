@@ -29,9 +29,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - support node >=10
 
-# 0.5.0 (2020-05-01)
+# 0.5.0 (2020-05-02)
 
 ### Features
 
 - support cosmiconfig
+- support overrides
 - support pnpm

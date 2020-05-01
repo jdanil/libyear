@@ -1,6 +1,7 @@
 import * as chalk from "chalk";
 
 import { printFloat } from "./numbers";
+import type { Overrides, Threshold } from "./types";
 
 type Dependencies = Array<{
   dependency: string;
@@ -12,15 +13,6 @@ type Dependencies = Array<{
 }>;
 
 type Metric = "drift" | "pulse" | "releases";
-
-type Threshold = {
-  driftCollective?: number;
-  driftIndividual?: number;
-  pulseCollective?: number;
-  pulseIndividual?: number;
-  releasesCollective?: number;
-  releasesIndividual?: number;
-};
 
 const ntext = (text: string, plural: string, count: number) =>
   Math.abs(count) === 1 ? text : plural;
@@ -36,21 +28,40 @@ const getMetricUnit = (metric: Metric, count: number) => {
   }
 };
 
-const isBreach = (value: number, limit?: number) =>
-  limit != null && value > limit;
+const getMatchingPattern = (dependency: string, overrides: Overrides) =>
+  Object.keys(overrides).find((pattern) => RegExp(pattern).test(dependency));
 
-const printIndividual = (dependencies: Dependencies, threshold?: Threshold) => {
+const isExcused = (dependency: string, overrides: Overrides) =>
+  Object.entries(overrides).some(
+    ([pattern, { defer }]) =>
+      RegExp(pattern).test(dependency) && Date.now() < Date.parse(defer),
+  );
+
+const isBreach = (
+  value: number,
+  limit?: number,
+  dependency?: string,
+  overrides?: Overrides,
+) => limit != null && value > limit && !isExcused(dependency, overrides ?? {});
+
+const printIndividual = (
+  dependencies: Dependencies,
+  threshold?: Threshold,
+  overrides?: Overrides,
+) => {
   const printHelper = (
     metric: Metric,
     dependency: string,
     value: number,
     limit: number,
   ) => {
-    if (isBreach(value, limit)) {
+    const threshold =
+      overrides?.[getMatchingPattern(dependency, overrides)]?.[metric] ?? limit;
+    if (isBreach(value, threshold, dependency, overrides)) {
       console.error(
         `${chalk.magenta(metric)}: ${chalk.cyan(dependency)} is ${chalk.red(
           `${printFloat(value)} ${getMetricUnit(metric, value)}`,
-        )} behind; threshold is ${chalk.yellow(printFloat(limit))}.`,
+        )} behind; threshold is ${chalk.yellow(printFloat(threshold))}.`,
       );
     }
   };
@@ -105,7 +116,11 @@ const printCollective = (
   )(message("releases", totalReleases, threshold?.releasesCollective));
 };
 
-export const print = (dependencies: Dependencies, threshold?: Threshold) => {
+export const print = (
+  dependencies: Dependencies,
+  threshold?: Threshold,
+  overrides?: Overrides,
+) => {
   console.table(
     dependencies.map(
       ({ dependency, drift, pulse, releases, status, available }) => ({
@@ -135,16 +150,34 @@ export const print = (dependencies: Dependencies, threshold?: Threshold) => {
 
   const breaches = {
     driftCollective: isBreach(totalDrift, threshold?.driftCollective),
-    driftIndividual: dependencies.some(({ drift }) =>
-      isBreach(drift, threshold?.driftIndividual),
+    driftIndividual: dependencies.some(({ dependency, drift }) =>
+      isBreach(
+        drift,
+        overrides?.[getMatchingPattern(dependency, overrides)]?.drift ??
+          threshold?.driftIndividual,
+        dependency,
+        overrides,
+      ),
     ),
     pulseCollective: isBreach(totalPulse, threshold?.pulseCollective),
-    pulseIndividual: dependencies.some(({ pulse }) =>
-      isBreach(pulse, threshold?.pulseIndividual),
+    pulseIndividual: dependencies.some(({ dependency, pulse }) =>
+      isBreach(
+        pulse,
+        overrides?.[getMatchingPattern(dependency, overrides)]?.pulse ??
+          threshold?.pulseIndividual,
+        dependency,
+        overrides,
+      ),
     ),
     releasesCollective: isBreach(totalReleases, threshold?.releasesCollective),
-    releasesIndividual: dependencies.some(({ releases }) =>
-      isBreach(releases, threshold?.releasesIndividual),
+    releasesIndividual: dependencies.some(({ dependency, releases }) =>
+      isBreach(
+        releases,
+        overrides?.[getMatchingPattern(dependency, overrides)]?.releases ??
+          threshold?.releasesIndividual,
+        dependency,
+        overrides,
+      ),
     ),
   };
 
@@ -154,7 +187,7 @@ export const print = (dependencies: Dependencies, threshold?: Threshold) => {
     breaches.releasesIndividual
   ) {
     console.log(chalk.bold("# Individual"));
-    printIndividual(dependencies, threshold);
+    printIndividual(dependencies, threshold, overrides);
     console.log();
   }
 

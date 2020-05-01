@@ -58,6 +58,12 @@ If dependencies are already up-to-date, `libyear` tracks upcoming versions of de
 npx libyear
 ```
 
+### `pnpm`
+
+```bash
+pnpx libyear
+```
+
 ### `yarn@1` (`yarn classic`)
 
 ```bash
@@ -88,7 +94,7 @@ yarn dlx libyear
 
 ### `--package-manager`
 
-Accepts `berry`, `npm`, `yarn`. Default is inferred.
+Accepts `berry`, `npm`, `pnpm`, `yarn`. Default is inferred.
 
 ### `--threshold-drift-collective=<libyears>` (`-D=<libyears>`)
 
@@ -142,6 +148,14 @@ Configuration is expected in the following structure.
 
 ```json5
 {
+  overrides: {
+    "^@types/": {
+      defer: "2020-01-01", // string (ISO formatted Date)
+      drift: null, // number (default: null)
+      pulse: null, // number (default: null)
+      releases: null, // integer (default: null)
+    },
+  },
   threshold: {
     drift: {
       collective: null, // number (default: null)
@@ -156,6 +170,40 @@ Configuration is expected in the following structure.
       individual: null, // integer (default: null)
     },
   },
+}
+```
+
+### Overrides
+
+Configuration files support an `overrides` property.
+Each property in the object maps a regular expression to a collection of options.
+
+- `defer` - Defer enforcing any thresholds until the date specified.
+- `drift` - Override drift threshold for matching dependencies.
+- `pulse` - Override pulse threshold for matching dependencies.
+- `releases` - Override releases threshold for matching dependencies.
+
+To match a specific dependency, make sure to include the starts with (`^`) and ends with (`$`) anchors.
+
+```json
+{
+  "overrides": {
+    "^libyear$": {}
+  }
+}
+```
+
+There may be cases where matching many dependencies is desired.
+For instance, type definitions are often updated less regularly than source code.
+To cater for this case, we can set a more lenient pulse threshold.
+
+```json
+{
+  "overrides": {
+    "^@types/": {
+      "pulse": null
+    }
+  }
 }
 ```
 
@@ -174,9 +222,6 @@ Configuration is expected in the following structure.
   - support `berry` w/o "required" workaround
 - features
   - `pnpm` support
-  - whitelisting
-  - time extension (amnesty / reprieve / clemency / respite / suspension)
-  - leniency for type definition packages
   - JSON output
 - rfc
   - batch queries

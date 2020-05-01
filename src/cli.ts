@@ -17,7 +17,7 @@ export const cli = async () => {
 
   // validate cli options
   const packageManager = args["package-manager"];
-  const { threshold } = await getConfiguration(args);
+  const { overrides, threshold } = await getConfiguration(args);
   const driftCollective = validateThreshold(threshold?.drift?.collective);
   const driftIndividual = validateThreshold(threshold?.drift?.individual);
   const pulseCollective = validateThreshold(threshold?.pulse?.collective);
@@ -38,5 +38,6 @@ export const cli = async () => {
       releasesCollective,
       releasesIndividual,
     },
+    overrides,
   );
 };

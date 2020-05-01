@@ -4,19 +4,13 @@ import { calculateDrift, calculatePulse } from "./dates";
 import { getDependencies } from "./dependencies";
 import { print } from "./print";
 import { getReleaseTime } from "./release-time";
-import type { PackageManager } from "./types";
+import type { Overrides, PackageManager, Threshold } from "./types";
 import { getSanitisedReleases, getStableReleases } from "./versions";
 
 export const libyear = async (
   packageManager: PackageManager,
-  threshold?: {
-    driftCollective?: number;
-    driftIndividual?: number;
-    pulseCollective?: number;
-    pulseIndividual?: number;
-    releasesCollective?: number;
-    releasesIndividual?: number;
-  },
+  threshold?: Threshold,
+  overrides?: Overrides,
 ) => {
   const awaitedDependencies = Object.entries(
     await getDependencies(packageManager),
@@ -67,7 +61,7 @@ export const libyear = async (
 
   Promise.all(awaitedDependencies)
     .then((dependencies) => {
-      print(dependencies, threshold);
+      print(dependencies, threshold, overrides);
     })
     .catch((error) => {
       console.error(error.message);
