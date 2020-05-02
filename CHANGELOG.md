@@ -31,6 +31,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # 0.5.0 (2020-05-02)
 
+### Bug Fixes
+
+- merge pnpm list
+
 ### Features
 
 - support cosmiconfig

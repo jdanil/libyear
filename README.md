@@ -178,7 +178,7 @@ Configuration is expected in the following structure.
 Configuration files support an `overrides` property.
 Each property in the object maps a regular expression to a collection of options.
 
-- `defer` - Defer enforcing any thresholds until the date specified.
+- `defer` - Defer enforcing any thresholds until the date specified for matching dependencies.
 - `drift` - Override drift threshold for matching dependencies.
 - `pulse` - Override pulse threshold for matching dependencies.
 - `releases` - Override releases threshold for matching dependencies.

@@ -1,5 +1,6 @@
 // TODO [2021-04-01]: replace with `Object.fromEntries()` after dropping node@10.
 import * as fromEntries from "fromentries";
+import { merge } from "lodash";
 
 import { execute } from "./execute";
 import type { PackageManager } from "./types";
@@ -12,7 +13,7 @@ const getParsedDependencies = async (
 
   switch (packageManager) {
     case "pnpm":
-      return json[0];
+      return merge(...(json as [object]));
     case "berry":
     case "npm":
     case "yarn":
