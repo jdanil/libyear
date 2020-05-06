@@ -73,7 +73,7 @@
     "@types/semver": "^7.1.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
-    "audit-ci": "^2.5.1",
+    "audit-ci": "^3.0.0",
     "eslint": "^6.8.0",
     "eslint-changeset": "^0.1.2",
     "husky": "^4.2.5",
