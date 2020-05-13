@@ -69,7 +69,7 @@
     "@jest/globals": "^25.5.2",
     "@types/lodash": "^4.14.150",
     "@types/mri": "^1.1.0",
-    "@types/node": "^13.13.4",
+    "@types/node": "^14.0.1",
     "@types/semver": "^7.1.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
