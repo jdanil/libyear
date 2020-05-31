@@ -37,7 +37,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "audit-ci": "audit-ci",
+    "audit-ci": "audit-ci --config .auditcirc.json",
     "clean": "tsc --build --clean",
     "compile": "tsc --build",
     "fmt": "prettier --ignore-path .gitignore",
