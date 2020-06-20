@@ -68,19 +68,6 @@ pnpx libyear
 
 ```bash
 yarn add --dev libyear
-```
-
-`package.json`
-
-```json
-{
-  "scripts": {
-    "libyear": "libyear"
-  }
-}
-```
-
-```bash
 yarn libyear
 ```
 

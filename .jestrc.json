@@ -1,6 +1,5 @@
 {
   "coverageProvider": "v8",
   "coverageReporters": ["lcov", "text"],
-  "preset": "ts-jest",
-  "testEnvironment": "jest-environment-jsdom-sixteen"
+  "preset": "ts-jest"
 }
