@@ -40,3 +40,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - support cosmiconfig
 - support overrides
 - support pnpm
+
+# 0.5.1 (2020-06-20)
+
+### Bug Fixes
+
+- handle missing dependency info time

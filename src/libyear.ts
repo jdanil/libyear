@@ -15,7 +15,8 @@ export const libyear = async (
   const awaitedDependencies = Object.entries(
     await getDependencies(packageManager),
   ).map(async ([dependency, currentVersion]) => {
-    const releaseTime = await getReleaseTime(packageManager, dependency);
+    const releaseTime =
+      (await getReleaseTime(packageManager, dependency)) ?? {};
 
     const allVersionsObj = getSanitisedReleases(releaseTime);
     const stableVersionsObj = getStableReleases(allVersionsObj);
