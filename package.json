@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^9.0.1",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-conventional": "^9.0.1",
     "@jest/globals": "^26.0.1",
     "@types/lodash": "^4.14.155",
     "@types/mri": "^1.1.0",
