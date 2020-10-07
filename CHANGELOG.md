@@ -41,8 +41,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - support overrides
 - support pnpm
 
-# 0.5.1 (2020-06-20)
+# 0.6.0 (2020-10-08)
 
 ### Bug Fixes
 
 - handle missing dependency info time
+
+### Features
+
+- support yarn v2 plug'n'play

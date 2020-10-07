@@ -1,9 +1,9 @@
 import * as execa from "execa";
 
-export const execute = async (cmd: string) => {
+export const execute = async (cmd: string): Promise<string> => {
   try {
     return (await execa.command(cmd)).stdout;
   } catch (error) {
-    return error.stdout;
+    return (error as execa.ExecaReturnValue).stdout;
   }
 };

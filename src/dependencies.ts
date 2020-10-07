@@ -5,30 +5,68 @@ import { merge } from "lodash";
 import { execute } from "./execute";
 import type { PackageManager } from "./types";
 
+type ParsedDependency = Record<
+  string,
+  { required?: { version?: string } | string; version?: string }
+>;
+type ParsedDependencies = Record<
+  "dependencies" | "devDependencies",
+  ParsedDependency
+>;
+
 const getParsedDependencies = async (
   packageManager: PackageManager,
   cmd: string,
-): Promise<any> => {
-  const json = JSON.parse(await execute(cmd));
+): Promise<ParsedDependencies> => {
+  const stdout = await execute(cmd);
 
   switch (packageManager) {
     case "pnpm":
-      return merge(...(json as [object]));
+      return merge(
+        ...(JSON.parse(stdout) as [
+          ParsedDependencies,
+          ...ParsedDependencies[]
+        ]),
+      ) as ParsedDependencies;
     case "berry":
+      return {
+        dependencies: merge(
+          ...(stdout
+            .split("\n")
+            .map(
+              (dependency) =>
+                JSON.parse(dependency) as {
+                  value: string;
+                  children: {
+                    Version: string;
+                  };
+                },
+            )
+            .filter((dependency) => !/@workspace:/.test(dependency.value))
+            .map((dependency) => ({
+              [dependency.value.split(/@(npm|patch|workspace):/)[0]]: {
+                version: dependency.children.Version,
+              },
+            })) as [ParsedDependency, ...ParsedDependency[]]),
+        ) as ParsedDependency,
+        devDependencies: {},
+      };
     case "npm":
     case "yarn":
     default:
-      return json;
+      return JSON.parse(stdout) as ParsedDependencies;
   }
 };
 
 export const getDependencies = async (
   packageManager: PackageManager,
-): Promise<{ [key: string]: string }> => {
+): Promise<Record<string, string>> => {
   const cmd =
-    {
+    ({
+      berry: "yarn info --all --json",
       pnpm: "pnpm recursive list --depth=0 --json",
-    }[packageManager] ?? "npm ls --depth=0 --json --silent";
+    } as Record<PackageManager, string>)[packageManager] ??
+    "npm ls --depth=0 --json --silent";
 
   const json = await getParsedDependencies(packageManager, cmd);
 
@@ -36,18 +74,13 @@ export const getDependencies = async (
     Object.entries({
       ...json.dependencies,
       ...json.devDependencies,
-    }).map(
-      ([dependency, data]: [
-        string,
-        { version?: string; required?: { version?: string } | string },
-      ]) => [
-        dependency,
-        data.version ??
-          (
-            (data.required as { version?: string })?.version ||
-            (data.required as string)
-          ).replace(/[<=>^~]/u, ""),
-      ],
-    ),
+    }).map(([dependency, data]) => [
+      dependency,
+      data.version ??
+        (
+          (data.required as { version?: string })?.version ||
+          (data.required as string)
+        ).replace(/[<=>^~]/u, ""),
+    ]),
   );
 };

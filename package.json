@@ -1,6 +1,6 @@
 {
   "name": "libyear",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "A simple measure of software dependency freshness",
   "author": "Joshua David <@jdanil>",
   "contributors": [
@@ -85,5 +85,8 @@
     "ts-node": "^8.10.2",
     "tslib": "^2.0.0",
     "typescript": "^3.9.5"
+  },
+  "resolutions": {
+    "jest-changed-files": "~26.1.0"
   }
 }

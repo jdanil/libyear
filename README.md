@@ -198,15 +198,14 @@ To cater for this case, we can set a more lenient pulse threshold.
 
 ### Now
 
+- `--all` flag
+- major, minor, patch thresholds
 - fix "available" logic
 - ci semantic release
 - unit tests
 
 ### Next
 
-- fix
-  - handle `npm ls` UNMET PEER DEPENDENCY
-  - support `berry` w/o "required" workaround
 - features
   - JSON output
 - rfc
