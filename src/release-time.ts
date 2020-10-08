@@ -4,7 +4,7 @@ import type { PackageManager } from "./types";
 export const getReleaseTime = async (
   packageManager: PackageManager,
   packageName: string,
-) => {
+): Promise<Record<string, string>> => {
   const cmd = {
     berry: `yarn npm info ${packageName} --fields time --json`,
     npm: `npm view ${packageName} time --json`,
@@ -18,14 +18,14 @@ export const getReleaseTime = async (
     return {};
   }
 
-  const json = JSON.parse(stdout);
+  const json = JSON.parse(stdout) as unknown;
   switch (packageManager) {
     case "berry":
-      return json.time;
+      return (json as Record<"time", Record<string, string>>).time;
     case "yarn":
-      return json.data;
+      return (json as Record<"data", Record<string, string>>).data;
     case "npm":
     default:
-      return json;
+      return json as Record<string, string>;
   }
 };

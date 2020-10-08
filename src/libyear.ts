@@ -11,7 +11,7 @@ export const libyear = async (
   packageManager: PackageManager,
   threshold?: Threshold,
   overrides?: Overrides,
-) => {
+): Promise<void> => {
   const awaitedDependencies = Object.entries(
     await getDependencies(packageManager),
   ).map(async ([dependency, currentVersion]) => {
@@ -64,7 +64,7 @@ export const libyear = async (
     .then((dependencies) => {
       print(dependencies, threshold, overrides);
     })
-    .catch((error) => {
-      console.error(error.message);
+    .catch((error: unknown) => {
+      console.error((error as Error).message);
     });
 };

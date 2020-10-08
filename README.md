@@ -111,13 +111,13 @@ Throws an error if any individual pulse metric surpasses the threshold.
 
 Accepts an integer. Default `null`.
 
-Throws an error if the total pulse metric surpasses the threshold.
+Throws an error if the total releases metric surpasses the threshold.
 
 ### `--threshold-releases-individual=<count>` (`-r=<count>`)
 
 Accepts an integer. Default `null`.
 
-Throws an error if any individual pulse metric surpasses the threshold.
+Throws an error if any individual releases metric surpasses the threshold.
 
 ## Configuration
 
@@ -199,6 +199,7 @@ To cater for this case, we can set a more lenient pulse threshold.
 ### Now
 
 - `--all` flag
+- `--silent` flag
 - major, minor, patch thresholds
 - fix "available" logic
 - ci semantic release

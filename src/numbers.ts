@@ -1,1 +1,2 @@
-export const printFloat = (x: number) => parseFloat(Number(x).toFixed(2));
+export const printFloat = (x: number): number =>
+  parseFloat(Number(x).toFixed(2));

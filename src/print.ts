@@ -120,7 +120,7 @@ export const print = (
   dependencies: Dependencies,
   threshold?: Threshold,
   overrides?: Overrides,
-) => {
+): void => {
   console.table(
     dependencies.map(
       ({ dependency, drift, pulse, releases, status, available }) => ({

@@ -70,12 +70,12 @@
               "type": "object",
               "properties": {
                 "collective": {
-                  "description": "Throws an error if the total pulse metric surpasses the threshold.",
+                  "description": "Throws an error if the total releases metric surpasses the threshold.",
                   "default": null,
                   "type": "integer"
                 },
                 "individual": {
-                  "description": "Throws an error if any individual pulse metric surpasses the threshold.",
+                  "description": "Throws an error if any individual releases metric surpasses the threshold.",
                   "default": null,
                   "type": "integer"
                 }
