@@ -22,6 +22,9 @@ const ntext = (text: string, plural: string, count: number) =>
 const getMetricUnit = (metric: Metric, count: number) => {
   switch (metric) {
     case "releases":
+    case "major":
+    case "minor":
+    case "patch":
       return ntext("release", "releases", count);
     case "drift":
     case "pulse":
@@ -67,16 +70,21 @@ const printIndividual = (
       );
     }
   };
-  dependencies.forEach(({ dependency, drift, pulse, releases }) => {
-    printHelper("drift", dependency, drift, threshold?.driftIndividual);
-    printHelper("pulse", dependency, pulse, threshold?.pulseIndividual);
-    printHelper(
-      "releases",
-      dependency,
-      releases,
-      threshold?.releasesIndividual,
-    );
-  });
+  dependencies.forEach(
+    ({ dependency, drift, pulse, releases, major, minor, patch }) => {
+      printHelper("drift", dependency, drift, threshold?.driftIndividual);
+      printHelper("pulse", dependency, pulse, threshold?.pulseIndividual);
+      printHelper(
+        "releases",
+        dependency,
+        releases,
+        threshold?.releasesIndividual,
+      );
+      printHelper("major", dependency, major, threshold?.majorIndividual);
+      printHelper("minor", dependency, minor, threshold?.minorIndividual);
+      printHelper("patch", dependency, patch, threshold?.patchIndividual);
+    },
+  );
 };
 
 const printCollective = (
