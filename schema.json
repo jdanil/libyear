@@ -26,7 +26,22 @@
                 "type": "number"
               },
               "releases": {
-                "description": "Override releases threshold for matching dependencies.",
+                "description": "Override stable releases threshold for matching dependencies.",
+                "default": null,
+                "type": "integer"
+              },
+              "major": {
+                "description": "Override major releases threshold for matching dependencies.",
+                "default": null,
+                "type": "integer"
+              },
+              "minor": {
+                "description": "Override minor releases threshold for matching dependencies.",
+                "default": null,
+                "type": "integer"
+              },
+              "patch": {
+                "description": "Override patch releases threshold for matching dependencies.",
                 "default": null,
                 "type": "integer"
               }
@@ -70,12 +85,57 @@
               "type": "object",
               "properties": {
                 "collective": {
-                  "description": "Throws an error if the total releases metric surpasses the threshold.",
+                  "description": "Throws an error if the total stable releases metric surpasses the threshold.",
                   "default": null,
                   "type": "integer"
                 },
                 "individual": {
-                  "description": "Throws an error if any individual releases metric surpasses the threshold.",
+                  "description": "Throws an error if any individual stable releases metric surpasses the threshold.",
+                  "default": null,
+                  "type": "integer"
+                }
+              }
+            },
+            "major": {
+              "type": "object",
+              "properties": {
+                "collective": {
+                  "description": "Throws an error if the total major metric surpasses the threshold.",
+                  "default": null,
+                  "type": "integer"
+                },
+                "individual": {
+                  "description": "Throws an error if any individual major metric surpasses the threshold.",
+                  "default": null,
+                  "type": "integer"
+                }
+              }
+            },
+            "minor": {
+              "type": "object",
+              "properties": {
+                "collective": {
+                  "description": "Throws an error if the total minor metric surpasses the threshold.",
+                  "default": null,
+                  "type": "integer"
+                },
+                "individual": {
+                  "description": "Throws an error if any individual minor metric surpasses the threshold.",
+                  "default": null,
+                  "type": "integer"
+                }
+              }
+            },
+            "patch": {
+              "type": "object",
+              "properties": {
+                "collective": {
+                  "description": "Throws an error if the total patch metric surpasses the threshold.",
+                  "default": null,
+                  "type": "integer"
+                },
+                "individual": {
+                  "description": "Throws an error if any individual patch metric surpasses the threshold.",
                   "default": null,
                   "type": "integer"
                 }

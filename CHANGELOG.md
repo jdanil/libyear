@@ -46,7 +46,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - handle missing dependency info time
+- available to no longer recommend older stable versions
 
 ### Features
 
 - support yarn v2 plug'n'play
+- support major, minor, patch metrics

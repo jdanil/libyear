@@ -20,6 +20,18 @@ const getCliConfiguration = (args: Argv) => ({
       individual: (args["threshold-releases-individual"] ??
         args["r"]) as number,
     },
+    major: {
+      collective: args["threshold-major-collective"] as number,
+      individual: args["threshold-major-individual"] as number,
+    },
+    minor: {
+      collective: args["threshold-minor-collective"] as number,
+      individual: args["threshold-minor-individual"] as number,
+    },
+    patch: {
+      collective: args["threshold-patch-collective"] as number,
+      individual: args["threshold-patch-individual"] as number,
+    },
   },
 });
 

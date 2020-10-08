@@ -25,6 +25,12 @@ export const cli = async (): Promise<void> => {
   const pulseIndividual = validateThreshold(threshold?.pulse?.individual);
   const releasesCollective = validateThreshold(threshold?.releases?.collective);
   const releasesIndividual = validateThreshold(threshold?.releases?.individual);
+  const majorCollective = validateThreshold(threshold?.major?.collective);
+  const majorIndividual = validateThreshold(threshold?.major?.individual);
+  const minorCollective = validateThreshold(threshold?.minor?.collective);
+  const minorIndividual = validateThreshold(threshold?.minor?.individual);
+  const patchCollective = validateThreshold(threshold?.patch?.collective);
+  const patchIndividual = validateThreshold(threshold?.patch?.individual);
 
   // run libyear
   await libyear(
@@ -38,6 +44,12 @@ export const cli = async (): Promise<void> => {
       pulseIndividual,
       releasesCollective,
       releasesIndividual,
+      majorCollective,
+      majorIndividual,
+      minorCollective,
+      minorIndividual,
+      patchCollective,
+      patchIndividual,
     },
     overrides,
   );

@@ -8,11 +8,13 @@ type Dependencies = Array<{
   drift: number;
   pulse: number;
   releases: number;
-  status: string;
+  major: number;
+  minor: number;
+  patch: number;
   available: string;
 }>;
 
-type Metric = "drift" | "pulse" | "releases";
+type Metric = "drift" | "pulse" | "releases" | "major" | "minor" | "patch";
 
 const ntext = (text: string, plural: string, count: number) =>
   Math.abs(count) === 1 ? text : plural;
@@ -81,6 +83,9 @@ const printCollective = (
   totalDrift: number,
   totalPulse: number,
   totalReleases: number,
+  totalMajor: number,
+  totalMinor: number,
+  totalPatch: number,
   threshold?: Threshold,
 ) => {
   const logger = (value: number, limit?: number) =>
@@ -92,6 +97,9 @@ const printCollective = (
         drift: "package is",
         pulse: "dependencies are",
         releases: "dependencies are",
+        major: "dependencies are",
+        minor: "dependencies are",
+        patch: "dependencies are",
       }[metric]
     } ${valueStyler(
       `${printFloat(value)} ${getMetricUnit(metric, value)}`,
@@ -114,6 +122,18 @@ const printCollective = (
     totalReleases,
     threshold?.releasesCollective,
   )(message("releases", totalReleases, threshold?.releasesCollective));
+  logger(
+    totalMajor,
+    threshold?.majorCollective,
+  )(message("major", totalMajor, threshold?.majorCollective));
+  logger(
+    totalMinor,
+    threshold?.minorCollective,
+  )(message("minor", totalMinor, threshold?.minorCollective));
+  logger(
+    totalPatch,
+    threshold?.patchCollective,
+  )(message("patch", totalPatch, threshold?.patchCollective));
 };
 
 export const print = (
@@ -123,12 +143,23 @@ export const print = (
 ): void => {
   console.table(
     dependencies.map(
-      ({ dependency, drift, pulse, releases, status, available }) => ({
+      ({
+        dependency,
+        drift,
+        pulse,
+        releases,
+        major,
+        minor,
+        patch,
+        available,
+      }) => ({
         dependency,
         drift: printFloat(drift),
         pulse: printFloat(pulse),
         releases,
-        status,
+        major,
+        minor,
+        patch,
         available,
       }),
     ),
@@ -145,6 +176,18 @@ export const print = (
   );
   const totalReleases = dependencies.reduce(
     (acc, { releases }) => (isNaN(releases) ? acc : acc + releases),
+    0,
+  );
+  const totalMajor = dependencies.reduce(
+    (acc, { major }) => (isNaN(major) ? acc : acc + major),
+    0,
+  );
+  const totalMinor = dependencies.reduce(
+    (acc, { minor }) => (isNaN(minor) ? acc : acc + minor),
+    0,
+  );
+  const totalPatch = dependencies.reduce(
+    (acc, { patch }) => (isNaN(patch) ? acc : acc + patch),
     0,
   );
 
@@ -179,12 +222,45 @@ export const print = (
         overrides,
       ),
     ),
+    majorCollective: isBreach(totalMajor, threshold?.majorCollective),
+    majorIndividual: dependencies.some(({ dependency, major }) =>
+      isBreach(
+        major,
+        overrides?.[getMatchingPattern(dependency, overrides)]?.major ??
+          threshold?.majorIndividual,
+        dependency,
+        overrides,
+      ),
+    ),
+    minorCollective: isBreach(totalMinor, threshold?.minorCollective),
+    minorIndividual: dependencies.some(({ dependency, minor }) =>
+      isBreach(
+        minor,
+        overrides?.[getMatchingPattern(dependency, overrides)]?.minor ??
+          threshold?.minorIndividual,
+        dependency,
+        overrides,
+      ),
+    ),
+    patchCollective: isBreach(totalPatch, threshold?.patchCollective),
+    patchIndividual: dependencies.some(({ dependency, patch }) =>
+      isBreach(
+        patch,
+        overrides?.[getMatchingPattern(dependency, overrides)]?.patch ??
+          threshold?.patchIndividual,
+        dependency,
+        overrides,
+      ),
+    ),
   };
 
   if (
     breaches.driftIndividual ||
     breaches.pulseIndividual ||
-    breaches.releasesIndividual
+    breaches.releasesIndividual ||
+    breaches.majorIndividual ||
+    breaches.minorIndividual ||
+    breaches.patchIndividual
   ) {
     console.log(chalk.bold("# Individual"));
     printIndividual(dependencies, threshold, overrides);
@@ -192,7 +268,15 @@ export const print = (
   }
 
   console.log(chalk.bold("# Collective"));
-  printCollective(totalDrift, totalPulse, totalReleases, threshold);
+  printCollective(
+    totalDrift,
+    totalPulse,
+    totalReleases,
+    totalMajor,
+    totalMinor,
+    totalPatch,
+    threshold,
+  );
   console.log();
 
   if (Object.values(breaches).includes(true)) {

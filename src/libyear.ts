@@ -1,11 +1,15 @@
-import { sort } from "semver";
+import { compare, sort } from "semver";
 
 import { calculateDrift, calculatePulse } from "./dates";
 import { getDependencies } from "./dependencies";
 import { print } from "./print";
 import { getReleaseTime } from "./release-time";
 import type { Overrides, PackageManager, Threshold } from "./types";
-import { getSanitisedReleases, getStableReleases } from "./versions";
+import {
+  getReleasesByType,
+  getSanitisedReleases,
+  getStableReleases,
+} from "./versions";
 
 export const libyear = async (
   packageManager: PackageManager,
@@ -26,36 +30,46 @@ export const libyear = async (
     const latestAllVersion = sort(allVersions).slice(-1)[0];
     const latestStableVersion = sort(stableVersions).slice(-1)[0];
 
+    const diffAllVersions = allVersions.slice(
+      allVersions.findIndex((version) => version === currentVersion) + 1,
+      allVersions.findIndex((version) => version === latestStableVersion) + 1,
+    );
+    const diffStableVersions = diffAllVersions.filter((version) =>
+      stableVersions.includes(version),
+    );
+
     const drift = calculateDrift(
       releaseTime[currentVersion],
       releaseTime[latestStableVersion],
     );
     const pulse = calculatePulse(releaseTime[latestAllVersion]);
-    const releases = allVersions
-      .slice(
-        allVersions.findIndex((version) => version === currentVersion) + 1,
-        allVersions.findIndex((version) => version === latestStableVersion) + 1,
-      )
-      .filter((version) => stableVersions.includes(version)).length;
-    const status =
-      Object.entries(releaseTime).length === 0
-        ? "symlink"
-        : stableVersions.includes(currentVersion)
-        ? "stable"
-        : "pre-release";
+    const releases = diffStableVersions.length;
+    const major = getReleasesByType(
+      [currentVersion, ...diffStableVersions],
+      "major",
+    ).length;
+    const minor = getReleasesByType(
+      [currentVersion, ...diffStableVersions],
+      "minor",
+    ).length;
+    const patch = getReleasesByType(
+      [currentVersion, ...diffStableVersions],
+      "patch",
+    ).length;
     const available =
-      latestStableVersion != currentVersion
-        ? latestStableVersion
-        : latestAllVersion != currentVersion
-        ? latestAllVersion
-        : "N/A";
+      [latestStableVersion, latestAllVersion].find(
+        (version) =>
+          compare(currentVersion, version, { includePrerelease: true }) < 0,
+      ) ?? "N/A";
 
     return {
       dependency,
       drift,
       pulse,
       releases,
-      status,
+      major,
+      minor,
+      patch,
       available,
     };
   });

@@ -1,6 +1,18 @@
 // TODO [2021-04-01]: replace with `Object.fromEntries()` after dropping node@10.
 import * as fromEntries from "fromentries";
-import { prerelease, valid } from "semver";
+import { ReleaseType, diff, prerelease, valid } from "semver";
+
+/**
+ * Filter versions by release type.
+ */
+export const getReleasesByType = (
+  versions: string[],
+  type: ReleaseType,
+): string[] =>
+  versions.filter(
+    (value: string, index: number, array: string[]) =>
+      diff(array[index - 1] ?? value, value) === type,
+  );
 
 /**
  * Filter out "time" metadata about the package.

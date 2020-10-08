@@ -10,6 +10,9 @@ It is a single number telling you how up-to-date your dependencies are.
 - `drift` representing "dependency drift"; the time between the release of the currently used and latest (stable) available versions of a dependency. Measured in "libyears".
 - `pulse` representing "pulse check", an indication of a dependency's activity; the time since the release of the latest available version of a dependency (including pre-release). Measured in "libyears".
 - `releases` the number of stable releases between the currently used and latest (stable) available versions of a dependency.
+- `major` the number of major releases between the currently used and latest (stable) available versions of a dependency.
+- `minor` the number of minor releases between the currently used and latest (stable) available versions of a dependency.
+- `patch` the number of patch releases between the currently used and latest (stable) available versions of a dependency.
 
 All metrics are calculated against dependencies both collectively and individually.
 
@@ -111,13 +114,49 @@ Throws an error if any individual pulse metric surpasses the threshold.
 
 Accepts an integer. Default `null`.
 
-Throws an error if the total releases metric surpasses the threshold.
+Throws an error if the total stable releases metric surpasses the threshold.
 
 ### `--threshold-releases-individual=<count>` (`-r=<count>`)
 
 Accepts an integer. Default `null`.
 
-Throws an error if any individual releases metric surpasses the threshold.
+Throws an error if any individual stable releases metric surpasses the threshold.
+
+### `--threshold-major-collective=<count>`
+
+Accepts an integer. Default `null`.
+
+Throws an error if the total major metric surpasses the threshold.
+
+### `--threshold-major-individual=<count>`
+
+Accepts an integer. Default `null`.
+
+Throws an error if any individual major metric surpasses the threshold.
+
+### `--threshold-minor-collective=<count>`
+
+Accepts an integer. Default `null`.
+
+Throws an error if the total minor metric surpasses the threshold.
+
+### `--threshold-minor-individual=<count>`
+
+Accepts an integer. Default `null`.
+
+Throws an error if any individual minor metric surpasses the threshold.
+
+### `--threshold-patch-collective=<count>`
+
+Accepts an integer. Default `null`.
+
+Throws an error if the total patch metric surpasses the threshold.
+
+### `--threshold-patch-individual=<count>`
+
+Accepts an integer. Default `null`.
+
+Throws an error if any individual patch metric surpasses the threshold.
 
 ## Configuration
 
@@ -141,6 +180,9 @@ Configuration is expected in the following structure.
       drift: null, // number (default: null)
       pulse: null, // number (default: null)
       releases: null, // integer (default: null)
+      major: null, // integer (default: null)
+      minor: null, // integer (default: null)
+      patch: null, // integer (default: null)
     },
   },
   threshold: {
@@ -156,6 +198,18 @@ Configuration is expected in the following structure.
       collective: null, // integer (default: null)
       individual: null, // integer (default: null)
     },
+    major: {
+      collective: null, // integer (default: null)
+      individual: null, // integer (default: null)
+    },
+    minor: {
+      collective: null, // integer (default: null)
+      individual: null, // integer (default: null)
+    },
+    patch: {
+      collective: null, // integer (default: null)
+      individual: null, // integer (default: null)
+    },
   },
 }
 ```
@@ -168,7 +222,10 @@ Each property in the object maps a regular expression to a collection of options
 - `defer` - Defer enforcing any thresholds until the date specified for matching dependencies.
 - `drift` - Override drift threshold for matching dependencies.
 - `pulse` - Override pulse threshold for matching dependencies.
-- `releases` - Override releases threshold for matching dependencies.
+- `releases` - Override stable releases threshold for matching dependencies.
+- `major` - Override major releases threshold for matching dependencies.
+- `minor` - Override minor releases threshold for matching dependencies.
+- `patch` - Override patch releases threshold for matching dependencies.
 
 To match a specific dependency, make sure to include the starts with (`^`) and ends with (`$`) anchors.
 
@@ -199,9 +256,6 @@ To cater for this case, we can set a more lenient pulse threshold.
 ### Now
 
 - `--all` flag
-- `--silent` flag
-- major, minor, patch thresholds
-- fix "available" logic
 - ci semantic release
 - unit tests
 
@@ -212,6 +266,7 @@ To cater for this case, we can set a more lenient pulse threshold.
 - rfc
   - batch queries
   - audit vulnerabilities
+  - include resolutions
 
 ### Later
 

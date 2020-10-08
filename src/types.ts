@@ -7,6 +7,12 @@ export type Threshold = {
   pulseIndividual?: number;
   releasesCollective?: number;
   releasesIndividual?: number;
+  majorCollective?: number;
+  majorIndividual?: number;
+  minorCollective?: number;
+  minorIndividual?: number;
+  patchCollective?: number;
+  patchIndividual?: number;
 };
 
 export type Overrides = {
@@ -15,6 +21,9 @@ export type Overrides = {
     drift?: number;
     pulse?: number;
     releases?: number;
+    major?: number;
+    minor?: number;
+    patch?: number;
   };
 };
 
@@ -32,6 +41,18 @@ export type Configuration = {
     releases?: {
       collective?: Pick<Threshold, "releasesCollective">;
       individual?: Pick<Threshold, "releasesIndividual">;
+    };
+    major?: {
+      collective?: Pick<Threshold, "majorCollective">;
+      individual?: Pick<Threshold, "majorIndividual">;
+    };
+    minor?: {
+      collective?: Pick<Threshold, "minorCollective">;
+      individual?: Pick<Threshold, "minorIndividual">;
+    };
+    patch?: {
+      collective?: Pick<Threshold, "patchCollective">;
+      individual?: Pick<Threshold, "patchIndividual">;
     };
   };
 };
