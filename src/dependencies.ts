@@ -60,11 +60,12 @@ const getParsedDependencies = async (
 
 export const getDependencies = async (
   packageManager: PackageManager,
+  flags?: { all?: boolean },
 ): Promise<Record<string, string>> => {
   const cmd =
     ({
-      berry: "yarn info --all --json",
-      pnpm: "pnpm recursive list --depth=0 --json",
+      berry: `yarn info ${flags?.all ? "--all" : ""} --json`,
+      pnpm: `pnpm ${flags?.all ? "recursive" : ""} list --depth=0 --json`,
     } as Record<PackageManager, string>)[packageManager] ??
     "npm ls --depth=0 --json --silent";
 

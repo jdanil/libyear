@@ -12,6 +12,7 @@ import {
 
 export const libyear = async (
   packageManager: PackageManager,
+  flags?: { all?: boolean },
 ): Promise<
   Array<{
     dependency: string;
@@ -25,7 +26,7 @@ export const libyear = async (
   }>
 > => {
   const awaitedDependencies = Object.entries(
-    await getDependencies(packageManager),
+    await getDependencies(packageManager, flags),
   ).map(async ([dependency, currentVersion]) => {
     const releaseTime =
       (await getReleaseTime(packageManager, dependency)) ?? {};

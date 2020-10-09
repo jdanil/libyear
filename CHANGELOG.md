@@ -53,3 +53,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - support yarn v2 plug'n'play
 - support major, minor, patch metrics
 - support JSON output
+- support package and project level checks

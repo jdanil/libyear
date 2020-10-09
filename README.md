@@ -46,10 +46,11 @@ On top of the most commonly referenced "dependency drift" fitness function,
 "drift" is useful as a guideline to determine when dependencies should be updated.
 "pulse" is useful for identifying dependencies that may no longer be maintained.
 "releases" is an alternate measure of "drift" based on discrete versions rather than time.
+"major", "minor", and "patch" provide more granular metrics for "releases".
 
 Each metric can be configured with a threshold.
 If configured, a breach of the threshold will exit the process with a failure code.
-This may be used in CI as a quality gate.
+This may be used in CI as a quality gate, or as a [cron job](https://en.wikipedia.org/wiki/Cron) to trigger an alert when the debt gets too high.
 
 If dependencies are already up-to-date, `libyear` tracks upcoming versions of dependencies, providing timely notice to prepare for stable releases.
 
@@ -85,6 +86,12 @@ yarn dlx libyear
 ### `--package-manager`
 
 Accepts `berry`, `npm`, `pnpm`, `yarn`. Default is inferred.
+
+### `--all`
+
+Include dependencies from the whole project. Default is `false`.
+
+_Note: This option is only supported when using `berry` or `pnpm` package managers._
 
 ### `--json`
 
@@ -164,10 +171,11 @@ Throws an error if any individual patch metric surpasses the threshold.
 
 ## Configuration
 
-`libyear` can be configured via cosmiconfig-supported formats.
+`libyear` can be configured via [cosmiconfig-supported](https://github.com/davidtheclark/cosmiconfig) formats.
 
 - `package.json` (under `{ "configs": { "libyear": { ... } } }`)
 - `libyearrc`
+- `libyearrc.cjs`
 - `libyearrc.js`
 - `libyearrc.json`
 - `libyearrc.yaml`
@@ -267,19 +275,20 @@ Packages can be temporarily excused from complying to thresholds by setting a da
 
 ### Now
 
-- `--all` flag
 - ci semantic release
 - unit tests
 - refactor
-  - cli.ts
   - print.ts
 
 ### Next
 
 - rfc
-  - batch queries
+  - batch queries / use npm REST API instead of cli (for release times)
   - audit vulnerabilities
   - include resolutions
+  - programmatic use
+  - include collective metrics in JSON report
+  - include violations in JSON report
 
 ### Later
 
@@ -289,7 +298,7 @@ Packages can be temporarily excused from complying to thresholds by setting a da
 
 ## Acknowledgements
 
-`libyear` is inspired by the package-mananger-specific variants of libyear.
+`libyear` is inspired by the package-manager-specific variants of libyear.
 
 - [libyear-npm](https://github.com/jaredbeck/libyear-npm) by [@jaredbeck](https://github.com/jaredbeck)
 - [libyear-yarn](https://github.com/sbleon/libyear-yarn) by [@sbleon](https://github.com/sbleon)

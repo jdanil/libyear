@@ -15,10 +15,11 @@ const validateThreshold = (threshold: unknown): number =>
 export const cli = async (): Promise<void> => {
   // parse cli args
   const argv = process.argv.slice(2);
-  const args = mri(argv, { boolean: ["json"] });
+  const args = mri(argv, { boolean: ["all", "json"] });
 
   // validate cli options
   const packageManager = args["package-manager"] as PackageManager;
+  const all = args["all"] as boolean;
   const json = args["json"] as boolean;
   const { overrides, threshold } = await getConfiguration(args);
   const driftCollective = validateThreshold(threshold?.drift?.collective);
@@ -40,6 +41,7 @@ export const cli = async (): Promise<void> => {
       getParsedPackageManager(
         packageManager ?? (await getInferredPackageManager()),
       ),
+      { all },
     );
 
     const threshold = {
