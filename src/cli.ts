@@ -6,6 +6,7 @@ import {
   getParsedPackageManager,
 } from "./package-manager";
 import { getConfiguration } from "./configuration";
+import { print } from "./print";
 import type { PackageManager } from "./types";
 
 const validateThreshold = (threshold: unknown): number =>
@@ -14,10 +15,11 @@ const validateThreshold = (threshold: unknown): number =>
 export const cli = async (): Promise<void> => {
   // parse cli args
   const argv = process.argv.slice(2);
-  const args = mri(argv);
+  const args = mri(argv, { boolean: ["json"] });
 
   // validate cli options
   const packageManager = args["package-manager"] as PackageManager;
+  const json = args["json"] as boolean;
   const { overrides, threshold } = await getConfiguration(args);
   const driftCollective = validateThreshold(threshold?.drift?.collective);
   const driftIndividual = validateThreshold(threshold?.drift?.individual);
@@ -33,11 +35,14 @@ export const cli = async (): Promise<void> => {
   const patchIndividual = validateThreshold(threshold?.patch?.individual);
 
   // run libyear
-  await libyear(
-    getParsedPackageManager(
-      packageManager ?? (await getInferredPackageManager()),
-    ),
-    {
+  try {
+    const report = await libyear(
+      getParsedPackageManager(
+        packageManager ?? (await getInferredPackageManager()),
+      ),
+    );
+
+    const threshold = {
       driftCollective,
       driftIndividual,
       pulseCollective,
@@ -50,7 +55,18 @@ export const cli = async (): Promise<void> => {
       minorIndividual,
       patchCollective,
       patchIndividual,
-    },
-    overrides,
-  );
+    };
+
+    if (json) {
+      console.log(JSON.stringify(report));
+    } else {
+      print(report, threshold, overrides);
+    }
+  } catch (error: unknown) {
+    if (json) {
+      console.log(JSON.stringify(error));
+    } else {
+      console.error((error as Error).message);
+    }
+  }
 };

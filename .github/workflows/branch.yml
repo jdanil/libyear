@@ -29,3 +29,4 @@ jobs:
       - run: yarn test --ci --changedSince="master"
       - run: yarn lint:diff
       - run: yarn fmt:diff --branch --check
+    timeout-minutes: 15

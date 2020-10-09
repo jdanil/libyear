@@ -2,9 +2,8 @@ import { compare, sort } from "semver";
 
 import { calculateDrift, calculatePulse } from "./dates";
 import { getDependencies } from "./dependencies";
-import { print } from "./print";
 import { getReleaseTime } from "./release-time";
-import type { Overrides, PackageManager, Threshold } from "./types";
+import type { PackageManager } from "./types";
 import {
   getReleasesByType,
   getSanitisedReleases,
@@ -13,9 +12,18 @@ import {
 
 export const libyear = async (
   packageManager: PackageManager,
-  threshold?: Threshold,
-  overrides?: Overrides,
-): Promise<void> => {
+): Promise<
+  Array<{
+    dependency: string;
+    drift: number;
+    pulse: number;
+    releases: number;
+    major: number;
+    minor: number;
+    patch: number;
+    available: string;
+  }>
+> => {
   const awaitedDependencies = Object.entries(
     await getDependencies(packageManager),
   ).map(async ([dependency, currentVersion]) => {
@@ -74,11 +82,5 @@ export const libyear = async (
     };
   });
 
-  Promise.all(awaitedDependencies)
-    .then((dependencies) => {
-      print(dependencies, threshold, overrides);
-    })
-    .catch((error: unknown) => {
-      console.error((error as Error).message);
-    });
+  return Promise.all(awaitedDependencies);
 };

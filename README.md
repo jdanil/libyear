@@ -86,6 +86,10 @@ yarn dlx libyear
 
 Accepts `berry`, `npm`, `pnpm`, `yarn`. Default is inferred.
 
+### `--json`
+
+Outputs the report to the console as valid JSON. Default is `false`.
+
 ### `--threshold-drift-collective=<libyears>` (`-D=<libyears>`)
 
 Accepts a number. Default `null`.
@@ -251,6 +255,14 @@ To cater for this case, we can set a more lenient pulse threshold.
 }
 ```
 
+## FAQ
+
+### Can I whitelist (or allowlist) dependencies from throwing errors?
+
+Dependencies cannot be ignored from threshold checks by design.
+If a package cannot be upgraded at a particular point in time, then it should be re-reviewed at a later date.
+Packages can be temporarily excused from complying to thresholds by setting a date to "defer" enforcement until in the configuration file.
+
 ## To Do
 
 ### Now
@@ -258,11 +270,12 @@ To cater for this case, we can set a more lenient pulse threshold.
 - `--all` flag
 - ci semantic release
 - unit tests
+- refactor
+  - cli.ts
+  - print.ts
 
 ### Next
 
-- features
-  - JSON output
 - rfc
   - batch queries
   - audit vulnerabilities

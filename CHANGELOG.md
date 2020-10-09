@@ -41,7 +41,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - support overrides
 - support pnpm
 
-# 0.6.0 (2020-10-08)
+# 0.6.0 (2020-10-09)
 
 ### Bug Fixes
 
@@ -52,3 +52,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - support yarn v2 plug'n'play
 - support major, minor, patch metrics
+- support JSON output
