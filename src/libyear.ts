@@ -1,4 +1,4 @@
-import { compare, sort } from "semver";
+import { compare, sort, valid } from "semver";
 
 import { calculateDrift, calculatePulse } from "./dates";
 import { getDependencies } from "./dependencies";
@@ -56,10 +56,12 @@ export const libyear = async (
       "patch",
     ).length;
     const available =
-      [latestStableVersion, latestAllVersion].find(
-        (version) =>
-          compare(currentVersion, version, { includePrerelease: true }) < 0,
-      ) ?? "N/A";
+      [latestStableVersion, latestAllVersion]
+        .filter((version) => valid(version))
+        .find(
+          (version) =>
+            compare(currentVersion, version, { includePrerelease: true }) < 0,
+        ) ?? "N/A";
 
     return {
       dependency,

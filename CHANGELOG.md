@@ -55,3 +55,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - support JSON output
 - support package and project level checks
 - support config option
+
+# 0.6.1 (2020-10-10)
+
+### Bug Fixes
+
+- handle invalid available versions
