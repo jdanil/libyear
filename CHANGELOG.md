@@ -41,7 +41,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - support overrides
 - support pnpm
 
-# 0.6.0 (2020-10-09)
+# 0.6.0 (2020-10-10)
 
 ### Bug Fixes
 
@@ -54,3 +54,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - support major, minor, patch metrics
 - support JSON output
 - support package and project level checks
+- support config option

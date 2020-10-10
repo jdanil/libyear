@@ -15,7 +15,7 @@ const validateThreshold = (threshold: unknown): number =>
 export const cli = async (): Promise<void> => {
   // parse cli args
   const argv = process.argv.slice(2);
-  const args = mri(argv, { boolean: ["all", "json"] });
+  const args = mri(argv, { boolean: ["all", "json"], string: ["config"] });
 
   // validate cli options
   const packageManager = args["package-manager"] as PackageManager;

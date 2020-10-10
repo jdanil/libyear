@@ -1,58 +1,47 @@
 export type PackageManager = "berry" | "npm" | "pnpm" | "yarn";
 
-export type Threshold = {
-  driftCollective?: number;
-  driftIndividual?: number;
-  pulseCollective?: number;
-  pulseIndividual?: number;
-  releasesCollective?: number;
-  releasesIndividual?: number;
-  majorCollective?: number;
-  majorIndividual?: number;
-  minorCollective?: number;
-  minorIndividual?: number;
-  patchCollective?: number;
-  patchIndividual?: number;
-};
+export type Metric =
+  | "drift"
+  | "pulse"
+  | "releases"
+  | "major"
+  | "minor"
+  | "patch";
 
-export type Overrides = {
-  [key: string]: {
+export type Threshold = Record<`${Metric}${"Collective" | "Individual"}`, number>;
+
+export type Overrides = Record<
+  string,
+  Record<Metric, number> & {
     defer?: string;
-    drift?: number;
-    pulse?: number;
-    releases?: number;
-    major?: number;
-    minor?: number;
-    patch?: number;
-  };
-};
+  }
+>;
 
 export type Configuration = {
   overrides?: Overrides;
-  threshold?: {
-    drift?: {
-      collective?: Pick<Threshold, "driftCollective">;
-      individual?: Pick<Threshold, "driftIndividual">;
-    };
-    pulse?: {
-      collective?: Pick<Threshold, "pulseCollective">;
-      individual?: Pick<Threshold, "pulseIndividual">;
-    };
-    releases?: {
-      collective?: Pick<Threshold, "releasesCollective">;
-      individual?: Pick<Threshold, "releasesIndividual">;
-    };
-    major?: {
-      collective?: Pick<Threshold, "majorCollective">;
-      individual?: Pick<Threshold, "majorIndividual">;
-    };
-    minor?: {
-      collective?: Pick<Threshold, "minorCollective">;
-      individual?: Pick<Threshold, "minorIndividual">;
-    };
-    patch?: {
-      collective?: Pick<Threshold, "patchCollective">;
-      individual?: Pick<Threshold, "patchIndividual">;
-    };
-  };
+  threshold?: Record<Metric, {
+    collective?: Pick<Threshold, `${Metric}Collective`>;
+    individual?: Pick<Threshold, `${Metric}Individual`>;
+  }>;
+};
+
+export type Dependencies = Array<
+  Record<Metric, number> & {
+    dependency: string;
+    available: string;
+  }
+>;
+
+export type Totals = Record<Metric, number>;
+
+export type ViolationsCollective = Map<Metric, number>;
+
+export type ViolationsIndividual = Record<
+  Metric,
+  Map<string, { threshold: number; value: number }>
+>;
+
+export type Violations = {
+  collective: ViolationsCollective;
+  individual: ViolationsIndividual;
 };

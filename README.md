@@ -1,4 +1,4 @@
-# `libyear` &middot; ![](https://github.com/jdanil/libyear/workflows/ci/badge.svg)
+# `libyear` &middot; ![](https://github.com/jdanil/libyear/workflows/ci/badge.svg) ![](https://github.com/jdanil/libyear/workflows/cron/badge.svg)
 
 A Node.js implementation of [libyear](https://libyear.com/).
 
@@ -83,89 +83,110 @@ yarn dlx libyear
 
 ## CLI
 
+### `--config=<path>`
+
+Path to a libyear configuration file.
+Default is automatically resolved by [cosmiconfig](https://github.com/davidtheclark/cosmiconfig).
+See [configuration](#configuration).
+
 ### `--package-manager`
 
-Accepts `berry`, `npm`, `pnpm`, `yarn`. Default is inferred.
+Accepts `berry`, `npm`, `pnpm`, `yarn`.
+Default is inferred.
 
 ### `--all`
 
-Include dependencies from the whole project. Default is `false`.
+Include dependencies from the whole project.
+Default `false`.
 
 _Note: This option is only supported when using `berry` or `pnpm` package managers._
 
 ### `--json`
 
-Outputs the report to the console as valid JSON. Default is `false`.
+Outputs the report to the console as valid JSON.
+Default `false`.
 
 ### `--threshold-drift-collective=<libyears>` (`-D=<libyears>`)
 
-Accepts a number. Default `null`.
+Accepts a number.
+Default `null`.
 
 Throws an error if the total drift metric surpasses the threshold.
 
 ### `--threshold-drift-individual=<libyears>` (`-d=<libyears>`)
 
-Accepts a number. Default `null`.
+Accepts a number.
+Default `null`.
 
 Throws an error if any individual drift metric surpasses the threshold.
 
 ### `--threshold-pulse-collective=<libyears>` (`-P=<libyears>`)
 
-Accepts a number. Default `null`.
+Accepts a number.
+Default `null`.
 
 Throws an error if the total pulse metric surpasses the threshold.
 
 ### `--threshold-pulse-individual=<libyears>` (`-p=<libyears>`)
 
-Accepts a number. Default `null`.
+Accepts a number.
+Default `null`.
 
 Throws an error if any individual pulse metric surpasses the threshold.
 
 ### `--threshold-releases-collective=<count>` (`-R=<count>`)
 
-Accepts an integer. Default `null`.
+Accepts an integer.
+Default `null`.
 
 Throws an error if the total stable releases metric surpasses the threshold.
 
 ### `--threshold-releases-individual=<count>` (`-r=<count>`)
 
-Accepts an integer. Default `null`.
+Accepts an integer.
+Default `null`.
 
 Throws an error if any individual stable releases metric surpasses the threshold.
 
 ### `--threshold-major-collective=<count>`
 
-Accepts an integer. Default `null`.
+Accepts an integer.
+Default `null`.
 
 Throws an error if the total major metric surpasses the threshold.
 
 ### `--threshold-major-individual=<count>`
 
-Accepts an integer. Default `null`.
+Accepts an integer.
+Default `null`.
 
 Throws an error if any individual major metric surpasses the threshold.
 
 ### `--threshold-minor-collective=<count>`
 
-Accepts an integer. Default `null`.
+Accepts an integer.
+Default `null`.
 
 Throws an error if the total minor metric surpasses the threshold.
 
 ### `--threshold-minor-individual=<count>`
 
-Accepts an integer. Default `null`.
+Accepts an integer.
+Default `null`.
 
 Throws an error if any individual minor metric surpasses the threshold.
 
 ### `--threshold-patch-collective=<count>`
 
-Accepts an integer. Default `null`.
+Accepts an integer.
+Default `null`.
 
 Throws an error if the total patch metric surpasses the threshold.
 
 ### `--threshold-patch-individual=<count>`
 
-Accepts an integer. Default `null`.
+Accepts an integer.
+Default `null`.
 
 Throws an error if any individual patch metric surpasses the threshold.
 
@@ -174,13 +195,16 @@ Throws an error if any individual patch metric surpasses the threshold.
 `libyear` can be configured via [cosmiconfig-supported](https://github.com/davidtheclark/cosmiconfig) formats.
 
 - `package.json` (under `{ "configs": { "libyear": { ... } } }`)
-- `libyearrc`
-- `libyearrc.cjs`
-- `libyearrc.js`
-- `libyearrc.json`
-- `libyearrc.yaml`
-- `libyearrc.yml`
+- `.libyearrc`
+- `.libyearrc.cjs`
+- `.libyearrc.js`
+- `.libyearrc.json`
+- `.libyearrc.yaml`
+- `.libyearrc.yml`
+- `libyear.config.cjs`
 - `libyear.config.js`
+
+Custom configuration files can be provided via the [`--config`](#--configpath) CLI option.
 
 Configuration is expected in the following structure.
 
@@ -277,8 +301,6 @@ Packages can be temporarily excused from complying to thresholds by setting a da
 
 - ci semantic release
 - unit tests
-- refactor
-  - print.ts
 
 ### Next
 

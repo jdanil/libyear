@@ -35,16 +35,18 @@ const getCliConfiguration = (args: Argv) => ({
   },
 });
 
-const getCosmiconfig = async (): Promise<Configuration> => {
+const getCosmiconfig = async (filePath?: string): Promise<Configuration> => {
   const explorer = cosmiconfig("libyear");
 
   try {
-    const result = await explorer.search();
+    const result = filePath
+      ? await explorer.load(filePath)
+      : await explorer.search();
     return result.config as Configuration;
-  } catch (error) {
+  } catch (error: unknown) {
     return {};
   }
 };
 
 export const getConfiguration = async (args: Argv): Promise<Configuration> =>
-  merge(await getCosmiconfig(), getCliConfiguration(args));
+  merge(await getCosmiconfig(args["config"]), getCliConfiguration(args));
