@@ -45,7 +45,7 @@
     "fmt:diff": "pretty-quick",
     "libyear": "ts-node ./bin/libyear",
     "lint": "eslint",
-    "lint:all": "yarn lint \"{bin,src}/**/*\"",
+    "lint:all": "yarn lint \"**/*\"",
     "lint:diff": "eslint-changeset",
     "prepack": "tsc --build --force",
     "test": "jest --config .jestrc.json --passWithNoTests",
@@ -58,7 +58,6 @@
     "cosmiconfig": "^7.0.0",
     "date-fns": "^2.16.1",
     "execa": "^4.0.3",
-    "fromentries": "^1.2.1",
     "lodash": "^4.17.20",
     "mri": "^1.1.6",
     "semver": "^7.3.2"
@@ -74,7 +73,7 @@
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
     "audit-ci": "^3.1.1",
-    "eslint": "^7.10.0",
+    "eslint": "^7.11.0",
     "eslint-changeset": "^0.1.4",
     "husky": "^4.3.0",
     "jest": "^26.5.2",
@@ -84,7 +83,7 @@
     "pretty-quick": "^3.0.2",
     "ts-jest": "^26.4.1",
     "ts-node": "^9.0.0",
-    "tslib": "^2.0.2",
+    "tslib": "^2.0.3",
     "typescript": "^4.1.0-beta"
   },
   "resolutions": {

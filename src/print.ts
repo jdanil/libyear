@@ -31,20 +31,14 @@ const getMetricUnit = (metric: Metric, count: number) => {
 };
 
 const printIndividual = (violations: ViolationsIndividual) => {
-  Object.keys(violations).forEach((key) => {
-    const metric = key as Metric;
-    violations[metric].forEach(
-      (
-        { threshold, value }: { threshold: number; value: number },
-        dependency: string,
-      ) => {
-        console.error(
-          `${chalk.magenta(metric)}: ${chalk.cyan(dependency)} is ${chalk.red(
-            `${printFloat(value)} ${getMetricUnit(metric, value)}`,
-          )} behind; threshold is ${chalk.yellow(printFloat(threshold))}.`,
-        );
-      },
-    );
+  violations.forEach((dependencies, metric) => {
+    dependencies.forEach(({ threshold, value }, dependency) => {
+      console.error(
+        `${chalk.magenta(metric)}: ${chalk.cyan(dependency)} is ${chalk.red(
+          `${printFloat(value)} ${getMetricUnit(metric, value)}`,
+        )} behind; threshold is ${chalk.yellow(printFloat(threshold))}.`,
+      );
+    });
   });
 };
 
@@ -78,7 +72,7 @@ const printCollective = (
 
   metrics.forEach((metric) => {
     logger(metric)(
-      message(metric, totals[metric], threshold?.[`${metric}Collective`]),
+      message(metric, totals.get(metric), threshold?.[`${metric}Collective`]),
     );
   });
 };
@@ -116,7 +110,7 @@ export const print = (
   const totals = getTotals(dependencies);
   const violations = getViolations(dependencies, totals, threshold, overrides);
   const hasIndividualViolations =
-    Object.values(violations.individual).reduce(
+    Array.from(violations.individual.values()).reduce(
       (acc, cur) => acc + cur.size,
       0,
     ) > 0;

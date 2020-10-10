@@ -32,11 +32,11 @@ export type Dependencies = Array<
   }
 >;
 
-export type Totals = Record<Metric, number>;
+export type Totals = Map<Metric, number>;
 
 export type ViolationsCollective = Map<Metric, number>;
 
-export type ViolationsIndividual = Record<
+export type ViolationsIndividual = Map<
   Metric,
   Map<string, { threshold: number; value: number }>
 >;

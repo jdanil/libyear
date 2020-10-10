@@ -3,7 +3,7 @@ import { compare, sort } from "semver";
 import { calculateDrift, calculatePulse } from "./dates";
 import { getDependencies } from "./dependencies";
 import { getReleaseTime } from "./release-time";
-import type { PackageManager } from "./types";
+import type { Dependencies, PackageManager } from "./types";
 import {
   getReleasesByType,
   getSanitisedReleases,
@@ -13,28 +13,18 @@ import {
 export const libyear = async (
   packageManager: PackageManager,
   flags?: { all?: boolean },
-): Promise<
-  Array<{
-    dependency: string;
-    drift: number;
-    pulse: number;
-    releases: number;
-    major: number;
-    minor: number;
-    patch: number;
-    available: string;
-  }>
-> => {
-  const awaitedDependencies = Object.entries(
-    await getDependencies(packageManager, flags),
+): Promise<Dependencies> => {
+  const awaitedDependencies = Array.from(
+    (await getDependencies(packageManager, flags)).entries(),
   ).map(async ([dependency, currentVersion]) => {
-    const releaseTime =
+    const releaseTimeObj =
       (await getReleaseTime(packageManager, dependency)) ?? {};
+    const releaseTimeMap = new Map(Object.entries(releaseTimeObj));
 
-    const allVersionsObj = getSanitisedReleases(releaseTime);
-    const stableVersionsObj = getStableReleases(allVersionsObj);
-    const allVersions = Object.keys(allVersionsObj);
-    const stableVersions = Object.keys(stableVersionsObj);
+    const allVersionsMap = getSanitisedReleases(releaseTimeMap);
+    const stableVersionsMap = getStableReleases(allVersionsMap);
+    const allVersions = Array.from(allVersionsMap.keys());
+    const stableVersions = Array.from(stableVersionsMap.keys());
 
     const latestAllVersion = sort(allVersions).slice(-1)[0];
     const latestStableVersion = sort(stableVersions).slice(-1)[0];
@@ -48,10 +38,10 @@ export const libyear = async (
     );
 
     const drift = calculateDrift(
-      releaseTime[currentVersion],
-      releaseTime[latestStableVersion],
+      releaseTimeMap.get(currentVersion),
+      releaseTimeMap.get(latestStableVersion),
     );
-    const pulse = calculatePulse(releaseTime[latestAllVersion]);
+    const pulse = calculatePulse(releaseTimeMap.get(latestAllVersion));
     const releases = diffStableVersions.length;
     const major = getReleasesByType(
       [currentVersion, ...diffStableVersions],

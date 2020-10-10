@@ -24,8 +24,7 @@
     "strictFunctionTypes": true,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es2019",
-    "typeRoots": ["@types"]
+    "target": "es2019"
   },
   "watchOptions": {
     "fallbackPolling": "dynamicPriority"

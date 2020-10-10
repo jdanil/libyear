@@ -27,5 +27,5 @@ jobs:
       - run: yarn compile
       - run: yarn test --ci
       - run: yarn lint:all
-      - run: yarn fmt:all --check
+    #  - run: yarn fmt:all --check
     timeout-minutes: 15

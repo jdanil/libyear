@@ -1,5 +1,3 @@
-// TODO [2021-04-01]: replace with `Object.fromEntries()` after dropping node@10.
-import * as fromEntries from "fromentries";
 import { merge } from "lodash";
 
 import { execute } from "./execute";
@@ -61,7 +59,7 @@ const getParsedDependencies = async (
 export const getDependencies = async (
   packageManager: PackageManager,
   flags?: { all?: boolean },
-): Promise<Record<string, string>> => {
+): Promise<Map<string, string>> => {
   const cmd =
     ({
       berry: `yarn info ${flags?.all ? "--all" : ""} --json`,
@@ -71,7 +69,7 @@ export const getDependencies = async (
 
   const json = await getParsedDependencies(packageManager, cmd);
 
-  return fromEntries(
+  return new Map(
     Object.entries({
       ...json.dependencies,
       ...json.devDependencies,

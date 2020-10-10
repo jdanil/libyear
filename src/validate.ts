@@ -1,5 +1,3 @@
-import * as fromEntries from "fromentries";
-
 import { metrics } from "./constants";
 import type {
   Dependencies,
@@ -28,20 +26,21 @@ const isBreach = (
 const getMatchingPattern = (dependency: string, overrides: Overrides) =>
   Object.keys(overrides).find((pattern) => RegExp(pattern).test(dependency));
 
-export const getTotals = (dependencies: Dependencies): Totals =>
-  dependencies.reduce(
-    (acc, cur) =>
-      metrics.reduce(
-        (previous, metric) => ({
-          ...previous,
-          [metric]: isNaN(cur[metric])
-            ? acc[metric]
-            : acc[metric] + cur[metric],
-        }),
-        {},
-      ),
-    fromEntries(metrics.map((metric) => [metric, 0])),
-  );
+export const getTotals = (dependencies: Dependencies): Totals => {
+  const totals = new Map<Metric, number>();
+
+  dependencies.forEach((dependency) => {
+    metrics.forEach((metric) => {
+      if (!isNaN(dependency[metric])) {
+        const acc = totals.has(metric) ? totals.get(metric) : 0;
+        const cur = dependency[metric];
+        totals.set(metric, acc + cur);
+      }
+    });
+  });
+
+  return totals;
+};
 
 const getCollectiveViolations = (
   totals: Totals,
@@ -50,7 +49,7 @@ const getCollectiveViolations = (
   const violations = new Map<Metric, number>();
 
   metrics.forEach((metric) => {
-    const value = totals[metric];
+    const value = totals.get(metric);
     const limit = threshold?.[`${metric}Collective`] as number;
     if (isBreach(value, limit)) {
       violations.set(metric, value);
@@ -65,7 +64,10 @@ const getIndividualViolations = (
   threshold?: Threshold,
   overrides?: Overrides,
 ): ViolationsIndividual => {
-  const violations = fromEntries(metrics.map((metric) => [metric, new Map()]));
+  const violations = new Map<
+    Metric,
+    Map<string, { threshold: number; value: number }>
+  >();
 
   dependencies.forEach(({ dependency, ...rest }) => {
     metrics.forEach((metric) => {
@@ -74,7 +76,10 @@ const getIndividualViolations = (
         overrides?.[getMatchingPattern(dependency, overrides)]?.[metric] ??
         (threshold?.[`${metric}Individual`] as number);
       if (isBreach(value, limit, dependency, overrides)) {
-        violations[metric].set(dependency, { threshold: limit, value });
+        if (!violations.has(metric)) {
+          violations.set(metric, new Map());
+        }
+        violations.get(metric).set(dependency, { threshold: limit, value });
       }
     });
   });
