@@ -8,7 +8,10 @@ export type Metric =
   | "minor"
   | "patch";
 
-export type Threshold = Record<`${Metric}${"Collective" | "Individual"}`, number>;
+export type Threshold = Record<
+  `${Metric}${"Collective" | "Individual"}`,
+  number
+>;
 
 export type Overrides = Record<
   string,
@@ -19,10 +22,13 @@ export type Overrides = Record<
 
 export type Configuration = {
   overrides?: Overrides;
-  threshold?: Record<Metric, {
-    collective?: Pick<Threshold, `${Metric}Collective`>;
-    individual?: Pick<Threshold, `${Metric}Individual`>;
-  }>;
+  threshold?: Record<
+    Metric,
+    {
+      collective?: Pick<Threshold, `${Metric}Collective`>;
+      individual?: Pick<Threshold, `${Metric}Individual`>;
+    }
+  >;
 };
 
 export type Dependencies = Array<
