@@ -314,7 +314,6 @@ Packages can be temporarily excused from complying to thresholds by setting a da
 
 ### Later
 
-- re-enable prettier once typescript template literal types are supported (see [issue](https://github.com/prettier/prettier/issues/9234))
 - extend linting when eslint@7 is released and supports plugins loaded from config file directory
 - `./tsconfig.json` to use `"module": "esnext"` when supported by [ts-node](https://github.com/TypeStrong/ts-node/issues/935)
 - `./bin/libyear.ts` to use top-level await after switching to ES Modules
