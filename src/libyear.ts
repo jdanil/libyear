@@ -38,10 +38,12 @@ export const libyear = async (
     );
 
     const drift = calculateDrift(
-      releaseTimeMap.get(currentVersion),
-      releaseTimeMap.get(latestStableVersion),
+      allVersionsMap.get(currentVersion),
+      allVersionsMap.get(latestStableVersion),
     );
-    const pulse = calculatePulse(releaseTimeMap.get(latestAllVersion));
+    const pulse = calculatePulse(
+      Array.from(allVersionsMap.values()).sort().slice(-1)[0],
+    );
     const releases = diffStableVersions.length;
     const major = getReleasesByType(
       [currentVersion, ...diffStableVersions],

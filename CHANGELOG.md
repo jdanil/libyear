@@ -61,3 +61,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - handle invalid available versions
+
+# 0.6.2 (2020-12-07)
+
+### Bug Fixes
+
+- improve pulse calculation accuracy

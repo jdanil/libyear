@@ -15,8 +15,10 @@
       "individual": 1
     },
     "releases": {
-      "collective": 10,
-      "individual": 5
+      "individual": 10
+    },
+    "major": {
+      "individual": 1
     }
   }
 }
