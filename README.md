@@ -22,7 +22,7 @@ All metrics are calculated against dependencies both collectively and individual
 
 [Dependency drift fitness function](https://www.thoughtworks.com/radar/techniques/dependency-drift-fitness-function) is a technique to introduce a specific [evolutionary architecture](https://www.thoughtworks.com/radar/techniques/evolutionary-architecture) fitness function to track dependencies over time, giving an indication of the possible work needed and whether a potential issue is getting better or worse.
 
-Newer versions of dependencies may include **bug fixes** and **security vulnerability fixes**.
+Newer versions of dependencies may include **bug fixes** and **security vulnerability patches**.
 These fixes are often released in "patch" versions which are backwards-compatible.
 
 Newer versions of dependencies may include **performance improvements** and **new features/capabilities**.
