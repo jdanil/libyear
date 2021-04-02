@@ -3,6 +3,18 @@
 *.js
 *.tgz
 
+# eslint
+.eslintignore
+
+# git
+.gitignore
+
+# husky
+.husky/
+
+# prettier
+.prettierignore
+
 # typescript
 *.tsbuildinfo
 
@@ -19,6 +31,4 @@ yarn-error.log
 yarn.lock
 
 # unsupported
-*.json
-*.md
 LICENSE

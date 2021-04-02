@@ -40,7 +40,7 @@
     "audit-ci": "audit-ci --config .auditcirc.json",
     "clean": "tsc --build --clean",
     "compile": "tsc --build",
-    "format": "prettier --ignore-path .gitignore",
+    "format": "prettier",
     "format:all": "yarn format .",
     "format:diff": "pretty-quick",
     "libyear": "ts-node ./bin/libyear",

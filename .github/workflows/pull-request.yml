@@ -27,7 +27,7 @@ jobs:
       - run: git -c protocol.version=2 fetch --depth=1 --no-recurse-submodules --no-tags --progress --prune origin ${{github.event.pull_request.base.ref}}:${{github.event.pull_request.base.ref}}
       - run: yarn install
       - run: yarn compile
-      - run: yarn test --ci --changedSince="master"
+      - run: yarn test:pull-request
       - run: yarn lint:diff
       - run: yarn format:diff --branch --check
     timeout-minutes: 15

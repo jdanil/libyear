@@ -1,3 +1,4 @@
 {
-  "*.ts": ["eslint --fix", "yarn test:precommit"]
+  "*": ["eslint --cache --fix", "prettier --write"],
+  "*.[jt]s?(x)": ["yarn test:precommit"]
 }
