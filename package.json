@@ -50,6 +50,7 @@
     "prepack": "tsc --build --force",
     "prepare": "is-ci || husky install",
     "test": "jest --config .jestrc.json --passWithNoTests",
+    "test:ci": "yarn test --ci",
     "test:coverage": "yarn test --coverage",
     "test:precommit": "yarn test --bail --findRelatedTests",
     "test:pull-request": "yarn test:ci --changedSince=\"master\""
@@ -75,7 +76,7 @@
     "@typescript-eslint/parser": "^4.20.0",
     "audit-ci": "^3.1.1",
     "eslint": "^7.23.0",
-    "eslint-changeset": "^0.1.4",
+    "eslint-changeset": "^0.1.5",
     "husky": "^6.0.0",
     "is-ci": "^3.0.0",
     "jest": "^26.6.3",
