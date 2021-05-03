@@ -74,7 +74,7 @@
     "@types/semver": "^7.3.4",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
-    "audit-ci": "^3.1.1",
+    "audit-ci": "^4.0.0",
     "eslint": "^7.23.0",
     "eslint-changeset": "^0.1.5",
     "husky": "^6.0.0",
