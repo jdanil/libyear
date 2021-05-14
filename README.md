@@ -1,4 +1,4 @@
-# `libyear` &middot; ![](https://github.com/jdanil/libyear/workflows/ci/badge.svg) ![](https://github.com/jdanil/libyear/workflows/cron/badge.svg)
+# `libyear` &middot; ![](https://github.com/jdanil/libyear/workflows/ci/badge.svg) ![](https://github.com/jdanil/libyear/workflows/cron/badge.svg) ![](https://raw.githubusercontent.com/jdanil/libyear/gh-badges/drift.svg)
 
 A Node.js implementation of [libyear](https://libyear.com/).
 
