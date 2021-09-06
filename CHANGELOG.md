@@ -3,43 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# 0.2.0 (2020-02-17)
-
-### Features
-
-- support short cli options for threshold
-
-# 0.3.0 (2020-02-18)
-
-### Features
-
-- support node@10
-
-# 0.4.0 (2020-02-22)
-
-### Features
-
-- detect threshold violations at dependency-level
-- support releases metric
-- style logs with chalk
-
-# 0.4.2 (2020-04-22)
+# 0.7.0 (TBA)
 
 ### Bug Fixes
 
-- support node >=10
+- handle invalid current versions
 
-# 0.5.0 (2020-05-02)
+### BREAKING CHANGES
+
+- drop support for node 10 & 15
+
+# 0.6.2 (2020-12-07)
 
 ### Bug Fixes
 
-- merge pnpm list
+- improve pulse calculation accuracy
 
-### Features
+# 0.6.1 (2020-10-10)
 
-- support cosmiconfig
-- support overrides
-- support pnpm
+### Bug Fixes
+
+- handle invalid available versions
 
 # 0.6.0 (2020-10-10)
 
@@ -56,24 +40,40 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - support package and project level checks
 - support config option
 
-# 0.6.1 (2020-10-10)
+# 0.5.0 (2020-05-02)
 
 ### Bug Fixes
 
-- handle invalid available versions
+- merge pnpm list
 
-# 0.6.2 (2020-12-07)
+### Features
+
+- support cosmiconfig
+- support overrides
+- support pnpm
+
+# 0.4.2 (2020-04-22)
 
 ### Bug Fixes
 
-- improve pulse calculation accuracy
+- support node >=10
 
-# 0.7.0 (TBA)
+# 0.4.0 (2020-02-22)
 
-### Bug Fixes
+### Features
 
-- handle invalid current versions
+- detect threshold violations at dependency-level
+- support releases metric
+- style logs with chalk
 
-### BREAKING CHANGES
+# 0.3.0 (2020-02-18)
 
-- drop support for node 10 & 15
+### Features
+
+- support node@10
+
+# 0.2.0 (2020-02-17)
+
+### Features
+
+- support short cli options for threshold
