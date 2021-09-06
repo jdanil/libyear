@@ -56,7 +56,7 @@ jobs:
           color: "blue"
           path: "badges/patch.svg"
       - name: Push badges to gh-badges directory
-        uses: s0/git-publish-subdir-action@v2.4.1
+        uses: s0/git-publish-subdir-action@v2.5.0
         env:
           REPO: self
           BRANCH: gh-badges
