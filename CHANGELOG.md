@@ -70,6 +70,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # 0.7.0 (TBA)
 
+### Bug Fixes
+
+- handle invalid current versions
+
 ### BREAKING CHANGES
 
 - drop support for node 10 & 15

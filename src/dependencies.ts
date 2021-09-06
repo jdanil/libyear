@@ -1,4 +1,5 @@
 import { merge } from "lodash";
+import { valid } from "semver";
 
 import { execute } from "./execute";
 import type { PackageManager } from "./types";
@@ -74,13 +75,15 @@ export const getDependencies = async (
     Object.entries({
       ...json.dependencies,
       ...json.devDependencies,
-    }).map(([dependency, data]) => [
-      dependency,
-      data.version ??
-        (
-          (data.required as { version?: string })?.version ||
-          (data.required as string)
-        ).replace(/[<=>^~]+/u, ""),
-    ]),
+    })
+      .map(([dependency, data]) => [
+        dependency,
+        data.version ??
+          (
+            (data.required as { version?: string })?.version ||
+            (data.required as string)
+          ).replace(/[<=>^~]+/u, ""),
+      ])
+      .filter(([_, version]) => valid(version)) as [[string, string]],
   );
 };
