@@ -7,10 +7,10 @@ jobs:
     name: Scheduled fitness function verification
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-node@v2.4.0
         with:
-          node-version: 14
+          node-version: 16
       - run: yarn install
       - run: yarn audit-ci
       - run: yarn libyear

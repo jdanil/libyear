@@ -43,7 +43,7 @@ const getCosmiconfig = async (filePath?: string): Promise<Configuration> => {
       ? await explorer.load(filePath)
       : await explorer.search();
     return result.config as Configuration;
-  } catch (error: unknown) {
+  } catch (error) {
     return {};
   }
 };

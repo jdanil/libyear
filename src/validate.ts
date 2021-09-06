@@ -31,7 +31,7 @@ export const getTotals = (dependencies: Dependencies): Totals => {
 
   dependencies.forEach((dependency) => {
     metrics.forEach((metric) => {
-      if (!isNaN(dependency[metric])) {
+      if (!Number.isNaN(dependency[metric])) {
         const acc = totals.has(metric) ? totals.get(metric) : 0;
         const cur = dependency[metric];
         totals.set(metric, acc + cur);
@@ -50,7 +50,7 @@ const getCollectiveViolations = (
 
   metrics.forEach((metric) => {
     const value = totals.get(metric);
-    const limit = threshold?.[`${metric}Collective`] as number;
+    const limit = threshold?.[`${metric}Collective`];
     if (isBreach(value, limit)) {
       violations.set(metric, value);
     }
@@ -74,7 +74,7 @@ const getIndividualViolations = (
       const value = rest[metric];
       const limit =
         overrides?.[getMatchingPattern(dependency, overrides)]?.[metric] ??
-        (threshold?.[`${metric}Individual`] as number);
+        threshold?.[`${metric}Individual`];
       if (isBreach(value, limit, dependency, overrides)) {
         if (!violations.has(metric)) {
           violations.set(metric, new Map());

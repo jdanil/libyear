@@ -67,3 +67,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - improve pulse calculation accuracy
+
+# 0.7.0 (TBA)
+
+### BREAKING CHANGES
+
+- drop support for node 10 & 15

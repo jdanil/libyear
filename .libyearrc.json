@@ -3,6 +3,9 @@
   "overrides": {
     "^@types/mri$": {
       "pulse": 5
+    },
+    "^mri$": {
+      "pulse": 2
     }
   },
   "threshold": {

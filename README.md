@@ -287,6 +287,12 @@ To cater for this case, we can set a more lenient pulse threshold.
 }
 ```
 
+## Integrations
+
+### GitHub Action
+
+libyear can be run via a [GitHub Action](https://github.com/marketplace/actions/node-js-dependency-freshness-via-libyear) ([source code](https://github.com/s0/libyear-node-action)) courtesy of [@s0](https://github.com/s0).
+
 ## FAQ
 
 ### Can I whitelist (or allowlist) dependencies from throwing errors?
@@ -315,7 +321,7 @@ Packages can be temporarily excused from complying to thresholds by setting a da
 ### Later
 
 - extend linting when eslint@7 is released and supports plugins loaded from config file directory
-- `./tsconfig.json` to use `"module": "esnext"` when supported by [ts-node](https://github.com/TypeStrong/ts-node/issues/935)
+- `./tsconfig.json` to use `"module": "esnext"` when supported by [ts-node](https://github.com/TypeStrong/ts-node/issues/935) and node 12 is EOL
 - `./bin/libyear.ts` to use top-level await after switching to ES Modules
 
 ## Acknowledgements

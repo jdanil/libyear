@@ -14,6 +14,7 @@
     "moduleResolution": "node",
     "newLine": "lf",
     "noImplicitAny": true,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
@@ -24,7 +25,8 @@
     "strictFunctionTypes": true,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es2019"
+    "target": "es2019",
+    "useUnknownInCatchVariables": true
   },
   "watchOptions": {
     "fallbackPolling": "dynamicPriority"

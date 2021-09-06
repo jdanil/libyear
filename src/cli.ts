@@ -10,7 +10,7 @@ import { print } from "./print";
 import type { PackageManager } from "./types";
 
 const validateThreshold = (threshold: unknown): number =>
-  isNaN(Number(threshold)) ? null : Number(threshold);
+  Number.isNaN(Number(threshold)) ? null : Number(threshold);
 
 export const cli = async (): Promise<void> => {
   // parse cli args
@@ -64,7 +64,7 @@ export const cli = async (): Promise<void> => {
     } else {
       print(report, threshold, overrides);
     }
-  } catch (error: unknown) {
+  } catch (error) {
     if (json) {
       console.log(JSON.stringify(error));
     } else {
