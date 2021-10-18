@@ -18,7 +18,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2.3.5
         with:
           # awaiting https://github.com/facebook/jest/issues/11271
           fetch-depth: 0
