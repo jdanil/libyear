@@ -1,4 +1,4 @@
-import * as execa from "execa";
+import { execaCommand } from "execa";
 import * as path from "path";
 import { satisfies } from "semver";
 
@@ -21,7 +21,7 @@ export const getParsedPackageManager = (
 export const getInferredPackageManager = async (): Promise<PackageManager> => {
   const packageManager = path.basename(process.env.npm_execpath || "npm");
   if (packageManager.startsWith("yarn")) {
-    const { stdout } = await execa.command("yarn --version");
+    const { stdout } = await execaCommand("yarn --version");
     return satisfies(stdout, "^0 || ^1") ? "yarn" : "berry";
   } else if (packageManager.startsWith("pnpm")) {
     return Promise.resolve("pnpm");
