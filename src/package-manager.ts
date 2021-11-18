@@ -1,5 +1,6 @@
+import * as path from "node:path";
+
 import { execaCommand } from "execa";
-import * as path from "path";
 import { satisfies } from "semver";
 
 import type { PackageManager } from "./types";
