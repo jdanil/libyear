@@ -65,7 +65,7 @@
     "semver": "^7.3.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "^15.0.0",
+    "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^15.0.0",
     "@jest/globals": "^27.3.1",
     "@types/lodash": "^4.14.177",
