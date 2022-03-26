@@ -1,3 +1,4 @@
+import { pick } from "lodash";
 import { execute } from "./execute";
 import type { PackageManager } from "./types";
 
@@ -6,10 +7,10 @@ export const getReleaseTime = async (
   packageName: string,
 ): Promise<Record<string, string>> => {
   const cmd = {
-    berry: `yarn npm info ${packageName} --fields time --json`,
-    npm: `npm view ${packageName} time --json`,
-    pnpm: `npm view ${packageName} time --json`,
-    yarn: `yarn info ${packageName} time --json`,
+    berry: `yarn npm info ${packageName} --fields time,versions --json`,
+    npm: `npm view ${packageName} time versions --json`,
+    pnpm: `npm view ${packageName} time versions --json`,
+    yarn: `yarn info ${packageName} time versions --json`,
   }[packageManager];
 
   const stdout = await execute(cmd);
@@ -20,12 +21,9 @@ export const getReleaseTime = async (
 
   const json = JSON.parse(stdout) as unknown;
   switch (packageManager) {
-    case "berry":
-      return (json as Record<"time", Record<string, string>>).time;
     case "yarn":
-      return (json as Record<"data", Record<string, string>>).data;
-    case "npm":
+      return pick(json.data.time, json.data.versions) as Record<string, string>;
     default:
-      return json as Record<string, string>;
+      return pick(json.time, json.versions) as Record<string, string>;
   }
 };
