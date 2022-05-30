@@ -1,14 +1,16 @@
-import { compare, sort, valid } from "semver";
+import { default as semver } from "semver";
 
-import { calculateDrift, calculatePulse } from "./dates";
-import { getDependencies } from "./dependencies";
-import { getReleaseTime } from "./release-time";
-import type { Dependencies, PackageManager } from "./types";
+import { calculateDrift, calculatePulse } from "./dates.js";
+import { getDependencies } from "./dependencies.js";
+import { getReleaseTime } from "./release-time.js";
+import type { Dependencies, PackageManager } from "./types.js";
 import {
   getReleasesByType,
   getSanitisedReleases,
   getStableReleases,
-} from "./versions";
+} from "./versions.js";
+
+const { compare, sort, valid } = semver;
 
 export const libyear = async (
   packageManager: PackageManager,

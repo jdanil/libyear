@@ -4,6 +4,9 @@
     "^@types/mri$": {
       "pulse": 5
     },
+    "^lodash-es$": {
+      "pulse": 2
+    },
     "^mri$": {
       "pulse": 2
     }

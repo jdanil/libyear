@@ -1,4 +1,6 @@
-import { ReleaseType, diff, prerelease, valid } from "semver";
+import { default as semver, ReleaseType } from "semver";
+
+const { diff, prerelease, valid } = semver;
 
 /**
  * Filter versions by release type.

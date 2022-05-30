@@ -1,6 +1,7 @@
-import { pick } from "lodash";
-import { execute } from "./execute";
-import type { PackageManager } from "./types";
+import { pick } from "lodash-es";
+
+import { execute } from "./execute.js";
+import type { PackageManager } from "./types.js";
 
 export const getReleaseTime = async (
   packageManager: PackageManager,

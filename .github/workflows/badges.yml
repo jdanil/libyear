@@ -9,13 +9,18 @@ on:
 jobs:
   get-badges:
     runs-on: ubuntu-latest
+    env:
+      YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3.0.2
       - name: Use Node.js
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3.2.0
         with:
           node-version: 16
+      - run: corepack enable
       - run: yarn install
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
       - id: libyear
         uses: s0/libyear-node-action@v0.1.2
       - run: mkdir badges
@@ -56,7 +61,7 @@ jobs:
           color: "blue"
           path: "badges/patch.svg"
       - name: Push badges to gh-badges directory
-        uses: s0/git-publish-subdir-action@v2.5.0
+        uses: s0/git-publish-subdir-action@v2.5.1
         env:
           REPO: self
           BRANCH: gh-badges

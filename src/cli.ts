@@ -1,13 +1,13 @@
-import * as mri from "mri";
+import { default as mri } from "mri";
 
-import { libyear } from "./libyear";
+import { libyear } from "./libyear.js";
 import {
   getInferredPackageManager,
   getParsedPackageManager,
-} from "./package-manager";
-import { getConfiguration } from "./configuration";
-import { print } from "./print";
-import type { PackageManager } from "./types";
+} from "./package-manager.js";
+import { getConfiguration } from "./configuration.js";
+import { print } from "./print.js";
+import type { PackageManager } from "./types.js";
 
 const validateThreshold = (threshold: unknown): number =>
   Number.isNaN(Number(threshold)) ? null : Number(threshold);

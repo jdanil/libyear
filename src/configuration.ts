@@ -1,8 +1,8 @@
 import { cosmiconfig } from "cosmiconfig";
-import { merge } from "lodash";
+import { merge } from "lodash-es";
 import type { Argv } from "mri";
 
-import type { Configuration } from "./types";
+import type { Configuration } from "./types.js";
 
 const getCliConfiguration = (args: Argv) => ({
   threshold: {
@@ -49,4 +49,7 @@ const getCosmiconfig = async (filePath?: string): Promise<Configuration> => {
 };
 
 export const getConfiguration = async (args: Argv): Promise<Configuration> =>
-  merge(await getCosmiconfig(args["config"]), getCliConfiguration(args));
+  merge(
+    await getCosmiconfig(args["config"] as string),
+    getCliConfiguration(args),
+  );

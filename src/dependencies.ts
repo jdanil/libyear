@@ -1,8 +1,10 @@
-import { merge } from "lodash";
-import { valid } from "semver";
+import { merge } from "lodash-es";
+import { default as semver } from "semver";
 
-import { execute } from "./execute";
-import type { PackageManager } from "./types";
+import { execute } from "./execute.js";
+import type { PackageManager } from "./types.js";
+
+const { valid } = semver;
 
 type ParsedDependency = Record<
   string,
@@ -24,7 +26,7 @@ const getParsedDependencies = async (
       return merge(
         ...(JSON.parse(stdout) as [
           ParsedDependencies,
-          ...ParsedDependencies[]
+          ...ParsedDependencies[],
         ]),
       ) as ParsedDependencies;
     case "berry":
