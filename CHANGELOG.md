@@ -5,6 +5,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # 0.8.0 (2022-05-30)
 
+### Bug Fixes
+
+- filter out unpublished versions
+
 ### BREAKING CHANGES
 
 - drop support for node 12
