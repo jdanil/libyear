@@ -24,19 +24,18 @@ export const getReleaseTime = async (
   switch (packageManager) {
     case "yarn": {
       const { time, versions } = (
-        json as Record<
-          "data",
-          { time: Record<string, string>; versions: string[] }
-        >
+        json as {
+          data: { time: Record<string, string>; versions: string[] };
+        }
       ).data;
-      return pick(time, versions) as Record<string, string>;
+      return pick(time, versions);
     }
     default: {
       const { time, versions } = json as {
         time: Record<string, string>;
         versions: string[];
       };
-      return pick(time, versions) as Record<string, string>;
+      return pick(time, versions);
     }
   }
 };
