@@ -1,3 +1,5 @@
+import { pick } from "lodash-es";
+
 import { execute } from "./execute.js";
 import type { PackageManager } from "./types.js";
 
@@ -6,10 +8,10 @@ export const getReleaseTime = async (
   packageName: string,
 ): Promise<Record<string, string>> => {
   const cmd = {
-    berry: `yarn npm info ${packageName} --fields time --json`,
-    npm: `npm view ${packageName} time --json`,
-    pnpm: `npm view ${packageName} time --json`,
-    yarn: `yarn info ${packageName} time --json`,
+    berry: `yarn npm info ${packageName} --fields time,versions --json`,
+    npm: `npm view ${packageName} time versions --json`,
+    pnpm: `npm view ${packageName} time versions --json`,
+    yarn: `yarn info ${packageName} time versions --json`,
   }[packageManager];
 
   const stdout = await execute(cmd);
@@ -20,12 +22,20 @@ export const getReleaseTime = async (
 
   const json = JSON.parse(stdout) as unknown;
   switch (packageManager) {
-    case "berry":
-      return (json as Record<"time", Record<string, string>>).time;
-    case "yarn":
-      return (json as Record<"data", Record<string, string>>).data;
-    case "npm":
-    default:
-      return json as Record<string, string>;
+    case "yarn": {
+      const { time, versions } = (
+        json as {
+          data: { time: Record<string, string>; versions: string[] };
+        }
+      ).data;
+      return pick(time, versions);
+    }
+    default: {
+      const { time, versions } = json as {
+        time: Record<string, string>;
+        versions: string[];
+      };
+      return pick(time, versions);
+    }
   }
 };
