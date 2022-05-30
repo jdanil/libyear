@@ -15,7 +15,7 @@
     }
   ],
   "parserOptions": {
-    "parserOptions": "ecma2021",
+    "parserOptions": "ecma2022",
     "project": "./tsconfig.json",
     "sourceType": "module"
   },

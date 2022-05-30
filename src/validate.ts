@@ -1,4 +1,4 @@
-import { metrics } from "./constants";
+import { metrics } from "./constants.js";
 import type {
   Dependencies,
   Metric,
@@ -8,7 +8,7 @@ import type {
   Violations,
   ViolationsCollective,
   ViolationsIndividual,
-} from "./types";
+} from "./types.js";
 
 const isExcused = (dependency: string, overrides: Overrides) =>
   Object.entries(overrides).some(

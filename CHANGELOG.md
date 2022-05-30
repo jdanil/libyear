@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.8.0 (2022-05-30)
+
+### BREAKING CHANGES
+
+- drop support for node 12
+- esm migration
+
 # 0.7.0 (2021-09-06)
 
 ### Bug Fixes

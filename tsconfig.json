@@ -10,8 +10,8 @@
     "incremental": true,
     "isolatedModules": true,
     "lib": ["esnext"],
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "newLine": "lf",
     "noImplicitAny": true,
     "noImplicitOverride": true,
@@ -25,7 +25,7 @@
     "strictFunctionTypes": true,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es2019",
+    "target": "esnext",
     "useUnknownInCatchVariables": true
   },
   "watchOptions": {

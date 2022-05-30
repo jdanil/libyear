@@ -6,12 +6,17 @@ jobs:
   test:
     name: Scheduled fitness function verification
     runs-on: ubuntu-latest
+    env:
+      YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v2.4.0
-      - uses: actions/setup-node@v2.4.1
+      - uses: actions/checkout@v3.0.2
+      - uses: actions/setup-node@v3.2.0
         with:
           node-version: 16
+      - run: corepack enable
       - run: yarn install
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
       - run: yarn audit-ci
       - run: yarn libyear
     timeout-minutes: 15

@@ -10,23 +10,27 @@ jobs:
     strategy:
       matrix:
         node:
-          - 12
           - 14
           - 16
-          - 17
+          - 18
         os:
           - macos-latest
           - ubuntu-latest
           - windows-latest
+    env:
+      YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v2.4.0
-      - uses: actions/setup-node@v2.4.1
+      - uses: actions/checkout@v3.0.2
+      - uses: actions/setup-node@v3.2.0
         with:
           node-version: ${{matrix.node}}
+      - run: corepack enable
       - run: yarn install
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
       - run: yarn libyear
       - run: yarn compile
-      - run: yarn test --ci
+      - run: yarn test:ci
       - run: yarn lint:all
       - run: yarn format:all --check
     timeout-minutes: 15

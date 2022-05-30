@@ -10,27 +10,31 @@ jobs:
     strategy:
       matrix:
         node:
-          - 12
           - 14
           - 16
-          - 17
+          - 18
         os:
           - macos-latest
           - ubuntu-latest
           - windows-latest
+    env:
+      YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3.0.2
         with:
           # awaiting https://github.com/facebook/jest/issues/11271
           fetch-depth: 0
-      - uses: actions/setup-node@v2.4.1
+      - uses: actions/setup-node@v3.2.0
         with:
           node-version: ${{matrix.node}}
       # awaiting https://github.com/actions/checkout/pull/155
       - run: git -c protocol.version=2 fetch --no-recurse-submodules --no-tags --progress --prune origin ${{github.event.pull_request.base.ref}}:${{github.event.pull_request.base.ref}}
+      - run: corepack enable
       - run: yarn install
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
       - run: yarn compile
-      - run: yarn test:pull-request
+      - run: yarn test:ci:branch
       - run: yarn lint:diff
       - run: yarn format:diff --branch --check
     timeout-minutes: 15

@@ -1,9 +1,11 @@
 import * as path from "node:path";
 
 import { execaCommand } from "execa";
-import { satisfies } from "semver";
+import { default as semver } from "semver";
 
-import type { PackageManager } from "./types";
+import type { PackageManager } from "./types.js";
+
+const { satisfies } = semver;
 
 export const getParsedPackageManager = (
   packageManager?: string,

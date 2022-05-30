@@ -1,4 +1,4 @@
 {
   "*": ["eslint --cache --fix", "prettier --write"],
-  "*.[jt]s?(x)": ["yarn test:precommit"]
+  "*.[jt]s?(x)": ["yarn test --bail --findRelatedTests"]
 }
