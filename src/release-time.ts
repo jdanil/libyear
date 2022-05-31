@@ -11,7 +11,7 @@ export const getReleaseTime = async (
     berry: `yarn npm info ${packageName} --fields time,versions --json`,
     npm: `npm view ${packageName} time versions --json`,
     pnpm: `npm view ${packageName} time versions --json`,
-    yarn: `yarn info ${packageName} time versions --json`,
+    yarn: `yarn info ${packageName} --json`,
   }[packageManager];
 
   const stdout = await execute(cmd);

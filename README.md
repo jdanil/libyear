@@ -321,8 +321,6 @@ Packages can be temporarily excused from complying to thresholds by setting a da
 ### Later
 
 - extend linting when eslint@7 is released and supports plugins loaded from config file directory
-- `./tsconfig.json` to use `"module": "esnext"` when supported by [ts-node](https://github.com/TypeStrong/ts-node/issues/935) and node 12 is EOL
-- `./bin/libyear.ts` to use top-level await after switching to ES Modules
 
 ## Acknowledgements
 

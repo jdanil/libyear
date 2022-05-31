@@ -33,6 +33,12 @@ jobs:
       - run: yarn install
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
+      - run: yarn libyear
+        continue-on-error: true
+      - run: npm run libyear
+        continue-on-error: true
+      - run: pnpm libyear
+        continue-on-error: true
       - run: yarn compile
       - run: yarn test:ci:branch
       - run: yarn lint:diff

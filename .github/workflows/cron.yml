@@ -19,4 +19,9 @@ jobs:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
       - run: yarn audit-ci
       - run: yarn libyear
+        continue-on-error: true
+      - run: npm run libyear
+        continue-on-error: true
+      - run: pnpm libyear
+        continue-on-error: true
     timeout-minutes: 15

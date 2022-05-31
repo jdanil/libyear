@@ -1,6 +1,6 @@
 {
   "name": "libyear",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A simple measure of software dependency freshness",
   "author": "Joshua David <@jdanil>",
   "contributors": [
@@ -72,8 +72,8 @@
     "@types/lodash-es": "^4.14.182",
     "@types/node": "^17.0.36",
     "@types/semver": "^7.3.9",
-    "@typescript-eslint/eslint-plugin": "^5.26.0",
-    "@typescript-eslint/parser": "^5.26.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
     "audit-ci": "^6.3.0",
     "eslint": "^8.16.0",
     "husky": "^8.0.1",
