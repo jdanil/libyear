@@ -21,19 +21,6 @@ export const cli = async (): Promise<void> => {
   const packageManager = args["package-manager"] as PackageManager;
   const all = args["all"] as boolean;
   const json = args["json"] as boolean;
-  const { overrides, threshold } = await getConfiguration(args);
-  const driftCollective = validateThreshold(threshold?.drift?.collective);
-  const driftIndividual = validateThreshold(threshold?.drift?.individual);
-  const pulseCollective = validateThreshold(threshold?.pulse?.collective);
-  const pulseIndividual = validateThreshold(threshold?.pulse?.individual);
-  const releasesCollective = validateThreshold(threshold?.releases?.collective);
-  const releasesIndividual = validateThreshold(threshold?.releases?.individual);
-  const majorCollective = validateThreshold(threshold?.major?.collective);
-  const majorIndividual = validateThreshold(threshold?.major?.individual);
-  const minorCollective = validateThreshold(threshold?.minor?.collective);
-  const minorIndividual = validateThreshold(threshold?.minor?.individual);
-  const patchCollective = validateThreshold(threshold?.patch?.collective);
-  const patchIndividual = validateThreshold(threshold?.patch?.individual);
 
   // run libyear
   try {
@@ -44,24 +31,33 @@ export const cli = async (): Promise<void> => {
       { all },
     );
 
-    const threshold = {
-      driftCollective,
-      driftIndividual,
-      pulseCollective,
-      pulseIndividual,
-      releasesCollective,
-      releasesIndividual,
-      majorCollective,
-      majorIndividual,
-      minorCollective,
-      minorIndividual,
-      patchCollective,
-      patchIndividual,
-    };
-
     if (json) {
       console.log(JSON.stringify(report));
     } else {
+      const { overrides, threshold } = await getConfiguration(args).then(
+        ({ overrides, threshold }) => ({
+          overrides,
+          threshold: {
+            driftCollective: validateThreshold(threshold?.drift?.collective),
+            driftIndividual: validateThreshold(threshold?.drift?.individual),
+            pulseCollective: validateThreshold(threshold?.pulse?.collective),
+            pulseIndividual: validateThreshold(threshold?.pulse?.individual),
+            releasesCollective: validateThreshold(
+              threshold?.releases?.collective,
+            ),
+            releasesIndividual: validateThreshold(
+              threshold?.releases?.individual,
+            ),
+            majorCollective: validateThreshold(threshold?.major?.collective),
+            majorIndividual: validateThreshold(threshold?.major?.individual),
+            minorCollective: validateThreshold(threshold?.minor?.collective),
+            minorIndividual: validateThreshold(threshold?.minor?.individual),
+            patchCollective: validateThreshold(threshold?.patch?.collective),
+            patchIndividual: validateThreshold(threshold?.patch?.individual),
+          },
+        }),
+      );
+
       print(report, threshold, overrides);
     }
   } catch (error) {

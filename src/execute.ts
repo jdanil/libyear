@@ -1,9 +1,6 @@
-import { ExecaReturnValue, execaCommand } from "execa";
+import { execaCommand } from "execa";
 
-export const execute = async (cmd: string): Promise<string> => {
-  try {
-    return (await execaCommand(cmd)).stdout;
-  } catch (error) {
-    return (error as ExecaReturnValue).stdout;
-  }
-};
+export const execute = async (cmd: string): Promise<string> =>
+  execaCommand(cmd)
+    .then(({ stdout }) => stdout)
+    .catch(({ stdout }) => stdout as string);

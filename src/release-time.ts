@@ -14,28 +14,28 @@ export const getReleaseTime = async (
     yarn: `yarn info ${packageName} --json`,
   }[packageManager];
 
-  const stdout = await execute(cmd);
-
-  if (!stdout) {
-    return {};
-  }
-
-  const json = JSON.parse(stdout) as unknown;
-  switch (packageManager) {
-    case "yarn": {
-      const { time, versions } = (
-        json as {
-          data: { time: Record<string, string>; versions: string[] };
-        }
-      ).data;
-      return pick(time, versions);
+  return execute(cmd).then((stdout) => {
+    if (!stdout) {
+      return {};
     }
-    default: {
-      const { time, versions } = json as {
-        time: Record<string, string>;
-        versions: string[];
-      };
-      return pick(time, versions);
+
+    const json = JSON.parse(stdout) as unknown;
+    switch (packageManager) {
+      case "yarn": {
+        const { time, versions } = (
+          json as {
+            data: { time: Record<string, string>; versions: string[] };
+          }
+        ).data;
+        return pick(time, versions);
+      }
+      default: {
+        const { time, versions } = json as {
+          time: Record<string, string>;
+          versions: string[];
+        };
+        return pick(time, versions);
+      }
     }
-  }
+  });
 };

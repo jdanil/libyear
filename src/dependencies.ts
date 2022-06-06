@@ -18,46 +18,45 @@ type ParsedDependencies = Record<
 const getParsedDependencies = async (
   packageManager: PackageManager,
   cmd: string,
-): Promise<ParsedDependencies> => {
-  const stdout = await execute(cmd);
-
-  switch (packageManager) {
-    case "pnpm":
-      return merge(
-        ...(JSON.parse(stdout) as [
-          ParsedDependencies,
-          ...ParsedDependencies[],
-        ]),
-      ) as ParsedDependencies;
-    case "berry":
-      return {
-        dependencies: merge(
-          ...(stdout
-            .split("\n")
-            .map(
-              (dependency) =>
-                JSON.parse(dependency) as {
-                  value: string;
-                  children: {
-                    Version: string;
-                  };
+): Promise<ParsedDependencies> =>
+  execute(cmd).then((stdout) => {
+    switch (packageManager) {
+      case "pnpm":
+        return merge(
+          ...(JSON.parse(stdout) as [
+            ParsedDependencies,
+            ...ParsedDependencies[],
+          ]),
+        ) as ParsedDependencies;
+      case "berry":
+        return {
+          dependencies: merge(
+            ...(stdout
+              .split("\n")
+              .map(
+                (dependency) =>
+                  JSON.parse(dependency) as {
+                    value: string;
+                    children: {
+                      Version: string;
+                    };
+                  },
+              )
+              .filter((dependency) => !/@workspace:/.test(dependency.value))
+              .map((dependency) => ({
+                [dependency.value.split(/@(npm|patch|workspace):/)[0]]: {
+                  version: dependency.children.Version,
                 },
-            )
-            .filter((dependency) => !/@workspace:/.test(dependency.value))
-            .map((dependency) => ({
-              [dependency.value.split(/@(npm|patch|workspace):/)[0]]: {
-                version: dependency.children.Version,
-              },
-            })) as [ParsedDependency, ...ParsedDependency[]]),
-        ) as ParsedDependency,
-        devDependencies: {},
-      };
-    case "npm":
-    case "yarn":
-    default:
-      return JSON.parse(stdout) as ParsedDependencies;
-  }
-};
+              })) as [ParsedDependency, ...ParsedDependency[]]),
+          ) as ParsedDependency,
+          devDependencies: {},
+        };
+      case "npm":
+      case "yarn":
+      default:
+        return JSON.parse(stdout) as ParsedDependencies;
+    }
+  });
 
 export const getDependencies = async (
   packageManager: PackageManager,
@@ -71,21 +70,22 @@ export const getDependencies = async (
       } as Record<PackageManager, string>
     )[packageManager] ?? "npm ls --depth=0 --json --silent";
 
-  const json = await getParsedDependencies(packageManager, cmd);
-
-  return new Map(
-    Object.entries({
-      ...json.dependencies,
-      ...json.devDependencies,
-    })
-      .map(([dependency, data]) => [
-        dependency,
-        data.version ??
-          (
-            (data.required as { version?: string })?.version ||
-            (data.required as string)
-          ).replace(/[<=>^~]+/u, ""),
-      ])
-      .filter(([_, version]) => valid(version)) as [[string, string]],
+  return getParsedDependencies(packageManager, cmd).then(
+    (json) =>
+      new Map(
+        Object.entries({
+          ...json.dependencies,
+          ...json.devDependencies,
+        })
+          .map(([dependency, data]) => [
+            dependency,
+            data.version ??
+              (
+                (data.required as { version?: string })?.version ||
+                (data.required as string)
+              ).replace(/[<=>^~]+/u, ""),
+          ])
+          .filter(([_, version]) => valid(version)) as [[string, string]],
+      ),
   );
 };
