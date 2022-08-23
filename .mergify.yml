@@ -1,0 +1,11 @@
+# We have authorized the GitHub application mergify. Read more about it at https://docs.mergify.com/examples/#dependabot.
+pull_request_rules:
+  - name: Auto-approve upgrades
+    conditions:
+      - author=renovate[bot]
+      - title~=update dependency
+      - -label=major-upgrade
+    actions:
+      review:
+        type: APPROVE
+        message: Automatically approving dependency upgrade
