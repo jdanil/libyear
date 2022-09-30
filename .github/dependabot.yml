@@ -1,12 +1,10 @@
+# Keep this minimal Dependabot config as a security backstop.
 version: 2
 updates:
-  - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: daily
-    open-pull-requests-limit: 10
   - package-ecosystem: npm
-    directory: "/"
+    directory: /
     schedule:
+      # Security updates ignore this and are opened ad-hoc, but this is still a required option.
       interval: daily
-    open-pull-requests-limit: 10
+   # Prevent PRs from opening except for security updates, as per https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates#overriding-the-default-behavior-with-a-configuration-file
+    open-pull-requests-limit: 0
