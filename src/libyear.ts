@@ -65,9 +65,7 @@ export const libyear = async (
               .filter((version) => valid(version))
               .find(
                 (version) =>
-                  compare(currentVersion, version, {
-                    includePrerelease: true,
-                  }) < 0,
+                  compare(currentVersion, version, false) < 0,
               ) ?? "N/A";
 
           return {
