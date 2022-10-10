@@ -14,9 +14,7 @@ jobs:
           - 16
           - 18
         os:
-          - macos-latest
           - ubuntu-latest
-          - windows-latest
     env:
       YARN_NODE_LINKER: node-modules
     steps:
