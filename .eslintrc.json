@@ -8,9 +8,14 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
+  "ignorePatterns": [
+    "!.*"
+  ],
   "overrides": [
     {
-      "files": ["**/*.ts"],
+      "files": [
+        "**/*.ts"
+      ],
       "parser": "@typescript-eslint/parser"
     }
   ],
@@ -19,5 +24,7 @@
     "project": "./tsconfig.json",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"]
+  "plugins": [
+    "@typescript-eslint"
+  ]
 }
