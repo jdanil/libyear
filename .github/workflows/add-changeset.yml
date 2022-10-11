@@ -1,0 +1,38 @@
+name: Automated Changeset
+
+on:
+  pull_request:
+    paths:
+      - '!.changeset/automated-changeset.md'
+
+jobs:
+  addChangeset:
+    runs-on: ubuntu-latest
+    if: "github.event.pull_request.sender.login == 'renovate[bot]'"
+    steps:
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
+      - uses: actions/github-script@7dff1a87643417cf3b95bb10b29f4c4bc60d8ebd # tag=v6
+        with:
+          script: |
+            const script = require('./scripts/add-changeset.js')
+            console.log(await script({github, context}))
+      - name: Set git identity
+        run: |-
+          git config user.name "stedi-engineering"
+          git config user.email "autobot@stedi.com"
+      - name: Import gpg
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@c8bb57c57e8df1be8c73ff3d59deab1dbc00e0d1 # tag=v5
+        with:
+          gpg_private_key: ${{secrets.STEDI_ENGINEERING_GPG_PRIVATE_KEY}}
+          passphrase: ${{secrets.STEDI_ENGINEERING_GPG_PASSPHRASE}}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+      - uses: stefanzweifel/git-auto-commit-action@6c32682a4040e023c054b2fc60a7cf65cc77f7ad # tag=v4
+        with:
+          commit_message: 'chore: add changesets file'
+          file_pattern: '.changeset/automated-changeset.md'
+          commit_options: '-S'
+          commit_user_name: stedi-engineering
+          commit_user_email: engineering+github-autobot@stedi.com
+          commit_author: stedi-engineering <engineering+github-autobot@stedi.com>

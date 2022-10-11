@@ -1,20 +1,11 @@
 {
-  "name": "libyear",
+  "name": "@stedi/libyear",
   "version": "0.8.0",
   "description": "A simple measure of software dependency freshness",
-  "author": "Joshua David <@jdanil>",
-  "contributors": [
-    "Jared Beck <@jaredbeck>",
-    "Leon Miller-Out <@sbleon>"
-  ],
-  "license": "LGPL-3.0",
-  "homepage": "https://github.com/jdanil/libyear",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jdanil/libyear.git"
-  },
+  "license": "UNLICENSED",
+  "repository": "https://github.com/Stedi/libyear.git",
   "bugs": {
-    "url": "https://github.com/jdanil/libyear/issues"
+    "url": "https://github.com/Stedi/libyear/issues"
   },
   "main": "./src",
   "exports": "./src",
@@ -26,14 +17,6 @@
     "bin/**/*.js",
     "src/**/*.d.ts",
     "src/**/*.js"
-  ],
-  "keywords": [
-    "debt",
-    "dependency",
-    "drift",
-    "fitness",
-    "libyear",
-    "outdated"
   ],
   "engines": {
     "node": ">=14"
@@ -54,7 +37,8 @@
     "prepare": "is-ci || husky install",
     "test": "jest --config .jestrc.json --passWithNoTests",
     "test:ci": "yarn test --ci",
-    "test:ci:branch": "yarn test:ci --changedSince=master"
+    "test:ci:branch": "yarn test:ci --changedSince=master",
+    "publish-packages": "changeset publish"
   },
   "dependencies": {
     "chalk": "^5.0.1",
@@ -66,6 +50,7 @@
     "semver": "^7.3.7"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.25.0",
     "@commitlint/cli": "^17.0.1",
     "@commitlint/config-conventional": "^17.0.0",
     "@jest/globals": "^28.1.0",

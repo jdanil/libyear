@@ -37,3 +37,35 @@ jobs:
       - run: yarn lint:all
       - run: yarn format:all --check
     timeout-minutes: 15
+  publish:
+    needs: ['test']
+    runs-on: ubuntu-latest
+    name: Publish to internal registry
+    steps:
+      - name: Import gpg
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@c8bb57c57e8df1be8c73ff3d59deab1dbc00e0d1 # tag=v5
+        with:
+          gpg_private_key: ${{secrets.STEDI_ENGINEERING_GPG_PRIVATE_KEY}}
+          passphrase: ${{secrets.STEDI_ENGINEERING_GPG_PASSPHRASE}}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Create Release Pull Request or Publish
+        uses: changesets/action@v1
+        with:
+          setupGitUser: false
+          publish: npm run publish-packages
+          commit: "chore: release package(s)"
+          title: "chore: release package(s)"
+      - name: "Notify #growth-engineering via Slack"
+        if: ${{ failure() }}
+        id: slack
+        uses: slackapi/slack-github-action@ebd044f149bf27a2817c0eee26e98d797fa5cffd # tag=v1.22.0
+        with:
+          payload: '{"job":"${{ github.job }}","actor":"${{ github.actor
+            }}","repository_name":"${{ github.repository
+            }}","link":"https://github.com/${{ github.repository
+            }}/actions/runs/${{ github.run_id }}"}'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

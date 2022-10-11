@@ -32,3 +32,5 @@ build/
 
 # system
 .DS_Store
+
+!scripts/add-changeset.js
