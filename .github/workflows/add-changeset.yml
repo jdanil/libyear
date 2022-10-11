@@ -3,7 +3,7 @@ name: Automated Changeset
 on:
   pull_request:
     paths:
-      - '!.changeset/automated-changeset.md'
+      - "!.changeset/automated-changeset.md"
 
 jobs:
   addChangeset:
@@ -30,9 +30,9 @@ jobs:
           git_commit_gpgsign: true
       - uses: stefanzweifel/git-auto-commit-action@6c32682a4040e023c054b2fc60a7cf65cc77f7ad # tag=v4
         with:
-          commit_message: 'chore: add changesets file'
-          file_pattern: '.changeset/automated-changeset.md'
-          commit_options: '-S'
+          commit_message: "chore: add changesets file"
+          file_pattern: ".changeset/automated-changeset.md"
+          commit_options: "-S"
           commit_user_name: stedi-engineering
           commit_user_email: engineering+github-autobot@stedi.com
           commit_author: stedi-engineering <engineering+github-autobot@stedi.com>

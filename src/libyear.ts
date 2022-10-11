@@ -63,10 +63,8 @@ export const libyear = async (
           const available =
             [latestStableVersion, latestAllVersion]
               .filter((version) => valid(version))
-              .find(
-                (version) =>
-                  compare(currentVersion, version, false) < 0,
-              ) ?? "N/A";
+              .find((version) => compare(currentVersion, version, false) < 0) ??
+            "N/A";
 
           return {
             dependency,

@@ -38,7 +38,7 @@ jobs:
       - run: yarn format:all --check
     timeout-minutes: 15
   publish:
-    needs: ['test']
+    needs: ["test"]
     runs-on: ubuntu-latest
     name: Publish to internal registry
     steps:

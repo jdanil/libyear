@@ -6,5 +6,5 @@ updates:
     schedule:
       # Security updates ignore this and are opened ad-hoc, but this is still a required option.
       interval: daily
-   # Prevent PRs from opening except for security updates, as per https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates#overriding-the-default-behavior-with-a-configuration-file
+    # Prevent PRs from opening except for security updates, as per https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates#overriding-the-default-behavior-with-a-configuration-file
     open-pull-requests-limit: 0
