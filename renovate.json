@@ -1,14 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:base"],
   "stabilityDays": 21,
   "major": {
     "automerge": false,
     "dependencyDashboardApproval": true,
-    "addLabels": [
-      "major-upgrade"
-    ]
+    "addLabels": ["major-upgrade"]
   }
 }
