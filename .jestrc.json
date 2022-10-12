@@ -1,9 +1,0 @@
-{
-  "coverageProvider": "v8",
-  "coverageReporters": ["lcov", "text"],
-  "injectGlobals": false,
-  "preset": "ts-jest",
-  "moduleNameMapper": {
-    "^lodash-es$": "lodash"
-  }
-}

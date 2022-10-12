@@ -1,41 +1,23 @@
-import { pick } from "lodash-es";
-
 import { execute } from "./execute";
-import type { PackageManager } from "./types.js";
+import type { PackageManager } from "./types";
+import { transformStdOut } from "./release-time-logic";
 
 export const getReleaseTime = async (
   packageManager: PackageManager,
   packageName: string,
-): Promise<Record<string, string>> => {
+): Promise<{versionsMap: Record<string, string>, latest: string}> => {
   const cmd = {
-    berry: `yarn npm info ${packageName} --fields time,versions --json`,
-    npm: `npm view ${packageName} time versions --json`,
-    pnpm: `npm view ${packageName} time versions --json`,
+    berry: `yarn npm info ${packageName} --fields time,versions,version --json`,
+    npm: `npm view ${packageName} time versions version --json`,
+    pnpm: `npm view ${packageName} time versions version --json`,
     yarn: `yarn info ${packageName} --json`,
   }[packageManager];
 
-  return execute(cmd).then((stdout) => {
+  return execute(cmd).then((stdout: string) => {
     if (!stdout) {
-      return {};
+      throw new Error('Stdout was empty!')
     }
 
-    const json = JSON.parse(stdout) as unknown;
-    switch (packageManager) {
-      case "yarn": {
-        const { time, versions } = (
-          json as {
-            data: { time: Record<string, string>; versions: string[] };
-          }
-        ).data;
-        return pick(time, versions);
-      }
-      default: {
-        const { time, versions } = json as {
-          time: Record<string, string>;
-          versions: string[];
-        };
-        return pick(time, versions);
-      }
-    }
+    return transformStdOut(stdout, packageManager);
   });
 };

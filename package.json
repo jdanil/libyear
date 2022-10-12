@@ -35,7 +35,7 @@
     "lint:diff": "FILES=$(git diff --diff-filter=ACMRTUB --name-only --relative master); [ -z ${FILES} ] || yarn lint --no-error-on-unmatched-pattern ${FILES}",
     "prepack": "tsc --build --force",
     "prepare": "is-ci || husky install",
-    "test": "jest --config .jestrc.json --passWithNoTests",
+    "test": "jest",
     "test:ci": "yarn test --ci",
     "test:ci:branch": "yarn test:ci --changedSince=master",
     "publish-packages": "changeset publish"

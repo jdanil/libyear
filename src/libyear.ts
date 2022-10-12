@@ -19,7 +19,7 @@ export const libyear = async (
   Promise.all(
     Array.from((await getDependencies(packageManager, flags)).entries()).map(
       ([dependency, currentVersion]) =>
-        getReleaseTime(packageManager, dependency).then((releaseTimeObj) => {
+        getReleaseTime(packageManager, dependency).then(({versionsMap: releaseTimeObj, latest: latestStableVersion}) => {
           const releaseTimeMap = new Map(Object.entries(releaseTimeObj));
 
           const allVersionsMap = getSanitisedReleases(releaseTimeMap);
@@ -28,7 +28,6 @@ export const libyear = async (
           const stableVersions = Array.from(stableVersionsMap.keys());
 
           const latestAllVersion = sort(allVersions).slice(-1)[0];
-          const latestStableVersion = sort(stableVersions).slice(-1)[0];
 
           const diffAllVersions = allVersions.slice(
             allVersions.findIndex((version) => version === currentVersion) + 1,
