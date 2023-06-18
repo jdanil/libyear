@@ -17,7 +17,7 @@
     "url": "https://github.com/jdanil/libyear/issues"
   },
   "main": "./src",
-  "exports": "./src",
+  "exports": "./src/libyear.js",
   "bin": "./bin/libyear.js",
   "type": "module",
   "types": "./src",
