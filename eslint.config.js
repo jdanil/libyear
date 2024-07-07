@@ -15,5 +15,11 @@ export default tseslint.config(
   {
     files: ["**/*.js"],
     ...tseslint.configs.disableTypeChecked,
+  },
+  {
+    ignores: [
+      "**/*.d.ts",
+      "**/*.js",
+    ],
   }
 );
