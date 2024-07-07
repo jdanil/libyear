@@ -1,7 +1,7 @@
 import { default as chalk } from "chalk";
 
 import { metrics } from "./constants.js";
-import { printFloat } from "./numbers.js";
+import { clipFloat, printFloat } from "./numbers.js";
 import type {
   Dependencies,
   Metric,
@@ -45,12 +45,12 @@ const printIndividual = (violations: ViolationsIndividual) => {
 const printCollective = (
   totals: Totals,
   violations: ViolationsCollective,
-  threshold: Threshold,
+  threshold?: Threshold,
 ) => {
   const isBreach = (metric: Metric) => violations.has(metric);
   const logger = (metric: Metric) =>
     isBreach(metric) ? console.error : console.log;
-  const message = (metric: Metric, value: number, limit: number) => {
+  const message = (metric: Metric, value: number, limit?: number) => {
     const valueStyler = isBreach(metric) ? chalk.red : chalk.greenBright;
     const valueMessage = `${chalk.magenta(metric)}: ${
       {
@@ -64,7 +64,8 @@ const printCollective = (
     } ${valueStyler(
       `${printFloat(value)} ${getMetricUnit(metric, value)}`,
     )} behind`;
-    const limitMessage = `threshold is ${chalk.yellow(printFloat(limit))}`;
+    const limitMessage = `threshold is ${chalk.yellow(limit != null ? printFloat(limit) : limit)}`;
+
     return isBreach(metric)
       ? `${valueMessage}; ${limitMessage}.`
       : `${valueMessage}.`;
@@ -72,7 +73,11 @@ const printCollective = (
 
   metrics.forEach((metric) => {
     logger(metric)(
-      message(metric, totals.get(metric), threshold?.[`${metric}Collective`]),
+      message(
+        metric,
+        totals.get(metric) ?? 0,
+        threshold?.[`${metric}Collective`],
+      ),
     );
   });
 };
@@ -95,8 +100,8 @@ export const print = (
         available,
       }) => ({
         dependency,
-        drift: printFloat(drift),
-        pulse: printFloat(pulse),
+        drift: clipFloat(drift),
+        pulse: clipFloat(pulse),
         releases,
         major,
         minor,

@@ -17,6 +17,7 @@ coverage/
 .pnp.js
 .yarn/build-state.yml
 .yarn/cache/
+.yarn/install-state.gz
 .yarn/unplugged/
 package-lock.json
 node_modules/

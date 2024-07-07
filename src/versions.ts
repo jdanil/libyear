@@ -1,6 +1,4 @@
-import { default as semver, ReleaseType } from "semver";
-
-const { diff, prerelease, valid } = semver;
+import { diff, prerelease, valid, type ReleaseType } from "semver";
 
 /**
  * Filter versions by release type.
@@ -20,9 +18,7 @@ export const getReleasesByType = (
 export const getSanitisedReleases = (
   releases: Map<string, string>,
 ): Map<string, string> =>
-  new Map(
-    Array.from(releases.entries()).filter(([version, _]) => valid(version)),
-  );
+  new Map(Array.from(releases.entries()).filter(([version]) => valid(version)));
 
 /**
  * Filter pre-release versions.
@@ -32,6 +28,6 @@ export const getStableReleases = (
 ): Map<string, string> =>
   new Map(
     Array.from(releases.entries()).filter(
-      ([version, _]) => prerelease(version) == null,
+      ([version]) => prerelease(version) == null,
     ),
   );

@@ -1,5 +1,4 @@
-import { default as mri } from "mri";
-
+import { getArgs } from "./args.js";
 import { libyear } from "./libyear.js";
 import {
   getInferredPackageManager,
@@ -7,20 +6,42 @@ import {
 } from "./package-manager.js";
 import { getConfiguration } from "./configuration.js";
 import { print } from "./print.js";
-import type { PackageManager } from "./types.js";
 
-const validateThreshold = (threshold: unknown): number =>
-  Number.isNaN(Number(threshold)) ? null : Number(threshold);
+const validateThreshold = (threshold: unknown): number | undefined =>
+  Number.isNaN(Number(threshold)) ? undefined : Number(threshold);
 
 export const cli = async (): Promise<void> => {
-  // parse cli args
-  const argv = process.argv.slice(2);
-  const args = mri(argv, { boolean: ["all", "json"], string: ["config"] });
+  const args = getArgs();
 
-  // validate cli options
-  const packageManager = args["package-manager"] as PackageManager;
-  const all = args["all"] as boolean;
-  const json = args["json"] as boolean;
+  const { all, help, json, packageManager, quiet, sort, ...rest } = args;
+
+  if (help) {
+    console.log(
+      [
+        "--all                                Include dependencies from the whole project.",
+        "--config                             Path to a libyear configuration file.",
+        "--help, -h                           Show help.",
+        "--json                               Outputs the report to the console as valid JSON.",
+        '--package-manager                    Accepts "berry", "npm", "pnpm", "yarn"',
+        "--quiet, -q                          Exclude up-to-date dependencies from results.",
+        "--sort                               Column to sort individual results by.",
+        "--threshold-drift-collective, -D     Drift threshold to warn on for all dependencies.",
+        "--threshold-drift-individual, -d     Drift threshold to warn on for individual dependencies.",
+        "--threshold-pulse-collective, -P     Pulse threshold to warn on for all dependencies.",
+        "--threshold-pulse-individual, -p     Pulse threshold to warn on for individual dependencies.",
+        "--threshold-releases-collective, -R  Releases threshold to warn on for all dependencies.",
+        "--threshold-releases-individual, -r  Releases threshold to warn on for individual dependencies.",
+        "--threshold-major-collective         Major releases threshold to warn on for all dependencies.",
+        "--threshold-major-individual         Major releases threshold to warn on for individual dependencies.",
+        "--threshold-minor-collective         Minor releases threshold to warn on for all dependencies.",
+        "--threshold-minor-individual         Minor releases threshold to warn on for individual dependencies.",
+        "--threshold-patch-collective         Patch releases threshold to warn on for all dependencies.",
+        "--threshold-patch-individual         Patch releases threshold to warn on for individual dependencies.",
+      ].join("\n"),
+    );
+
+    return;
+  }
 
   // run libyear
   try {
@@ -28,32 +49,31 @@ export const cli = async (): Promise<void> => {
       getParsedPackageManager(
         packageManager ?? (await getInferredPackageManager()),
       ),
-      { all },
+      { all, quiet, sort },
     );
 
     if (json) {
       console.log(JSON.stringify(report));
     } else {
-      const { overrides, threshold } = await getConfiguration(args).then(
-        ({ overrides, threshold }) => ({
+      const { overrides, threshold } = await getConfiguration(rest).then(
+        ({
+          overrides,
+          threshold: { drift, pulse, releases, major, minor, patch } = {},
+        }) => ({
           overrides,
           threshold: {
-            driftCollective: validateThreshold(threshold?.drift?.collective),
-            driftIndividual: validateThreshold(threshold?.drift?.individual),
-            pulseCollective: validateThreshold(threshold?.pulse?.collective),
-            pulseIndividual: validateThreshold(threshold?.pulse?.individual),
-            releasesCollective: validateThreshold(
-              threshold?.releases?.collective,
-            ),
-            releasesIndividual: validateThreshold(
-              threshold?.releases?.individual,
-            ),
-            majorCollective: validateThreshold(threshold?.major?.collective),
-            majorIndividual: validateThreshold(threshold?.major?.individual),
-            minorCollective: validateThreshold(threshold?.minor?.collective),
-            minorIndividual: validateThreshold(threshold?.minor?.individual),
-            patchCollective: validateThreshold(threshold?.patch?.collective),
-            patchIndividual: validateThreshold(threshold?.patch?.individual),
+            driftCollective: validateThreshold(drift?.collective),
+            driftIndividual: validateThreshold(drift?.individual),
+            pulseCollective: validateThreshold(pulse?.collective),
+            pulseIndividual: validateThreshold(pulse?.individual),
+            releasesCollective: validateThreshold(releases?.collective),
+            releasesIndividual: validateThreshold(releases?.individual),
+            majorCollective: validateThreshold(major?.collective),
+            majorIndividual: validateThreshold(major?.individual),
+            minorCollective: validateThreshold(minor?.collective),
+            minorIndividual: validateThreshold(minor?.individual),
+            patchCollective: validateThreshold(patch?.collective),
+            patchIndividual: validateThreshold(patch?.individual),
           },
         }),
       );

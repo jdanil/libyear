@@ -1,36 +1,47 @@
 import { cosmiconfig } from "cosmiconfig";
 import { merge } from "lodash-es";
-import type { Argv } from "mri";
 
-import type { Configuration } from "./types.js";
+import { safeParseInt } from "./numbers.js";
+import type { Args, Configuration } from "./types.js";
 
-const getCliConfiguration = (args: Argv) => ({
+const getCliConfiguration = ({
+  thresholdDriftCollective,
+  thresholdDriftIndividual,
+  thresholdPulseCollective,
+  thresholdPulseIndividual,
+  thresholdReleasesCollective,
+  thresholdReleasesIndividual,
+  thresholdMajorCollective,
+  thresholdMajorIndividual,
+  thresholdMinorCollective,
+  thresholdMinorIndividual,
+  thresholdPatchCollective,
+  thresholdPatchIndividual,
+}: Args) => ({
   threshold: {
     drift: {
-      collective: (args["threshold-drift-collective"] ?? args["D"]) as number,
-      individual: (args["threshold-drift-individual"] ?? args["d"]) as number,
+      collective: safeParseInt(thresholdDriftCollective),
+      individual: safeParseInt(thresholdDriftIndividual),
     },
     pulse: {
-      collective: (args["threshold-pulse-collective"] ?? args["P"]) as number,
-      individual: (args["threshold-pulse-individual"] ?? args["p"]) as number,
+      collective: safeParseInt(thresholdPulseCollective),
+      individual: safeParseInt(thresholdPulseIndividual),
     },
     releases: {
-      collective: (args["threshold-releases-collective"] ??
-        args["R"]) as number,
-      individual: (args["threshold-releases-individual"] ??
-        args["r"]) as number,
+      collective: safeParseInt(thresholdReleasesCollective),
+      individual: safeParseInt(thresholdReleasesIndividual),
     },
     major: {
-      collective: args["threshold-major-collective"] as number,
-      individual: args["threshold-major-individual"] as number,
+      collective: safeParseInt(thresholdMajorCollective),
+      individual: safeParseInt(thresholdMajorIndividual),
     },
     minor: {
-      collective: args["threshold-minor-collective"] as number,
-      individual: args["threshold-minor-individual"] as number,
+      collective: safeParseInt(thresholdMinorCollective),
+      individual: safeParseInt(thresholdMinorIndividual),
     },
     patch: {
-      collective: args["threshold-patch-collective"] as number,
-      individual: args["threshold-patch-individual"] as number,
+      collective: safeParseInt(thresholdPatchCollective),
+      individual: safeParseInt(thresholdPatchIndividual),
     },
   },
 });
@@ -42,14 +53,11 @@ const getCosmiconfig = async (filePath?: string): Promise<Configuration> => {
     const result = filePath
       ? await explorer.load(filePath)
       : await explorer.search();
-    return result.config as Configuration;
+    return ((result?.config as unknown) ?? {}) as Configuration;
   } catch (error) {
     return {};
   }
 };
 
-export const getConfiguration = async (args: Argv): Promise<Configuration> =>
-  merge(
-    await getCosmiconfig(args["config"] as string),
-    getCliConfiguration(args),
-  );
+export const getConfiguration = async (args: Args): Promise<Configuration> =>
+  merge(await getCosmiconfig(args.config), getCliConfiguration(args));

@@ -6,22 +6,14 @@
 # eslint
 .eslintignore
 
-# git
-.gitignore
-
 # husky
 .husky/
-
-# prettier
-.prettierignore
-
-# typescript
-*.tsbuildinfo
 
 # yarn
 .pnp.js
 .yarn/build-state.yml
 .yarn/cache/
+.yarn/install-state.gz
 .yarn/releases/
 .yarn/unplugged/
 package-lock.json

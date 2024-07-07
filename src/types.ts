@@ -10,7 +10,7 @@ export type Metric =
 
 export type Threshold = Record<
   `${Metric}${"Collective" | "Individual"}`,
-  number
+  number | undefined
 >;
 
 export type Overrides = Record<
@@ -29,6 +29,28 @@ export type Configuration = {
       individual?: Pick<Threshold, `${Metric}Individual`>;
     }
   >;
+};
+
+export type Args = {
+  all?: boolean;
+  config?: string;
+  help?: boolean;
+  json?: boolean;
+  packageManager?: PackageManager;
+  quiet?: boolean;
+  sort?: Metric;
+  thresholdDriftCollective?: string;
+  thresholdDriftIndividual?: string;
+  thresholdPulseCollective?: string;
+  thresholdPulseIndividual?: string;
+  thresholdReleasesCollective?: string;
+  thresholdReleasesIndividual?: string;
+  thresholdMajorCollective?: string;
+  thresholdMajorIndividual?: string;
+  thresholdMinorCollective?: string;
+  thresholdMinorIndividual?: string;
+  thresholdPatchCollective?: string;
+  thresholdPatchIndividual?: string;
 };
 
 export type Dependencies = Array<

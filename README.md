@@ -75,24 +75,13 @@ yarn add --dev libyear
 yarn libyear
 ```
 
-### `yarn@2` (`yarn berry`)
+### `yarn@>=2` (`yarn berry`)
 
 ```bash
 yarn dlx libyear
 ```
 
 ## CLI
-
-### `--config=<path>`
-
-Path to a libyear configuration file.
-Default is automatically resolved by [cosmiconfig](https://github.com/davidtheclark/cosmiconfig).
-See [configuration](#configuration).
-
-### `--package-manager`
-
-Accepts `berry`, `npm`, `pnpm`, `yarn`.
-Default is inferred.
 
 ### `--all`
 
@@ -101,10 +90,36 @@ Default `false`.
 
 _Note: This option is only supported when using `berry` or `pnpm` package managers._
 
+### `--config=<path>`
+
+Path to a libyear configuration file.
+Default is automatically resolved by [cosmiconfig](https://github.com/davidtheclark/cosmiconfig).
+See [configuration](#configuration).
+
+### `--help` (`-h`)
+
+Show help.
+Default `false`.
+
 ### `--json`
 
 Outputs the report to the console as valid JSON.
 Default `false`.
+
+### `--package-manager`
+
+Accepts `berry`, `npm`, `pnpm`, `yarn`.
+Default is inferred.
+
+### `--quiet` (`-q`)
+
+Exclude up-to-date dependencies from results.
+Default `false`.
+
+### `--sort=<drift|pulse|releases|major|minor|patch>`
+
+Column to sort individual results by.
+Default `null`.
 
 ### `--threshold-drift-collective=<libyears>` (`-D=<libyears>`)
 
@@ -199,10 +214,14 @@ Throws an error if any individual patch metric surpasses the threshold.
 - `.libyearrc.cjs`
 - `.libyearrc.js`
 - `.libyearrc.json`
+- `.libyearrc.mjs`
+- `.libyearrc.ts`
 - `.libyearrc.yaml`
 - `.libyearrc.yml`
 - `libyear.config.cjs`
 - `libyear.config.js`
+- `libyear.config.mjs`
+- `libyear.config.ts`
 
 Custom configuration files can be provided via the [`--config`](#--configpath) CLI option.
 
@@ -301,26 +320,27 @@ Dependencies cannot be ignored from threshold checks by design.
 If a package cannot be upgraded at a particular point in time, then it should be re-reviewed at a later date.
 Packages can be temporarily excused from complying to thresholds by setting a date to "defer" enforcement until in the configuration file.
 
-## To Do
-
-### Now
-
-- ci semantic release
-- unit tests
+## Roadmap
 
 ### Next
 
-- rfc
-  - batch queries / use npm REST API instead of cli (for release times)
-  - audit vulnerabilities
-  - include resolutions
-  - programmatic use
-  - include collective metrics in JSON report
-  - include violations in JSON report
+- ci semantic release
 
-### Later
+### RFC
 
-- extend linting when eslint@7 is released and supports plugins loaded from config file directory
+- batch queries / use npm REST API instead of cli (for release times)
+- audit vulnerabilities
+- include resolutions
+- programmatic use
+- include collective metrics in JSON report
+- include violations in JSON report
+
+## Contributing
+
+```
+corepack enable
+yarn install
+```
 
 ## Acknowledgements
 

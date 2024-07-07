@@ -1,6 +1,6 @@
-import { execaCommand } from "execa";
+import { execa, parseCommandString } from "execa";
 
 export const execute = async (cmd: string): Promise<string> =>
-  execaCommand(cmd)
+  execa`${parseCommandString(cmd)}`
     .then(({ stdout }) => stdout)
-    .catch(({ stdout }) => stdout as string);
+    .catch((error: unknown) => (error as Error & { stdout: string }).stdout);

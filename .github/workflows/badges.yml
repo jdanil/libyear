@@ -12,11 +12,11 @@ jobs:
     env:
       YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v4.1.7
       - name: Use Node.js
-        uses: actions/setup-node@v3.2.0
+        uses: actions/setup-node@v4.0.2
         with:
-          node-version: 16
+          node-version: 22
       - run: corepack enable
       - run: yarn install
         env:
@@ -24,44 +24,44 @@ jobs:
       - id: libyear
         uses: s0/libyear-node-action@v0.1.2
       - run: mkdir badges
-      - uses: emibcn/badge-action@v1.2.4
+      - uses: emibcn/badge-action@v2.0.3
         with:
           label: "libyear drift"
           status: ${{ steps.libyear.outputs.drift }} year(s) behind
           color: "blue"
           path: "badges/drift.svg"
-      - uses: emibcn/badge-action@v1.2.4
+      - uses: emibcn/badge-action@v2.0.3
         with:
           label: "libyear pulse"
           status: ${{ steps.libyear.outputs.pulse }} year(s) behind
           color: "blue"
           path: "badges/pulse.svg"
-      - uses: emibcn/badge-action@v1.2.4
+      - uses: emibcn/badge-action@v2.0.3
         with:
           label: "libyear"
           status: ${{ steps.libyear.outputs.releases }} release(s) behind
           color: "blue"
           path: "badges/releases.svg"
-      - uses: emibcn/badge-action@v1.2.4
+      - uses: emibcn/badge-action@v2.0.3
         with:
           label: "libyear"
           status: ${{ steps.libyear.outputs.major }} major release(s) behind
           color: "blue"
           path: "badges/major.svg"
-      - uses: emibcn/badge-action@v1.2.4
+      - uses: emibcn/badge-action@v2.0.3
         with:
           label: "libyear"
           status: ${{ steps.libyear.outputs.minor }} minor release(s) behind
           color: "blue"
           path: "badges/minor.svg"
-      - uses: emibcn/badge-action@v1.2.4
+      - uses: emibcn/badge-action@v2.0.3
         with:
           label: "libyear"
           status: ${{ steps.libyear.outputs.patch }} patch release(s) behind
           color: "blue"
           path: "badges/patch.svg"
       - name: Push badges to gh-badges directory
-        uses: s0/git-publish-subdir-action@v2.5.1
+        uses: s0/git-publish-subdir-action@v2.6.0
         env:
           REPO: self
           BRANCH: gh-badges

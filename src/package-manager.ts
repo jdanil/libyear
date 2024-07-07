@@ -1,11 +1,9 @@
 import * as path from "node:path";
 
-import { default as semver } from "semver";
+import { satisfies } from "semver";
 
 import { execute } from "./execute.js";
 import type { PackageManager } from "./types.js";
-
-const { satisfies } = semver;
 
 export const getParsedPackageManager = (
   packageManager?: string,

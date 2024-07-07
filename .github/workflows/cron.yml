@@ -9,15 +9,15 @@ jobs:
     env:
       YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v3.0.2
-      - uses: actions/setup-node@v3.2.0
+      - uses: actions/checkout@v4.1.7
+      - uses: actions/setup-node@v4.0.2
         with:
-          node-version: 16
+          node-version: 22
       - run: corepack enable
       - run: yarn install
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
-      - run: yarn audit-ci
+      - run: yarn npm audit --severity moderate
       - run: yarn libyear
         continue-on-error: true
       - run: npm run libyear

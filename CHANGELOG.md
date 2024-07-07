@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.9.0 (Unreleased)
+
+### Bug Fixes
+
+- remove unnecessary semver option
+- expose libyear in package.json exports
+
+### Features
+
+- upgrade `cosmiconfig` to support `.config` directory and `.mjs` and `.ts` configuration files
+- add help option
+- add quiet option
+- sort results by column
+
+### BREAKING CHANGES
+
+- drop support for node <18.19, 19, 21
+
 # 0.8.0 (2022-05-31)
 
 ### Bug Fixes

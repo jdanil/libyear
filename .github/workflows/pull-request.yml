@@ -10,9 +10,9 @@ jobs:
     strategy:
       matrix:
         node:
-          - 14
-          - 16
           - 18
+          - 20
+          - 22
         os:
           - macos-latest
           - ubuntu-latest
@@ -20,11 +20,11 @@ jobs:
     env:
       YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v4.1.7
         with:
           # awaiting https://github.com/facebook/jest/issues/11271
           fetch-depth: 0
-      - uses: actions/setup-node@v3.2.0
+      - uses: actions/setup-node@v4.0.2
         with:
           node-version: ${{matrix.node}}
       # awaiting https://github.com/actions/checkout/pull/155

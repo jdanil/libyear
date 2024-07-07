@@ -1,10 +1,8 @@
 import { merge } from "lodash-es";
-import { default as semver } from "semver";
+import { valid } from "semver";
 
 import { execute } from "./execute.js";
 import type { PackageManager } from "./types.js";
-
-const { valid } = semver;
 
 type ParsedDependency = Record<
   string,
@@ -44,7 +42,9 @@ const getParsedDependencies = async (
               )
               .filter((dependency) => !/@workspace:/.test(dependency.value))
               .map((dependency) => ({
-                [dependency.value.split(/@(npm|patch|workspace):/)[0]]: {
+                [dependency.value
+                  .split(/@(npm|patch|workspace):/)
+                  .at(0) as string]: {
                   version: dependency.children.Version,
                 },
               })) as [ParsedDependency, ...ParsedDependency[]]),
@@ -85,7 +85,7 @@ export const getDependencies = async (
                 (data.required as string)
               ).replace(/[<=>^~]+/u, ""),
           ])
-          .filter(([_, version]) => valid(version)) as [[string, string]],
+          .filter(([, version]) => valid(version)) as [[string, string]],
       ),
   );
 };
