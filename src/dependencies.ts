@@ -6,9 +6,17 @@ import type { PackageManager } from "./types.js";
 
 const { valid } = semver;
 
+type DependencyData = {
+  required?: { version?: string } | string;
+  version?: string;
+  resolved?: string;
+  dependencies?: ParsedDependency;
+  devDependencies?: ParsedDependency;
+};
+
 type ParsedDependency = Record<
   string,
-  { required?: { version?: string } | string; version?: string }
+  DependencyData
 >;
 type ParsedDependencies = Record<
   "dependencies" | "devDependencies",
@@ -58,6 +66,19 @@ const getParsedDependencies = async (
     }
   });
 
+const transformDependency = ([dependency, data]: [string, DependencyData]): [string, string] => {
+  return [
+    dependency,
+    data.version ??
+              (
+                (data.required as { version?: string })?.version ||
+                (data.required as string)
+              ).replace(/[<=>^~]+/u, ""),
+  ];
+}
+
+const isLocalDependency = (data: DependencyData) => data.resolved?.startsWith('file:');
+
 export const getDependencies = async (
   packageManager: PackageManager,
   flags?: { all?: boolean },
@@ -70,22 +91,26 @@ export const getDependencies = async (
       } as Record<PackageManager, string>
     )[packageManager] ?? "npm ls --depth=0 --json --silent";
 
-  return getParsedDependencies(packageManager, cmd).then(
-    (json) =>
-      new Map(
-        Object.entries({
-          ...json.dependencies,
-          ...json.devDependencies,
-        })
-          .map(([dependency, data]) => [
-            dependency,
-            data.version ??
-              (
-                (data.required as { version?: string })?.version ||
-                (data.required as string)
-              ).replace(/[<=>^~]+/u, ""),
-          ])
-          .filter(([_, version]) => valid(version)) as [[string, string]],
-      ),
-  );
+  const json = await getParsedDependencies(packageManager, cmd);
+
+  const dependencies = Object.entries({
+    ...json.dependencies,
+    ...json.devDependencies,
+  });
+
+  // Keep track of which dependencies are linked locally, ie: monorepos
+  const localDeps = new Map(dependencies.filter(([_, data]) => isLocalDependency(data)));
+
+  return new Map(dependencies
+    .flatMap(([dependency, data]) => {
+      if (isLocalDependency(data)) {
+          // This is a local package, recursively add its dependencies instead, but only up to 1 level deep
+          return Object.entries({ ...data.dependencies, ...data.devDependencies })
+            .map(transformDependency)
+            .filter(([depName]) => !localDeps.has(depName));
+      }
+      return [transformDependency([dependency, data])];
+    })
+    .filter(([_, version]) => valid(version)));
 };
+
