@@ -20,7 +20,7 @@ jobs:
     env:
       YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.0
         with:
           # awaiting https://github.com/facebook/jest/issues/11271
           fetch-depth: 0
