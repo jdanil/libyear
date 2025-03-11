@@ -1,7 +1,13 @@
 {
   "$schema": "./schema.json",
   "overrides": {
-    "^chalk$": {
+    "^@types/lodash-es$": {
+      "pulse": 2
+    },
+    "^@types/semver$": {
+      "pulse": 2
+    },
+    "^cosmiconfig$": {
       "pulse": 2
     },
     "^lodash-es$": {

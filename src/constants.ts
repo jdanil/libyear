@@ -1,4 +1,4 @@
-import type { Metric } from "./types.js";
+import type { Metric } from "./types.ts";
 
 export const metrics: Metric[] = [
   "drift",

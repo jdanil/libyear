@@ -1,4 +1,4 @@
-import { metrics } from "./constants.js";
+import { metrics } from "./constants.ts";
 import type {
   Dependencies,
   Metric,
@@ -8,7 +8,7 @@ import type {
   Violations,
   ViolationsCollective,
   ViolationsIndividual,
-} from "./types.js";
+} from "./types.ts";
 
 const isExcused = (dependency: string, overrides: Overrides): boolean =>
   Object.entries(overrides).some(
@@ -40,7 +40,7 @@ export const getTotals = (dependencies: Dependencies): Totals => {
   dependencies.forEach((dependency) => {
     metrics.forEach((metric) => {
       if (!Number.isNaN(dependency[metric])) {
-        const acc = totals.has(metric) ? totals.get(metric) ?? 0 : 0;
+        const acc = totals.has(metric) ? (totals.get(metric) ?? 0) : 0;
         const cur = dependency[metric];
         totals.set(metric, acc + cur);
       }

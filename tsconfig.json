@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowUnreachableCode": false,
-    "build": true,
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
@@ -19,6 +18,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
+    "rewriteRelativeImportExtensions": true,
     "skipLibCheck": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,

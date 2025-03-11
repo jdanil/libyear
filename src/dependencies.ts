@@ -1,8 +1,8 @@
 import { merge } from "lodash-es";
 import { valid } from "semver";
 
-import { execute } from "./execute.js";
-import type { PackageManager } from "./types.js";
+import { execute } from "./execute.ts";
+import type { PackageManager } from "./types.ts";
 
 type ParsedDependency = Record<
   string,

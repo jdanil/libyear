@@ -38,7 +38,7 @@
   "engines": {
     "node": "^18.19 || ^20 || >=22"
   },
-  "packageManager": "yarn@4.3.1",
+  "packageManager": "yarn@4.7.0",
   "scripts": {
     "clean": "tsc --build --clean",
     "compile": "tsc --build",
@@ -46,43 +46,38 @@
     "format": "prettier",
     "format:all": "yarn format .",
     "format:diff": "pretty-quick",
-    "libyear": "node --loader ts-node/esm --es-module-specifier-resolution=node ./bin/libyear",
+    "libyear": "node ./bin/libyear.ts",
     "lint": "eslint --cache --cache-strategy=content",
     "lint:all": "yarn lint \"**/*\"",
     "lint:diff": "FILES=$(git diff --diff-filter=ACMRTUB --name-only --relative master); [ -z ${FILES} ] || yarn lint --no-error-on-unmatched-pattern ${FILES}",
     "prepack": "tsc --build --force",
     "prepare": "[ -n ${CI:-} ] || husky",
-    "test": "yarn node --experimental-vm-modules $(yarn bin jest) --config .jestrc.json",
-    "test:ci": "yarn test --ci",
-    "test:ci:branch": "yarn test:ci --changedSince=master"
+    "test": "node --test"
   },
   "dependencies": {
-    "chalk": "^5.3.0",
+    "chalk": "^5.4.1",
     "cosmiconfig": "^9.0.0",
-    "date-fns": "^3.6.0",
-    "execa": "^9.3.0",
+    "date-fns": "^4.1.0",
+    "execa": "^9.5.2",
     "lodash-es": "^4.17.21",
-    "p-limit": "^6.0.0",
-    "semver": "^7.6.2"
+    "p-limit": "^6.2.0",
+    "semver": "^7.7.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@eslint/js": "^9.6.0",
-    "@jest/globals": "^29.7.0",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@eslint/js": "^9.22.0",
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^20.14.10",
+    "@types/node": "^22.13.10",
     "@types/semver": "^7.5.8",
-    "eslint": "^9.6.0",
-    "husky": "^9.0.11",
-    "jest": "^29.7.0",
-    "lint-staged": "^15.2.7",
-    "prettier": "^3.3.2",
-    "pretty-quick": "^4.0.0",
-    "ts-jest": "^29.1.5",
-    "ts-node": "^10.9.2",
-    "tslib": "^2.6.3",
-    "typescript": "^5.5.3",
-    "typescript-eslint": "^7.15.0"
+    "eslint": "^9.22.0",
+    "expect": "29.7.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.3",
+    "pretty-quick": "^4.1.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1"
   }
 }

@@ -53,12 +53,12 @@ export type Args = {
   thresholdPatchIndividual?: string;
 };
 
-export type Dependencies = Array<
-  Record<Metric, number> & {
-    dependency: string;
-    available: string;
-  }
->;
+export type Dependency = Record<Metric, number> & {
+  dependency: string;
+  available: string;
+};
+
+export type Dependencies = Dependency[];
 
 export type Totals = Map<Metric, number>;
 

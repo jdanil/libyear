@@ -1,8 +1,8 @@
 import { cosmiconfig } from "cosmiconfig";
 import { merge } from "lodash-es";
 
-import { safeParseInt } from "./numbers.js";
-import type { Args, Configuration } from "./types.js";
+import { safeParseInt } from "./numbers.ts";
+import type { Args, Configuration } from "./types.ts";
 
 const getCliConfiguration = ({
   thresholdDriftCollective,
@@ -54,7 +54,7 @@ const getCosmiconfig = async (filePath?: string): Promise<Configuration> => {
       ? await explorer.load(filePath)
       : await explorer.search();
     return ((result?.config as unknown) ?? {}) as Configuration;
-  } catch (error) {
+  } catch {
     return {};
   }
 };

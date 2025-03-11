@@ -4,15 +4,20 @@ import { orderBy } from "lodash-es";
 import pLimit from "p-limit";
 import { compare, sort, valid } from "semver";
 
-import { calculateDrift, calculatePulse } from "./dates.js";
-import { getDependencies } from "./dependencies.js";
-import { getReleaseTime } from "./release-time.js";
-import type { Dependencies, Metric, PackageManager } from "./types.js";
+import { calculateDrift, calculatePulse } from "./dates.ts";
+import { getDependencies } from "./dependencies.ts";
+import { getReleaseTime } from "./release-time.ts";
+import type {
+  Dependencies,
+  Dependency,
+  Metric,
+  PackageManager,
+} from "./types.ts";
 import {
   getReleasesByType,
   getSanitisedReleases,
   getStableReleases,
-} from "./versions.js";
+} from "./versions.ts";
 
 const limit = pLimit(availableParallelism());
 
@@ -91,8 +96,8 @@ export const libyear = async (
     ),
   ).then(
     (dependencies) =>
-      orderBy(
-        dependencies.filter(Boolean),
+      orderBy<Dependency>(
+        dependencies.filter(Boolean) as Dependencies,
         flags?.sort,
         "desc",
       ) as Dependencies,

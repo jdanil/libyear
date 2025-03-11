@@ -2,8 +2,8 @@ import * as path from "node:path";
 
 import { satisfies } from "semver";
 
-import { execute } from "./execute.js";
-import type { PackageManager } from "./types.js";
+import { execute } from "./execute.ts";
+import type { PackageManager } from "./types.ts";
 
 export const getParsedPackageManager = (
   packageManager?: string,

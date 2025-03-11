@@ -1,1 +1,1 @@
-export * from "./libyear.js";
+export * from "./libyear.ts";

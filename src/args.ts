@@ -2,7 +2,7 @@ import { parseArgs } from "node:util";
 
 import { camelCase } from "lodash-es";
 
-import { type Args } from "./types.js";
+import { type Args } from "./types.ts";
 
 export const getArgs = (): Args => {
   const args = process.argv.slice(2);
@@ -78,7 +78,7 @@ export const getArgs = (): Args => {
     },
   });
 
-  return Object.fromEntries(
+  return Object.fromEntries<boolean | string>(
     Object.entries(values).map(([key, value]) => [camelCase(key), value]),
   );
 };

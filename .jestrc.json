@@ -1,6 +1,0 @@
-{
-  "coverageProvider": "v8",
-  "coverageReporters": ["lcov", "text"],
-  "injectGlobals": false,
-  "preset": "ts-jest/presets/default-esm"
-}

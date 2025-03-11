@@ -1,7 +1,7 @@
 import { default as chalk } from "chalk";
 
-import { metrics } from "./constants.js";
-import { clipFloat, printFloat } from "./numbers.js";
+import { metrics } from "./constants.ts";
+import { clipFloat, printFloat } from "./numbers.ts";
 import type {
   Dependencies,
   Metric,
@@ -10,8 +10,8 @@ import type {
   Totals,
   ViolationsCollective,
   ViolationsIndividual,
-} from "./types.js";
-import { getTotals, getViolations } from "./validate.js";
+} from "./types.ts";
+import { getTotals, getViolations } from "./validate.ts";
 
 const ntext = (text: string, plural: string, count: number) =>
   Math.abs(count) === 1 ? text : plural;

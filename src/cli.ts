@@ -1,11 +1,11 @@
-import { getArgs } from "./args.js";
-import { libyear } from "./libyear.js";
+import { getArgs } from "./args.ts";
+import { libyear } from "./libyear.ts";
 import {
   getInferredPackageManager,
   getParsedPackageManager,
-} from "./package-manager.js";
-import { getConfiguration } from "./configuration.js";
-import { print } from "./print.js";
+} from "./package-manager.ts";
+import { getConfiguration } from "./configuration.ts";
+import { print } from "./print.ts";
 
 const validateThreshold = (threshold: unknown): number | undefined =>
   Number.isNaN(Number(threshold)) ? undefined : Number(threshold);

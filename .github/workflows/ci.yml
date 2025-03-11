@@ -13,6 +13,7 @@ jobs:
           - 18
           - 20
           - 22
+          - 23
         os:
           - macos-latest
           - ubuntu-latest
@@ -20,8 +21,8 @@ jobs:
     env:
       YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v4.1.7
-      - uses: actions/setup-node@v4.0.2
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-node@v4.2.0
         with:
           node-version: ${{matrix.node}}
       - run: corepack enable
@@ -35,7 +36,7 @@ jobs:
       - run: pnpm libyear
         continue-on-error: true
       - run: yarn compile
-      - run: yarn test:ci
+      - run: yarn test
       - run: yarn lint:all
       - run: yarn format:all --check
     timeout-minutes: 15
