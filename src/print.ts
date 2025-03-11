@@ -1,7 +1,8 @@
-import { default as chalk } from "chalk";
+import { partialRight } from "lodash-es";
 
 import { metrics } from "./constants.ts";
 import { clipFloat, printFloat } from "./numbers.ts";
+import { style } from "./style.ts";
 import type {
   Dependencies,
   Metric,
@@ -34,9 +35,7 @@ const printIndividual = (violations: ViolationsIndividual) => {
   violations.forEach((dependencies, metric) => {
     dependencies.forEach(({ threshold, value }, dependency) => {
       console.error(
-        `${chalk.magenta(metric)}: ${chalk.cyan(dependency)} is ${chalk.red(
-          `${printFloat(value)} ${getMetricUnit(metric, value)}`,
-        )} behind; threshold is ${chalk.yellow(printFloat(threshold))}.`,
+        `${style(metric, "magenta")}: ${style(dependency, "cyan")} is ${style(`${printFloat(value)} ${getMetricUnit(metric, value)}`, "error")} behind; threshold is ${style(printFloat(threshold), "warning")}.`,
       );
     });
   });
@@ -51,8 +50,10 @@ const printCollective = (
   const logger = (metric: Metric) =>
     isBreach(metric) ? console.error : console.log;
   const message = (metric: Metric, value: number, limit?: number) => {
-    const valueStyler = isBreach(metric) ? chalk.red : chalk.greenBright;
-    const valueMessage = `${chalk.magenta(metric)}: ${
+    const valueStyler = isBreach(metric)
+      ? partialRight(style, "error")
+      : partialRight(style, "success");
+    const valueMessage = `${style(metric, "magenta")}: ${
       {
         drift: "package is",
         pulse: "dependencies are",
@@ -64,7 +65,7 @@ const printCollective = (
     } ${valueStyler(
       `${printFloat(value)} ${getMetricUnit(metric, value)}`,
     )} behind`;
-    const limitMessage = `threshold is ${chalk.yellow(limit != null ? printFloat(limit) : limit)}`;
+    const limitMessage = `threshold is ${style(limit != null ? printFloat(limit) : String(limit), "warning")}`;
 
     return isBreach(metric)
       ? `${valueMessage}; ${limitMessage}.`
@@ -122,12 +123,12 @@ export const print = (
   const hasCollectiveViolations = violations.collective.size > 0;
 
   if (hasIndividualViolations) {
-    console.log(chalk.bold("# Individual"));
+    console.log(style("# Individual", "bold"));
     printIndividual(violations.individual);
     console.log();
   }
 
-  console.log(chalk.bold("# Collective"));
+  console.log(style("# Collective", "bold"));
   printCollective(totals, violations.collective, threshold);
   console.log();
 
