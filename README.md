@@ -337,7 +337,7 @@ Packages can be temporarily excused from complying to thresholds by setting a da
 
 ## Contributing
 
-```
+```bash
 corepack enable
 yarn install
 ```

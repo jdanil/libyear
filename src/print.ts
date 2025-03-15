@@ -89,8 +89,17 @@ export const print = (
   threshold?: Threshold,
   overrides?: Overrides,
 ): void => {
+  const totals = getTotals(dependencies);
+
   table(
-    dependencies.map(
+    [
+      ...dependencies,
+      {
+        dependency: "total",
+        ...(Object.fromEntries(totals) as Record<Metric, number>),
+        available: null,
+      },
+    ].map(
       ({
         dependency,
         drift,
@@ -108,13 +117,13 @@ export const print = (
         major,
         minor,
         patch,
-        available,
+        available: available ?? "—",
       }),
     ),
   );
+
   console.log();
 
-  const totals = getTotals(dependencies);
   const violations = getViolations(dependencies, totals, threshold, overrides);
   const hasIndividualViolations =
     Array.from(violations.individual.values()).reduce(
@@ -129,9 +138,11 @@ export const print = (
     console.log();
   }
 
-  console.log(style("# Collective", "bold"));
-  printCollective(totals, violations.collective, threshold);
-  console.log();
+  if (hasCollectiveViolations) {
+    console.log(style("# Collective", "bold"));
+    printCollective(totals, violations.collective, threshold);
+    console.log();
+  }
 
   if (hasIndividualViolations || hasCollectiveViolations) {
     process.exit(1);

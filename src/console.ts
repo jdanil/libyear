@@ -15,16 +15,17 @@ const logger = new Console({ stdout: transform });
  * Transforms the output of console.table()
  * to remove the index column,
  * strip quotes from strings,
- * and add hyperlinks.
+ * add hyperlinks,
+ * and add footer.
  */
 export const table = (data: unknown) => {
   logger.table(data);
 
   const table = (transform.read() as Buffer)?.toString() ?? "";
+  const rows = table.trim().split(/[\r\n]+/);
 
   log(
-    table
-      .split(/[\r\n]+/)
+    rows
       .reduce((accumulator, row, index) => {
         // remove index column
         row = row
@@ -37,7 +38,7 @@ export const table = (data: unknown) => {
         row = row.replace(/'/g, " ");
 
         // add hyperlink
-        if (index > 1) {
+        if (index > 1 && index < rows.length - 2) {
           const dependency = row.match(/│\s*([@\w\d/-]+)\s*│/i)?.at(1);
           if (dependency != null) {
             row = row.replace(
@@ -45,6 +46,23 @@ export const table = (data: unknown) => {
               terminalLink(dependency, `https://npm.im/${dependency}`),
             );
           }
+        }
+
+        // add footer
+        if (index === rows.length - 2) {
+          row = `${[...row.replace(/^│/, "├").replace(/│$/, "┤")]
+            .map((character) => {
+              switch (character) {
+                case "│":
+                  return "┼";
+                case "├":
+                case "┤":
+                  return character;
+                default:
+                  return "─";
+              }
+            })
+            .join("")}\n${row}`;
         }
 
         return `${accumulator}${row}\n`;

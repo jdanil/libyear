@@ -19,6 +19,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - sort results by column
 - remove index column
 - add hyperlink to dependencies
+- add totals to table
 
 ### BREAKING CHANGES
 
