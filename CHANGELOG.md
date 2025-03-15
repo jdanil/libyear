@@ -18,6 +18,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - add quiet option
 - sort results by column
 - remove index column
+- add hyperlink to dependencies
 
 ### BREAKING CHANGES
 

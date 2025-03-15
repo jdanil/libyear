@@ -12,6 +12,9 @@
     },
     "^lodash-es$": {
       "pulse": 5
+    },
+    "^terminal-link$": {
+      "pulse": 5
     }
   },
   "threshold": {

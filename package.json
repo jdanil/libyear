@@ -61,7 +61,8 @@
     "execa": "^9.5.2",
     "lodash-es": "^4.17.21",
     "p-limit": "^6.2.0",
-    "semver": "^7.7.1"
+    "semver": "^7.7.1",
+    "terminal-link": "^3.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",

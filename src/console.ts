@@ -13,8 +13,9 @@ const logger = new Console({ stdout: transform });
 
 /**
  * Transforms the output of console.table()
- * to remove the index column
- * and strip quotes from strings.
+ * to remove the index column,
+ * strip quotes from strings,
+ * and add hyperlinks.
  */
 export const table = (data: unknown) => {
   logger.table(data);
@@ -24,18 +25,30 @@ export const table = (data: unknown) => {
   log(
     table
       .split(/[\r\n]+/)
-      .reduce(
-        (accumulator, row) =>
-          (accumulator += `${row
-            .replace(/[^┬]*┬/, "┌")
-            .replace(/^├─*┼/, "├")
-            .replace(/│[^│]*/, "")
-            .replace(/^└─*┴/, "└")
-            .replace(/'/g, " ")}\n`),
-        "",
-      )
+      .reduce((accumulator, row, index) => {
+        // remove index column
+        row = row
+          .replace(/[^┬]*┬/, "┌")
+          .replace(/^├─*┼/, "├")
+          .replace(/│[^│]*/, "")
+          .replace(/^└─*┴/, "└");
+
+        // strip quotes from strings
+        row = row.replace(/'/g, " ");
+
+        // add hyperlink
+        if (index > 1) {
+          const dependency = row.match(/│\s*([@\w\d/-]+)\s*│/i)?.at(1);
+          if (dependency != null) {
+            row = row.replace(
+              dependency,
+              terminalLink(dependency, `https://npm.im/${dependency}`),
+            );
+          }
+        }
+
+        return `${accumulator}${row}\n`;
+      }, "")
       .trim(),
   );
 };
-
-export { error, log };
