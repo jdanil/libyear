@@ -8,7 +8,7 @@ on:
 
 jobs:
   get-badges:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     env:
       YARN_NODE_LINKER: node-modules
     steps:

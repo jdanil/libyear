@@ -16,6 +16,7 @@ jobs:
           - 23
         os:
           - macos-latest
+          - ubuntu-24.04-arm
           - ubuntu-latest
           - windows-latest
     env:
