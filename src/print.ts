@@ -1,5 +1,6 @@
 import { partialRight } from "lodash-es";
 
+import { table } from "./console.ts";
 import { metrics } from "./constants.ts";
 import { clipFloat, printFloat } from "./numbers.ts";
 import { style } from "./style.ts";
@@ -88,7 +89,7 @@ export const print = (
   threshold?: Threshold,
   overrides?: Overrides,
 ): void => {
-  console.table(
+  table(
     dependencies.map(
       ({
         dependency,

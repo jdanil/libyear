@@ -17,6 +17,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - add help option
 - add quiet option
 - sort results by column
+- remove index column
 
 ### BREAKING CHANGES
 
