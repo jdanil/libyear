@@ -31,12 +31,12 @@ export const cli = async (): Promise<void> => {
         "--threshold-pulse-individual, -p     Pulse threshold to warn on for individual dependencies.",
         "--threshold-releases-collective, -R  Releases threshold to warn on for all dependencies.",
         "--threshold-releases-individual, -r  Releases threshold to warn on for individual dependencies.",
-        "--threshold-major-collective         Major releases threshold to warn on for all dependencies.",
-        "--threshold-major-individual         Major releases threshold to warn on for individual dependencies.",
-        "--threshold-minor-collective         Minor releases threshold to warn on for all dependencies.",
-        "--threshold-minor-individual         Minor releases threshold to warn on for individual dependencies.",
-        "--threshold-patch-collective         Patch releases threshold to warn on for all dependencies.",
-        "--threshold-patch-individual         Patch releases threshold to warn on for individual dependencies.",
+        "--threshold-major-collective, -X     Major releases threshold to warn on for all dependencies.",
+        "--threshold-major-individual, -x     Major releases threshold to warn on for individual dependencies.",
+        "--threshold-minor-collective, -Y     Minor releases threshold to warn on for all dependencies.",
+        "--threshold-minor-individual, -y     Minor releases threshold to warn on for individual dependencies.",
+        "--threshold-patch-collective, -Z     Patch releases threshold to warn on for all dependencies.",
+        "--threshold-patch-individual, -z     Patch releases threshold to warn on for individual dependencies.",
       ].join("\n"),
     );
 

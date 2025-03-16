@@ -20,6 +20,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - remove index column
 - add hyperlink to dependencies
 - add totals to table
+- add aliases for major, minor, patch options
 
 ### BREAKING CHANGES
 

@@ -58,21 +58,27 @@ export const getArgs = (): Args => {
         type: "string",
       },
       "threshold-major-collective": {
+        short: "X",
         type: "string",
       },
       "threshold-major-individual": {
+        short: "x",
         type: "string",
       },
       "threshold-minor-collective": {
+        short: "Y",
         type: "string",
       },
       "threshold-minor-individual": {
+        short: "y",
         type: "string",
       },
       "threshold-patch-collective": {
+        short: "Z",
         type: "string",
       },
       "threshold-patch-individual": {
+        short: "z",
         type: "string",
       },
     },

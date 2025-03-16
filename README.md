@@ -163,42 +163,42 @@ Default `null`.
 
 Throws an error if any individual stable releases metric surpasses the threshold.
 
-### `--threshold-major-collective=<count>`
+### `--threshold-major-collective=<count>` (`-X=<count>`)
 
 Accepts an integer.
 Default `null`.
 
 Throws an error if the total major metric surpasses the threshold.
 
-### `--threshold-major-individual=<count>`
+### `--threshold-major-individual=<count>` (`-x=<count>`)
 
 Accepts an integer.
 Default `null`.
 
 Throws an error if any individual major metric surpasses the threshold.
 
-### `--threshold-minor-collective=<count>`
+### `--threshold-minor-collective=<count>` (`-Y=<count>`)
 
 Accepts an integer.
 Default `null`.
 
 Throws an error if the total minor metric surpasses the threshold.
 
-### `--threshold-minor-individual=<count>`
+### `--threshold-minor-individual=<count>` (`-y=<count>`)
 
 Accepts an integer.
 Default `null`.
 
 Throws an error if any individual minor metric surpasses the threshold.
 
-### `--threshold-patch-collective=<count>`
+### `--threshold-patch-collective=<count>` (`-Z=<count>`)
 
 Accepts an integer.
 Default `null`.
 
 Throws an error if the total patch metric surpasses the threshold.
 
-### `--threshold-patch-individual=<count>`
+### `--threshold-patch-individual=<count>` (`-z=<count>`)
 
 Accepts an integer.
 Default `null`.
