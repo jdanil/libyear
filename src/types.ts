@@ -60,13 +60,13 @@ export type Dependency = Record<Metric, number> & {
 
 export type Dependencies = Dependency[];
 
-export type Totals = Map<Metric, number>;
+export type Totals = Record<Metric, number>;
 
-export type ViolationsCollective = Map<Metric, number>;
+export type ViolationsCollective = Record<Metric, number>;
 
-export type ViolationsIndividual = Map<
+export type ViolationsIndividual = Record<
   Metric,
-  Map<string, { threshold: number; value: number }>
+  Record<string, { threshold: number; value: number }>
 >;
 
 export type Violations = {

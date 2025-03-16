@@ -35,14 +35,14 @@ const getMatchingPattern = (
   Object.keys(overrides).find((pattern) => RegExp(pattern).test(dependency));
 
 export const getTotals = (dependencies: Dependencies): Totals => {
-  const totals = new Map<Metric, number>();
+  const totals = {} as Record<Metric, number>;
 
   dependencies.forEach((dependency) => {
     metrics.forEach((metric) => {
       if (!Number.isNaN(dependency[metric])) {
-        const acc = totals.has(metric) ? (totals.get(metric) ?? 0) : 0;
+        const acc = Object.hasOwn(totals, metric) ? (totals[metric] ?? 0) : 0;
         const cur = dependency[metric];
-        totals.set(metric, acc + cur);
+        totals[metric] = acc + cur;
       }
     });
   });
@@ -54,13 +54,13 @@ const getCollectiveViolations = (
   totals: Totals,
   threshold?: Threshold,
 ): ViolationsCollective => {
-  const violations = new Map<Metric, number>();
+  const violations = {} as Record<Metric, number>;
 
   metrics.forEach((metric) => {
-    const value = totals.get(metric);
+    const value = totals[metric];
     const limit = threshold?.[`${metric}Collective`];
     if (value != null && isBreach(value, limit)) {
-      violations.set(metric, value);
+      violations[metric] = value;
     }
   });
 
@@ -72,10 +72,10 @@ const getIndividualViolations = (
   threshold?: Threshold,
   overrides?: Overrides,
 ): ViolationsIndividual => {
-  const violations = new Map<
+  const violations = {} as Record<
     Metric,
-    Map<string, { threshold: number; value: number }>
-  >();
+    Record<string, { threshold: number; value: number }>
+  >;
 
   dependencies.forEach(({ dependency, ...rest }) => {
     metrics.forEach((metric) => {
@@ -85,10 +85,10 @@ const getIndividualViolations = (
           metric
         ] ?? threshold?.[`${metric}Individual`];
       if (limit != null && isBreach(value, limit, dependency, overrides)) {
-        if (!violations.has(metric)) {
-          violations.set(metric, new Map());
+        if (!Object.hasOwn(violations, metric)) {
+          violations[metric] = {};
         }
-        violations.get(metric)?.set(dependency, { threshold: limit, value });
+        violations[metric][dependency] = { threshold: limit, value };
       }
     });
   });

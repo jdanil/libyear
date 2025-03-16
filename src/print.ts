@@ -33,12 +33,14 @@ const getMetricUnit = (metric: Metric, count: number) => {
 };
 
 const printIndividual = (violations: ViolationsIndividual) => {
-  violations.forEach((dependencies, metric) => {
-    dependencies.forEach(({ threshold, value }, dependency) => {
-      console.error(
-        `${style(metric, "magenta")}: ${style(dependency, "cyan")} is ${style(`${printFloat(value)} ${getMetricUnit(metric, value)}`, "error")} behind; threshold is ${style(printFloat(threshold), "warning")}.`,
-      );
-    });
+  Object.entries(violations).forEach(([metric, dependencies]) => {
+    Object.entries(dependencies).forEach(
+      ([dependency, { threshold, value }]) => {
+        console.error(
+          `${style(metric, "magenta")}: ${style(dependency, "cyan")} is ${style(`${printFloat(value)} ${getMetricUnit(metric as Metric, value)}`, "error")} behind; threshold is ${style(printFloat(threshold), "warning")}.`,
+        );
+      },
+    );
   });
 };
 
@@ -47,7 +49,7 @@ const printCollective = (
   violations: ViolationsCollective,
   threshold?: Threshold,
 ) => {
-  const isBreach = (metric: Metric) => violations.has(metric);
+  const isBreach = (metric: Metric) => Object.hasOwn(violations, metric);
   const logger = (metric: Metric) =>
     isBreach(metric) ? console.error : console.log;
   const message = (metric: Metric, value: number, limit?: number) => {
@@ -75,11 +77,7 @@ const printCollective = (
 
   metrics.forEach((metric) => {
     logger(metric)(
-      message(
-        metric,
-        totals.get(metric) ?? 0,
-        threshold?.[`${metric}Collective`],
-      ),
+      message(metric, totals[metric] ?? 0, threshold?.[`${metric}Collective`]),
     );
   });
 };
@@ -96,7 +94,7 @@ export const print = (
       ...dependencies,
       {
         dependency: "total",
-        ...(Object.fromEntries(totals) as Record<Metric, number>),
+        ...totals,
         available: null,
       },
     ].map(
@@ -126,11 +124,11 @@ export const print = (
 
   const violations = getViolations(dependencies, totals, threshold, overrides);
   const hasIndividualViolations =
-    Array.from(violations.individual.values()).reduce(
-      (acc, cur) => acc + cur.size,
+    Object.values(violations.individual).reduce(
+      (acc, cur) => acc + Object.keys(cur).length,
       0,
     ) > 0;
-  const hasCollectiveViolations = violations.collective.size > 0;
+  const hasCollectiveViolations = Object.keys(violations.collective).length > 0;
 
   if (hasIndividualViolations) {
     console.log(style("# Individual", "bold"));

@@ -61,7 +61,7 @@ const getParsedDependencies = async (
 export const getDependencies = async (
   packageManager: PackageManager,
   flags?: { all?: boolean },
-): Promise<Map<string, string>> => {
+): Promise<Record<string, string>> => {
   const cmd =
     (
       {
@@ -70,22 +70,21 @@ export const getDependencies = async (
       } as Record<PackageManager, string>
     )[packageManager] ?? "npm ls --depth=0 --json --silent";
 
-  return getParsedDependencies(packageManager, cmd).then(
-    (json) =>
-      new Map(
-        Object.entries({
-          ...json.dependencies,
-          ...json.devDependencies,
-        })
-          .map(([dependency, data]) => [
-            dependency,
-            data.version ??
-              (
-                (data.required as { version?: string })?.version ||
-                (data.required as string)
-              ).replace(/[<=>^~]+/u, ""),
-          ])
-          .filter(([, version]) => valid(version)) as [[string, string]],
-      ),
+  return getParsedDependencies(packageManager, cmd).then((json) =>
+    Object.fromEntries(
+      Object.entries({
+        ...json.dependencies,
+        ...json.devDependencies,
+      })
+        .map(([dependency, data]) => [
+          dependency,
+          data.version ??
+            (
+              (data.required as { version?: string })?.version ||
+              (data.required as string)
+            ).replace(/[<=>^~]+/u, ""),
+        ])
+        .filter(([, version]) => valid(version)) as [[string, string]],
+    ),
   );
 };

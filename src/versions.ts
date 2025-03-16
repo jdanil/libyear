@@ -16,18 +16,18 @@ export const getReleasesByType = (
  * Filter out "time" metadata about the package.
  */
 export const getSanitisedReleases = (
-  releases: Map<string, string>,
-): Map<string, string> =>
-  new Map(Array.from(releases.entries()).filter(([version]) => valid(version)));
+  releases: Record<string, string>,
+): Record<string, string> =>
+  Object.fromEntries(
+    Object.entries(releases).filter(([version]) => valid(version)),
+  );
 
 /**
  * Filter pre-release versions.
  */
 export const getStableReleases = (
-  releases: Map<string, string>,
-): Map<string, string> =>
-  new Map(
-    Array.from(releases.entries()).filter(
-      ([version]) => prerelease(version) == null,
-    ),
+  releases: Record<string, string>,
+): Record<string, string> =>
+  Object.fromEntries(
+    Object.entries(releases).filter(([version]) => prerelease(version) == null),
   );

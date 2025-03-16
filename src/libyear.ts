@@ -26,16 +26,16 @@ export const libyear = async (
   flags?: { all?: boolean; quiet?: boolean; sort?: Metric },
 ): Promise<Dependencies> =>
   Promise.all(
-    Array.from((await getDependencies(packageManager, flags)).entries()).map(
+    Object.entries(await getDependencies(packageManager, flags)).map(
       ([dependency, currentVersion]) =>
         limit(() =>
           getReleaseTime(packageManager, dependency).then((releaseTimeObj) => {
-            const releaseTimeMap = new Map(Object.entries(releaseTimeObj));
+            const releaseTimeMap = releaseTimeObj;
 
             const allVersionsMap = getSanitisedReleases(releaseTimeMap);
             const stableVersionsMap = getStableReleases(allVersionsMap);
-            const allVersions = Array.from(allVersionsMap.keys());
-            const stableVersions = Array.from(stableVersionsMap.keys());
+            const allVersions = Object.keys(allVersionsMap);
+            const stableVersions = Object.keys(stableVersionsMap);
 
             const latestAllVersion = sort(allVersions).at(-1) ?? "";
             const latestStableVersion = sort(stableVersions).at(-1) ?? "";
@@ -52,11 +52,11 @@ export const libyear = async (
             );
 
             const drift = calculateDrift(
-              allVersionsMap.get(currentVersion) ?? "",
-              allVersionsMap.get(latestStableVersion) ?? "",
+              allVersionsMap[currentVersion] ?? "",
+              allVersionsMap[latestStableVersion] ?? "",
             );
             const pulse = calculatePulse(
-              Array.from(allVersionsMap.values()).sort().at(-1) ?? "",
+              Object.values(allVersionsMap).sort().at(-1) ?? "",
             );
             const releases = diffStableVersions.length;
             const major = getReleasesByType(
