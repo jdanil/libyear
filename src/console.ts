@@ -3,6 +3,8 @@ import { Transform } from "node:stream";
 
 import terminalLink from "terminal-link";
 
+import { PACKAGE_NAME_REGEXP } from "./constants.ts";
+
 const transform = new Transform({
   transform(chunk, _encoding, callback) {
     callback(null, chunk);
@@ -39,7 +41,9 @@ export const table = (data: unknown) => {
 
         // add hyperlink
         if (index > 1 && index < rows.length - 2) {
-          const dependency = row.match(/│\s*([@\w\d/-]+)\s*│/i)?.at(1);
+          const dependency = row
+            .match(new RegExp(`│\\s*(${PACKAGE_NAME_REGEXP.source})\\s*│`))
+            ?.at(1);
           if (dependency != null) {
             row = row.replace(
               dependency,

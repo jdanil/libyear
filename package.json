@@ -52,7 +52,7 @@
     "lint:diff": "FILES=$(git diff --diff-filter=ACMRTUB --name-only --relative master); [ -z ${FILES} ] || yarn lint --no-error-on-unmatched-pattern ${FILES}",
     "prepack": "tsc --build --force",
     "prepare": "[ -n ${CI:-} ] || husky",
-    "test": "node --test **/*.ts"
+    "test": "node --test ./src/**/*.ts"
   },
   "dependencies": {
     "chalk": "^5.4.1",
