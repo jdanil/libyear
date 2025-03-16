@@ -1,10 +1,9 @@
+import * as assert from "node:assert";
 import { describe, it } from "node:test";
 
-import { expect } from "expect";
+import { clipFloat, printFloat, safeParseInt } from "./number.ts";
 
-import { clipFloat, printFloat, safeParseInt } from "./numbers.ts";
-
-await describe("numbers", async () => {
+await describe("number", async () => {
   await describe("clipFloat", async () => {
     for (const [input, expected] of [
       [0.123, 0.12],
@@ -18,7 +17,7 @@ await describe("numbers", async () => {
       [1.2345, 1.23],
     ] as const) {
       await it(`clips ${input}`, () => {
-        expect(clipFloat(input)).toBe(expected);
+        assert.equal(clipFloat(input), expected);
       });
     }
   });
@@ -36,7 +35,7 @@ await describe("numbers", async () => {
       [1.2345, "1.23"],
     ] as const) {
       await it(`prints ${input}`, () => {
-        expect(printFloat(input)).toBe(expected);
+        assert.equal(printFloat(input), expected);
       });
     }
   });
@@ -49,7 +48,7 @@ await describe("numbers", async () => {
       ["1", 1],
     ] as const) {
       await it(`parses ${input}`, () => {
-        expect(safeParseInt(input)).toBe(expected);
+        assert.equal(safeParseInt(input), expected);
       });
     }
   });

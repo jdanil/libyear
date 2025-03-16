@@ -2,7 +2,7 @@ import { parseArgs } from "node:util";
 
 import { camelCase } from "lodash-es";
 
-import { type Args } from "./types.ts";
+import { type Args } from "../types.ts";
 
 export const getArgs = (): Args => {
   const args = process.argv.slice(2);

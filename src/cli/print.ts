@@ -1,9 +1,9 @@
-import { partialRight } from "lodash-es";
+import { partial } from "lodash-es";
 
-import { table } from "./console.ts";
-import { metrics } from "./constants.ts";
-import { clipFloat, printFloat } from "./numbers.ts";
-import { style } from "./style.ts";
+import { METRICS } from "../constants.ts";
+import { clipFloat, printFloat } from "../style/number.ts";
+import { styleTable } from "../style/table.ts";
+import { styleText } from "../style/text.ts";
 import type {
   Dependencies,
   Metric,
@@ -12,8 +12,8 @@ import type {
   Totals,
   ViolationsCollective,
   ViolationsIndividual,
-} from "./types.ts";
-import { getTotals, getViolations } from "./validate.ts";
+} from "../types.ts";
+import { getTotals, getViolations } from "../validate.ts";
 
 const ntext = (text: string, plural: string, count: number) =>
   Math.abs(count) === 1 ? text : plural;
@@ -37,7 +37,7 @@ const printIndividual = (violations: ViolationsIndividual) => {
     Object.entries(dependencies).forEach(
       ([dependency, { threshold, value }]) => {
         console.error(
-          `${style(metric, "magenta")}: ${style(dependency, "cyan")} is ${style(`${printFloat(value)} ${getMetricUnit(metric as Metric, value)}`, "error")} behind; threshold is ${style(printFloat(threshold), "warning")}.`,
+          `${styleText("magenta", metric)}: ${styleText("cyan", dependency)} is ${styleText("red", `${printFloat(value)} ${getMetricUnit(metric as Metric, value)}`)} behind; threshold is ${styleText("yellow", printFloat(threshold))}.`,
         );
       },
     );
@@ -54,9 +54,9 @@ const printCollective = (
     isBreach(metric) ? console.error : console.log;
   const message = (metric: Metric, value: number, limit?: number) => {
     const valueStyler = isBreach(metric)
-      ? partialRight(style, "error")
-      : partialRight(style, "success");
-    const valueMessage = `${style(metric, "magenta")}: ${
+      ? partial(styleText, "red")
+      : partial(styleText, "green");
+    const valueMessage = `${styleText("magenta", metric)}: ${
       {
         drift: "package is",
         pulse: "dependencies are",
@@ -68,14 +68,14 @@ const printCollective = (
     } ${valueStyler(
       `${printFloat(value)} ${getMetricUnit(metric, value)}`,
     )} behind`;
-    const limitMessage = `threshold is ${style(limit != null ? printFloat(limit) : String(limit), "warning")}`;
+    const limitMessage = `threshold is ${styleText("yellow", limit != null ? printFloat(limit) : String(limit))}`;
 
     return isBreach(metric)
       ? `${valueMessage}; ${limitMessage}.`
       : `${valueMessage}.`;
   };
 
-  metrics.forEach((metric) => {
+  METRICS.forEach((metric) => {
     logger(metric)(
       message(metric, totals[metric] ?? 0, threshold?.[`${metric}Collective`]),
     );
@@ -89,38 +89,38 @@ export const print = (
 ): void => {
   const totals = getTotals(dependencies);
 
-  table(
-    [
-      ...dependencies,
-      {
-        dependency: "total",
-        ...totals,
-        available: null,
-      },
-    ].map(
-      ({
-        dependency,
-        drift,
-        pulse,
-        releases,
-        major,
-        minor,
-        patch,
-        available,
-      }) => ({
-        dependency,
-        drift: clipFloat(drift),
-        pulse: clipFloat(pulse),
-        releases,
-        major,
-        minor,
-        patch,
-        available: available ?? "—",
-      }),
+  console.log(
+    styleTable(
+      [
+        ...dependencies,
+        {
+          dependency: "total",
+          ...totals,
+          available: null,
+        },
+      ].map(
+        ({
+          dependency,
+          drift,
+          pulse,
+          releases,
+          major,
+          minor,
+          patch,
+          available,
+        }) => ({
+          dependency,
+          drift: clipFloat(drift),
+          pulse: clipFloat(pulse),
+          releases,
+          major,
+          minor,
+          patch,
+          available: available ?? "—",
+        }),
+      ),
     ),
   );
-
-  console.log();
 
   const violations = getViolations(dependencies, totals, threshold, overrides);
   const hasIndividualViolations =
@@ -131,15 +131,13 @@ export const print = (
   const hasCollectiveViolations = Object.keys(violations.collective).length > 0;
 
   if (hasIndividualViolations) {
-    console.log(style("# Individual", "bold"));
+    console.log(`\n${styleText("bold", "# Individual")}`);
     printIndividual(violations.individual);
-    console.log();
   }
 
   if (hasCollectiveViolations) {
-    console.log(style("# Collective", "bold"));
+    console.log(`\n${styleText("bold", "# Collective")}`);
     printCollective(totals, violations.collective, threshold);
-    console.log();
   }
 
   if (hasIndividualViolations || hasCollectiveViolations) {

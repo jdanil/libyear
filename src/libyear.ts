@@ -5,8 +5,8 @@ import pLimit from "p-limit";
 import { compare, sort, valid } from "semver";
 
 import { calculateDrift, calculatePulse } from "./dates.ts";
-import { getDependencies } from "./dependencies.ts";
-import { getReleaseTime } from "./release-time.ts";
+import { getDependencies } from "./fetch/dependencies.ts";
+import { getReleaseTime } from "./fetch/release-time.ts";
 import type {
   Dependencies,
   Dependency,
@@ -29,9 +29,7 @@ export const libyear = async (
     Object.entries(await getDependencies(packageManager, flags)).map(
       ([dependency, currentVersion]) =>
         limit(() =>
-          getReleaseTime(packageManager, dependency).then((releaseTimeObj) => {
-            const releaseTimeMap = releaseTimeObj;
-
+          getReleaseTime(packageManager, dependency).then((releaseTimeMap) => {
             const allVersionsMap = getSanitisedReleases(releaseTimeMap);
             const stableVersionsMap = getStableReleases(allVersionsMap);
             const allVersions = Object.keys(allVersionsMap);

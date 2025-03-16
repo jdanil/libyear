@@ -1,8 +1,8 @@
 import { cosmiconfig } from "cosmiconfig";
 import { merge } from "lodash-es";
 
-import { safeParseInt } from "./numbers.ts";
-import type { Args, Configuration } from "./types.ts";
+import { safeParseInt } from "../style/number.ts";
+import type { Args, Configuration } from "../types.ts";
 
 const getCliConfiguration = ({
   thresholdDriftCollective,

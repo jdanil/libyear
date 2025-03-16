@@ -1,9 +1,9 @@
-import { getArgs } from "./args.ts";
-import { libyear } from "./libyear.ts";
 import {
   getInferredPackageManager,
   getParsedPackageManager,
-} from "./package-manager.ts";
+} from "../fetch/package-manager.ts";
+import { libyear } from "../libyear.ts";
+import { getArgs } from "./args.ts";
 import { getConfiguration } from "./configuration.ts";
 import { print } from "./print.ts";
 

@@ -1,4 +1,4 @@
-import { metrics } from "./constants.ts";
+import { METRICS } from "./constants.ts";
 import type {
   Dependencies,
   Metric,
@@ -38,7 +38,7 @@ export const getTotals = (dependencies: Dependencies): Totals => {
   const totals = {} as Record<Metric, number>;
 
   dependencies.forEach((dependency) => {
-    metrics.forEach((metric) => {
+    METRICS.forEach((metric) => {
       if (!Number.isNaN(dependency[metric])) {
         const acc = Object.hasOwn(totals, metric) ? (totals[metric] ?? 0) : 0;
         const cur = dependency[metric];
@@ -56,7 +56,7 @@ const getCollectiveViolations = (
 ): ViolationsCollective => {
   const violations = {} as Record<Metric, number>;
 
-  metrics.forEach((metric) => {
+  METRICS.forEach((metric) => {
     const value = totals[metric];
     const limit = threshold?.[`${metric}Collective`];
     if (value != null && isBreach(value, limit)) {
@@ -78,7 +78,7 @@ const getIndividualViolations = (
   >;
 
   dependencies.forEach(({ dependency, ...rest }) => {
-    metrics.forEach((metric) => {
+    METRICS.forEach((metric) => {
       const value = rest[metric];
       const limit =
         overrides?.[getMatchingPattern(dependency, overrides) ?? ""]?.[

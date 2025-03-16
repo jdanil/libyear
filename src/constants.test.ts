@@ -1,6 +1,5 @@
+import * as assert from "node:assert";
 import { describe, it } from "node:test";
-
-import { expect } from "expect";
 
 import { PACKAGE_NAME_REGEXP } from "./constants.ts";
 
@@ -48,7 +47,8 @@ await describe("constants", async () => {
       ["@_scope/package", false],
     ] as const) {
       await it(`matches "${input}" as ${expected}`, () => {
-        expect(new RegExp(`^${PACKAGE_NAME_REGEXP.source}$`).test(input)).toBe(
+        assert.equal(
+          new RegExp(`^${PACKAGE_NAME_REGEXP.source}$`).test(input),
           expected,
         );
       });
