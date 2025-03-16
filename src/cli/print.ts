@@ -1,9 +1,6 @@
 import { partial } from "lodash-es";
 
 import { METRICS } from "../constants.ts";
-import { clipFloat, printFloat } from "../style/number.ts";
-import { styleTable } from "../style/table.ts";
-import { styleText } from "../style/text.ts";
 import type {
   Dependencies,
   Metric,
@@ -14,6 +11,9 @@ import type {
   ViolationsIndividual,
 } from "../types.ts";
 import { getTotals, getViolations } from "../validate.ts";
+import { clipFloat, printFloat } from "./style/number.ts";
+import { styleTable } from "./style/table.ts";
+import { styleText } from "./style/text.ts";
 
 const ntext = (text: string, plural: string, count: number) =>
   Math.abs(count) === 1 ? text : plural;

@@ -4,7 +4,7 @@ import { orderBy } from "lodash-es";
 import pLimit from "p-limit";
 import { compare, sort, valid } from "semver";
 
-import { calculateDrift, calculatePulse } from "./dates.ts";
+import { calculateDrift, calculatePulse } from "./date.ts";
 import { getDependencies } from "./fetch/dependencies.ts";
 import { getReleaseTime } from "./fetch/release-time.ts";
 import type {

@@ -3,11 +3,11 @@ import { describe, it } from "node:test";
 import { add, sub } from "date-fns";
 import { expect } from "expect";
 
-import { calculateDrift, calculatePulse } from "./dates.ts";
+import { calculateDrift, calculatePulse } from "./date.ts";
 
 const EPOCH = "1970-01-01T00:00:00.000Z";
 
-await describe("dates", async () => {
+await describe("date", async () => {
   await describe("calculateDrift", async () => {
     for (const [title, current, latest, expected] of [
       ["same time", EPOCH, EPOCH, 0],

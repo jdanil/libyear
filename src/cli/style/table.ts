@@ -3,7 +3,7 @@ import { Transform } from "node:stream";
 
 import terminalLink from "terminal-link";
 
-import { PACKAGE_NAME_REGEXP } from "../constants.ts";
+import { PACKAGE_NAME_REGEXP } from "../../constants.ts";
 
 const transform = new Transform({
   transform(chunk, _encoding, callback) {
