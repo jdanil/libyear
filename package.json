@@ -25,7 +25,9 @@
     "bin/**/*.d.ts",
     "bin/**/*.js",
     "src/**/*.d.ts",
-    "src/**/*.js"
+    "src/**/*.js",
+    "!src/**/*test.d.ts",
+    "!src/**/*test.js"
   ],
   "keywords": [
     "debt",
