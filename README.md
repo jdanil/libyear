@@ -324,6 +324,7 @@ Packages can be temporarily excused from complying to thresholds by setting a da
 
 ### Next
 
+- enforce deprecations
 - rename "threshold" to "limit"
 - style table w/ status colours
 - ci semantic release

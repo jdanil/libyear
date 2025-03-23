@@ -82,6 +82,12 @@ const printCollective = (
   });
 };
 
+const printDeprecations = (deprecations: Record<string, string>) => {
+  Object.entries(deprecations).forEach(([dependency, deprecation]) => {
+    console.warn(`${styleText("yellow", dependency)}: ${deprecation}`);
+  });
+};
+
 export const print = (
   dependencies: Dependencies,
   threshold?: Threshold,
@@ -130,6 +136,13 @@ export const print = (
     ) > 0;
   const hasCollectiveViolations = Object.keys(violations.collective).length > 0;
 
+  const deprecations = dependencies.reduce(
+    (accumulator, { dependency, deprecated }) =>
+      deprecated ? { ...accumulator, [dependency]: deprecated } : accumulator,
+    {},
+  );
+  const hasDeprecations = Object.keys(deprecations).length > 0;
+
   if (hasIndividualViolations) {
     console.log(`\n${styleText("bold", "# Individual")}`);
     printIndividual(violations.individual);
@@ -138,6 +151,11 @@ export const print = (
   if (hasCollectiveViolations) {
     console.log(`\n${styleText("bold", "# Collective")}`);
     printCollective(totals, violations.collective, threshold);
+  }
+
+  if (hasDeprecations) {
+    console.log(`\n${styleText("bold", "# Deprecations")}`);
+    printDeprecations(deprecations);
   }
 
   if (hasIndividualViolations || hasCollectiveViolations) {

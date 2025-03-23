@@ -21,6 +21,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - add hyperlink to dependencies
 - add totals to table
 - add aliases for major, minor, patch options
+- add deprecations to output
 
 ### BREAKING CHANGES
 
