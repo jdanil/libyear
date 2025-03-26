@@ -18,6 +18,9 @@ export const cli = async (): Promise<void> => {
   if (help) {
     console.log(
       [
+        "─── Usage ".padEnd(80, "─"),
+        "$ libyear <options>",
+        "─── Options ".padEnd(80, "─"),
         "--all                                Include dependencies from the whole project.",
         "--config                             Path to a libyear configuration file.",
         "--help, -h                           Show help.",
