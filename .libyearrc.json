@@ -17,7 +17,7 @@
       "pulse": 5
     }
   },
-  "threshold": {
+  "limit": {
     "drift": {
       "collective": 5,
       "individual": 1

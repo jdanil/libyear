@@ -7,8 +7,8 @@ import { getArgs } from "./args.ts";
 import { getConfiguration } from "./configuration.ts";
 import { print } from "./print.ts";
 
-const validateThreshold = (threshold: unknown): number | undefined =>
-  Number.isNaN(Number(threshold)) ? undefined : Number(threshold);
+const validateLimit = (limit: unknown): number | undefined =>
+  Number.isNaN(Number(limit)) ? undefined : Number(limit);
 
 export const cli = async (): Promise<void> => {
   const args = getArgs();
@@ -21,25 +21,25 @@ export const cli = async (): Promise<void> => {
         "─── Usage ".padEnd(80, "─"),
         "$ libyear <options>",
         "─── Options ".padEnd(80, "─"),
-        "--all                                Include dependencies from the whole project.",
-        "--config                             Path to a libyear configuration file.",
-        "--help, -h                           Show help.",
-        "--json                               Outputs the report to the console as valid JSON.",
-        '--package-manager                    Accepts "berry", "npm", "pnpm", "yarn"',
-        "--quiet, -q                          Exclude up-to-date dependencies from results.",
-        "--sort                               Column to sort individual results by.",
-        "--threshold-drift-collective, -D     Drift threshold to warn on for all dependencies.",
-        "--threshold-drift-individual, -d     Drift threshold to warn on for individual dependencies.",
-        "--threshold-pulse-collective, -P     Pulse threshold to warn on for all dependencies.",
-        "--threshold-pulse-individual, -p     Pulse threshold to warn on for individual dependencies.",
-        "--threshold-releases-collective, -R  Releases threshold to warn on for all dependencies.",
-        "--threshold-releases-individual, -r  Releases threshold to warn on for individual dependencies.",
-        "--threshold-major-collective, -X     Major releases threshold to warn on for all dependencies.",
-        "--threshold-major-individual, -x     Major releases threshold to warn on for individual dependencies.",
-        "--threshold-minor-collective, -Y     Minor releases threshold to warn on for all dependencies.",
-        "--threshold-minor-individual, -y     Minor releases threshold to warn on for individual dependencies.",
-        "--threshold-patch-collective, -Z     Patch releases threshold to warn on for all dependencies.",
-        "--threshold-patch-individual, -z     Patch releases threshold to warn on for individual dependencies.",
+        "--all                            Include dependencies from the whole project.",
+        "--config                         Path to a libyear configuration file.",
+        "--help, -h                       Show help.",
+        "--json                           Outputs the report to the console as valid JSON.",
+        '--package-manager                Accepts "berry", "npm", "pnpm", "yarn"',
+        "--quiet, -q                      Exclude up-to-date dependencies from results.",
+        "--sort                           Column to sort individual results by.",
+        "--limit-drift-collective, -D     Drift limit to warn on for all dependencies.",
+        "--limit-drift-individual, -d     Drift limit to warn on for individual dependencies.",
+        "--limit-pulse-collective, -P     Pulse limit to warn on for all dependencies.",
+        "--limit-pulse-individual, -p     Pulse limit to warn on for individual dependencies.",
+        "--limit-releases-collective, -R  Releases limit to warn on for all dependencies.",
+        "--limit-releases-individual, -r  Releases limit to warn on for individual dependencies.",
+        "--limit-major-collective, -X     Major releases limit to warn on for all dependencies.",
+        "--limit-major-individual, -x     Major releases limit to warn on for individual dependencies.",
+        "--limit-minor-collective, -Y     Minor releases limit to warn on for all dependencies.",
+        "--limit-minor-individual, -y     Minor releases limit to warn on for individual dependencies.",
+        "--limit-patch-collective, -Z     Patch releases limit to warn on for all dependencies.",
+        "--limit-patch-individual, -z     Patch releases limit to warn on for individual dependencies.",
       ].join("\n"),
     );
 
@@ -58,30 +58,30 @@ export const cli = async (): Promise<void> => {
     if (json) {
       console.log(JSON.stringify(report));
     } else {
-      const { overrides, threshold } = await getConfiguration(rest).then(
+      const { overrides, limit } = await getConfiguration(rest).then(
         ({
           overrides,
-          threshold: { drift, pulse, releases, major, minor, patch } = {},
+          limit: { drift, pulse, releases, major, minor, patch } = {},
         }) => ({
           overrides,
-          threshold: {
-            driftCollective: validateThreshold(drift?.collective),
-            driftIndividual: validateThreshold(drift?.individual),
-            pulseCollective: validateThreshold(pulse?.collective),
-            pulseIndividual: validateThreshold(pulse?.individual),
-            releasesCollective: validateThreshold(releases?.collective),
-            releasesIndividual: validateThreshold(releases?.individual),
-            majorCollective: validateThreshold(major?.collective),
-            majorIndividual: validateThreshold(major?.individual),
-            minorCollective: validateThreshold(minor?.collective),
-            minorIndividual: validateThreshold(minor?.individual),
-            patchCollective: validateThreshold(patch?.collective),
-            patchIndividual: validateThreshold(patch?.individual),
+          limit: {
+            driftCollective: validateLimit(drift?.collective),
+            driftIndividual: validateLimit(drift?.individual),
+            pulseCollective: validateLimit(pulse?.collective),
+            pulseIndividual: validateLimit(pulse?.individual),
+            releasesCollective: validateLimit(releases?.collective),
+            releasesIndividual: validateLimit(releases?.individual),
+            majorCollective: validateLimit(major?.collective),
+            majorIndividual: validateLimit(major?.individual),
+            minorCollective: validateLimit(minor?.collective),
+            minorIndividual: validateLimit(minor?.individual),
+            patchCollective: validateLimit(patch?.collective),
+            patchIndividual: validateLimit(patch?.individual),
           },
         }),
       );
 
-      print(report, threshold, overrides);
+      print(report, limit, overrides);
     }
   } catch (error) {
     if (json) {

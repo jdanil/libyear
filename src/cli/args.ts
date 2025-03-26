@@ -23,6 +23,54 @@ export const getArgs = (): Args => {
       json: {
         type: "boolean",
       },
+      "limit-drift-collective": {
+        short: "D",
+        type: "string",
+      },
+      "limit-drift-individual": {
+        short: "d",
+        type: "string",
+      },
+      "limit-pulse-collective": {
+        short: "P",
+        type: "string",
+      },
+      "limit-pulse-individual": {
+        short: "p",
+        type: "string",
+      },
+      "limit-releases-collective": {
+        short: "R",
+        type: "string",
+      },
+      "limit-releases-individual": {
+        short: "r",
+        type: "string",
+      },
+      "limit-major-collective": {
+        short: "X",
+        type: "string",
+      },
+      "limit-major-individual": {
+        short: "x",
+        type: "string",
+      },
+      "limit-minor-collective": {
+        short: "Y",
+        type: "string",
+      },
+      "limit-minor-individual": {
+        short: "y",
+        type: "string",
+      },
+      "limit-patch-collective": {
+        short: "Z",
+        type: "string",
+      },
+      "limit-patch-individual": {
+        short: "z",
+        type: "string",
+      },
       "package-manager": {
         type: "string",
       },
@@ -31,54 +79,6 @@ export const getArgs = (): Args => {
         type: "boolean",
       },
       sort: {
-        type: "string",
-      },
-      "threshold-drift-collective": {
-        short: "D",
-        type: "string",
-      },
-      "threshold-drift-individual": {
-        short: "d",
-        type: "string",
-      },
-      "threshold-pulse-collective": {
-        short: "P",
-        type: "string",
-      },
-      "threshold-pulse-individual": {
-        short: "p",
-        type: "string",
-      },
-      "threshold-releases-collective": {
-        short: "R",
-        type: "string",
-      },
-      "threshold-releases-individual": {
-        short: "r",
-        type: "string",
-      },
-      "threshold-major-collective": {
-        short: "X",
-        type: "string",
-      },
-      "threshold-major-individual": {
-        short: "x",
-        type: "string",
-      },
-      "threshold-minor-collective": {
-        short: "Y",
-        type: "string",
-      },
-      "threshold-minor-individual": {
-        short: "y",
-        type: "string",
-      },
-      "threshold-patch-collective": {
-        short: "Z",
-        type: "string",
-      },
-      "threshold-patch-individual": {
-        short: "z",
         type: "string",
       },
     },

@@ -5,6 +5,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # 0.9.0 (Unreleased)
 
+### BREAKING CHANGES
+
+- rename "threshold" to "limit"
+
 ### Bug Fixes
 
 - remove unnecessary semver option

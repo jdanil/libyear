@@ -5,43 +5,43 @@ import type { Args, Configuration } from "../types.ts";
 import { safeParseInt } from "./style/number.ts";
 
 const getCliConfiguration = ({
-  thresholdDriftCollective,
-  thresholdDriftIndividual,
-  thresholdPulseCollective,
-  thresholdPulseIndividual,
-  thresholdReleasesCollective,
-  thresholdReleasesIndividual,
-  thresholdMajorCollective,
-  thresholdMajorIndividual,
-  thresholdMinorCollective,
-  thresholdMinorIndividual,
-  thresholdPatchCollective,
-  thresholdPatchIndividual,
+  limitDriftCollective,
+  limitDriftIndividual,
+  limitPulseCollective,
+  limitPulseIndividual,
+  limitReleasesCollective,
+  limitReleasesIndividual,
+  limitMajorCollective,
+  limitMajorIndividual,
+  limitMinorCollective,
+  limitMinorIndividual,
+  limitPatchCollective,
+  limitPatchIndividual,
 }: Args) => ({
-  threshold: {
+  limit: {
     drift: {
-      collective: safeParseInt(thresholdDriftCollective),
-      individual: safeParseInt(thresholdDriftIndividual),
+      collective: safeParseInt(limitDriftCollective),
+      individual: safeParseInt(limitDriftIndividual),
     },
     pulse: {
-      collective: safeParseInt(thresholdPulseCollective),
-      individual: safeParseInt(thresholdPulseIndividual),
+      collective: safeParseInt(limitPulseCollective),
+      individual: safeParseInt(limitPulseIndividual),
     },
     releases: {
-      collective: safeParseInt(thresholdReleasesCollective),
-      individual: safeParseInt(thresholdReleasesIndividual),
+      collective: safeParseInt(limitReleasesCollective),
+      individual: safeParseInt(limitReleasesIndividual),
     },
     major: {
-      collective: safeParseInt(thresholdMajorCollective),
-      individual: safeParseInt(thresholdMajorIndividual),
+      collective: safeParseInt(limitMajorCollective),
+      individual: safeParseInt(limitMajorIndividual),
     },
     minor: {
-      collective: safeParseInt(thresholdMinorCollective),
-      individual: safeParseInt(thresholdMinorIndividual),
+      collective: safeParseInt(limitMinorCollective),
+      individual: safeParseInt(limitMinorIndividual),
     },
     patch: {
-      collective: safeParseInt(thresholdPatchCollective),
-      individual: safeParseInt(thresholdPatchIndividual),
+      collective: safeParseInt(limitPatchCollective),
+      individual: safeParseInt(limitPatchIndividual),
     },
   },
 });

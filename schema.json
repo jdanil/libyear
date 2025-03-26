@@ -11,56 +11,56 @@
             "type": "object",
             "properties": {
               "defer": {
-                "description": "Defer enforcing any thresholds until the date specified.",
+                "description": "Defer enforcing any limits until the date specified.",
                 "default": null,
                 "type": "string"
               },
               "drift": {
-                "description": "Override drift threshold for matching dependencies.",
+                "description": "Override drift limit for matching dependencies.",
                 "default": null,
                 "type": "number"
               },
               "pulse": {
-                "description": "Override pulse threshold for matching dependencies.",
+                "description": "Override pulse limit for matching dependencies.",
                 "default": null,
                 "type": "number"
               },
               "releases": {
-                "description": "Override stable releases threshold for matching dependencies.",
+                "description": "Override stable releases limit for matching dependencies.",
                 "default": null,
                 "type": "integer"
               },
               "major": {
-                "description": "Override major releases threshold for matching dependencies.",
+                "description": "Override major releases limit for matching dependencies.",
                 "default": null,
                 "type": "integer"
               },
               "minor": {
-                "description": "Override minor releases threshold for matching dependencies.",
+                "description": "Override minor releases limit for matching dependencies.",
                 "default": null,
                 "type": "integer"
               },
               "patch": {
-                "description": "Override patch releases threshold for matching dependencies.",
+                "description": "Override patch releases limit for matching dependencies.",
                 "default": null,
                 "type": "integer"
               }
             }
           }
         },
-        "threshold": {
+        "limit": {
           "type": "object",
           "properties": {
             "drift": {
               "type": "object",
               "properties": {
                 "collective": {
-                  "description": "Throws an error if the total drift metric surpasses the threshold.",
+                  "description": "Throws an error if the total drift metric surpasses the limit.",
                   "default": null,
                   "type": "number"
                 },
                 "individual": {
-                  "description": "Throws an error if any individual drift metric surpasses the threshold.",
+                  "description": "Throws an error if any individual drift metric surpasses the limit.",
                   "default": null,
                   "type": "number"
                 }
@@ -70,12 +70,12 @@
               "type": "object",
               "properties": {
                 "collective": {
-                  "description": "Throws an error if the total pulse metric surpasses the threshold.",
+                  "description": "Throws an error if the total pulse metric surpasses the limit.",
                   "default": null,
                   "type": "number"
                 },
                 "individual": {
-                  "description": "Throws an error if any individual pulse metric surpasses the threshold.",
+                  "description": "Throws an error if any individual pulse metric surpasses the limit.",
                   "default": null,
                   "type": "number"
                 }
@@ -85,12 +85,12 @@
               "type": "object",
               "properties": {
                 "collective": {
-                  "description": "Throws an error if the total stable releases metric surpasses the threshold.",
+                  "description": "Throws an error if the total stable releases metric surpasses the limit.",
                   "default": null,
                   "type": "integer"
                 },
                 "individual": {
-                  "description": "Throws an error if any individual stable releases metric surpasses the threshold.",
+                  "description": "Throws an error if any individual stable releases metric surpasses the limit.",
                   "default": null,
                   "type": "integer"
                 }
@@ -100,12 +100,12 @@
               "type": "object",
               "properties": {
                 "collective": {
-                  "description": "Throws an error if the total major metric surpasses the threshold.",
+                  "description": "Throws an error if the total major metric surpasses the limit.",
                   "default": null,
                   "type": "integer"
                 },
                 "individual": {
-                  "description": "Throws an error if any individual major metric surpasses the threshold.",
+                  "description": "Throws an error if any individual major metric surpasses the limit.",
                   "default": null,
                   "type": "integer"
                 }
@@ -115,12 +115,12 @@
               "type": "object",
               "properties": {
                 "collective": {
-                  "description": "Throws an error if the total minor metric surpasses the threshold.",
+                  "description": "Throws an error if the total minor metric surpasses the limit.",
                   "default": null,
                   "type": "integer"
                 },
                 "individual": {
-                  "description": "Throws an error if any individual minor metric surpasses the threshold.",
+                  "description": "Throws an error if any individual minor metric surpasses the limit.",
                   "default": null,
                   "type": "integer"
                 }
@@ -130,12 +130,12 @@
               "type": "object",
               "properties": {
                 "collective": {
-                  "description": "Throws an error if the total patch metric surpasses the threshold.",
+                  "description": "Throws an error if the total patch metric surpasses the limit.",
                   "default": null,
                   "type": "integer"
                 },
                 "individual": {
-                  "description": "Throws an error if any individual patch metric surpasses the threshold.",
+                  "description": "Throws an error if any individual patch metric surpasses the limit.",
                   "default": null,
                   "type": "integer"
                 }

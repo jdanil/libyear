@@ -1,9 +1,9 @@
 import { METRICS } from "./constants.ts";
 import type {
   Dependencies,
+  Limit,
   Metric,
   Overrides,
-  Threshold,
   Totals,
   Violations,
   ViolationsCollective,
@@ -52,13 +52,13 @@ export const getTotals = (dependencies: Dependencies): Totals => {
 
 const getCollectiveViolations = (
   totals: Totals,
-  threshold?: Threshold,
+  limits?: Limit,
 ): ViolationsCollective => {
   const violations = {} as Record<Metric, number>;
 
   METRICS.forEach((metric) => {
     const value = totals[metric];
-    const limit = threshold?.[`${metric}Collective`];
+    const limit = limits?.[`${metric}Collective`];
     if (value != null && isBreach(value, limit)) {
       violations[metric] = value;
     }
@@ -69,12 +69,12 @@ const getCollectiveViolations = (
 
 const getIndividualViolations = (
   dependencies: Dependencies,
-  threshold?: Threshold,
+  limits?: Limit,
   overrides?: Overrides,
 ): ViolationsIndividual => {
   const violations = {} as Record<
     Metric,
-    Record<string, { threshold: number; value: number }>
+    Record<string, { limit: number; value: number }>
   >;
 
   dependencies.forEach(({ dependency, ...rest }) => {
@@ -83,12 +83,12 @@ const getIndividualViolations = (
       const limit =
         overrides?.[getMatchingPattern(dependency, overrides) ?? ""]?.[
           metric
-        ] ?? threshold?.[`${metric}Individual`];
+        ] ?? limits?.[`${metric}Individual`];
       if (limit != null && isBreach(value, limit, dependency, overrides)) {
         if (!Object.hasOwn(violations, metric)) {
           violations[metric] = {};
         }
-        violations[metric][dependency] = { threshold: limit, value };
+        violations[metric][dependency] = { limit, value };
       }
     });
   });
@@ -99,9 +99,9 @@ const getIndividualViolations = (
 export const getViolations = (
   dependencies: Dependencies,
   totals: Totals,
-  threshold?: Threshold,
+  limit?: Limit,
   overrides?: Overrides,
 ): Violations => ({
-  collective: getCollectiveViolations(totals, threshold),
-  individual: getIndividualViolations(dependencies, threshold, overrides),
+  collective: getCollectiveViolations(totals, limit),
+  individual: getIndividualViolations(dependencies, limit, overrides),
 });

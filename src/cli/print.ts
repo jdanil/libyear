@@ -3,9 +3,9 @@ import { partial } from "lodash-es";
 import { METRICS } from "../constants.ts";
 import type {
   Dependencies,
+  Limit,
   Metric,
   Overrides,
-  Threshold,
   Totals,
   ViolationsCollective,
   ViolationsIndividual,
@@ -34,20 +34,18 @@ const getMetricUnit = (metric: Metric, count: number) => {
 
 const printIndividual = (violations: ViolationsIndividual) => {
   Object.entries(violations).forEach(([metric, dependencies]) => {
-    Object.entries(dependencies).forEach(
-      ([dependency, { threshold, value }]) => {
-        console.error(
-          `${styleText("magenta", metric)}: ${styleText("cyan", dependency)} is ${styleText("red", `${printFloat(value)} ${getMetricUnit(metric as Metric, value)}`)} behind; threshold is ${styleText("yellow", printFloat(threshold))}.`,
-        );
-      },
-    );
+    Object.entries(dependencies).forEach(([dependency, { limit, value }]) => {
+      console.error(
+        `${styleText("magenta", metric)}: ${styleText("cyan", dependency)} is ${styleText("red", `${printFloat(value)} ${getMetricUnit(metric as Metric, value)}`)} behind; limit is ${styleText("yellow", printFloat(limit))}.`,
+      );
+    });
   });
 };
 
 const printCollective = (
   totals: Totals,
   violations: ViolationsCollective,
-  threshold?: Threshold,
+  limit?: Limit,
 ) => {
   const isBreach = (metric: Metric) => Object.hasOwn(violations, metric);
   const logger = (metric: Metric) =>
@@ -68,7 +66,7 @@ const printCollective = (
     } ${valueStyler(
       `${printFloat(value)} ${getMetricUnit(metric, value)}`,
     )} behind`;
-    const limitMessage = `threshold is ${styleText("yellow", limit != null ? printFloat(limit) : String(limit))}`;
+    const limitMessage = `limit is ${styleText("yellow", limit != null ? printFloat(limit) : String(limit))}`;
 
     return isBreach(metric)
       ? `${valueMessage}; ${limitMessage}.`
@@ -77,7 +75,7 @@ const printCollective = (
 
   METRICS.forEach((metric) => {
     logger(metric)(
-      message(metric, totals[metric] ?? 0, threshold?.[`${metric}Collective`]),
+      message(metric, totals[metric] ?? 0, limit?.[`${metric}Collective`]),
     );
   });
 };
@@ -90,7 +88,7 @@ const printDeprecations = (deprecations: Record<string, string>) => {
 
 export const print = (
   dependencies: Dependencies,
-  threshold?: Threshold,
+  limit?: Limit,
   overrides?: Overrides,
 ): void => {
   const totals = getTotals(dependencies);
@@ -128,7 +126,7 @@ export const print = (
     ),
   );
 
-  const violations = getViolations(dependencies, totals, threshold, overrides);
+  const violations = getViolations(dependencies, totals, limit, overrides);
   const hasIndividualViolations =
     Object.values(violations.individual).reduce(
       (acc, cur) => acc + Object.keys(cur).length,
@@ -150,7 +148,7 @@ export const print = (
 
   if (hasCollectiveViolations) {
     console.log(`\n${styleText("bold", "# Collective")}`);
-    printCollective(totals, violations.collective, threshold);
+    printCollective(totals, violations.collective, limit);
   }
 
   if (hasDeprecations) {

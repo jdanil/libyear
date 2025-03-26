@@ -8,7 +8,7 @@ export type Metric =
   | "minor"
   | "patch";
 
-export type Threshold = Record<
+export type Limit = Record<
   `${Metric}${"Collective" | "Individual"}`,
   number | undefined
 >;
@@ -22,11 +22,11 @@ export type Overrides = Record<
 
 export type Configuration = {
   overrides?: Overrides;
-  threshold?: Record<
+  limit?: Record<
     Metric,
     {
-      collective?: Pick<Threshold, `${Metric}Collective`>;
-      individual?: Pick<Threshold, `${Metric}Individual`>;
+      collective?: Pick<Limit, `${Metric}Collective`>;
+      individual?: Pick<Limit, `${Metric}Individual`>;
     }
   >;
 };
@@ -36,21 +36,21 @@ export type Args = {
   config?: string;
   help?: boolean;
   json?: boolean;
+  limitDriftCollective?: string;
+  limitDriftIndividual?: string;
+  limitPulseCollective?: string;
+  limitPulseIndividual?: string;
+  limitReleasesCollective?: string;
+  limitReleasesIndividual?: string;
+  limitMajorCollective?: string;
+  limitMajorIndividual?: string;
+  limitMinorCollective?: string;
+  limitMinorIndividual?: string;
+  limitPatchCollective?: string;
+  limitPatchIndividual?: string;
   packageManager?: PackageManager;
   quiet?: boolean;
   sort?: Metric;
-  thresholdDriftCollective?: string;
-  thresholdDriftIndividual?: string;
-  thresholdPulseCollective?: string;
-  thresholdPulseIndividual?: string;
-  thresholdReleasesCollective?: string;
-  thresholdReleasesIndividual?: string;
-  thresholdMajorCollective?: string;
-  thresholdMajorIndividual?: string;
-  thresholdMinorCollective?: string;
-  thresholdMinorIndividual?: string;
-  thresholdPatchCollective?: string;
-  thresholdPatchIndividual?: string;
 };
 
 export type Dependency = Record<Metric, number> & {
@@ -67,7 +67,7 @@ export type ViolationsCollective = Record<Metric, number>;
 
 export type ViolationsIndividual = Record<
   Metric,
-  Record<string, { threshold: number; value: number }>
+  Record<string, { limit: number; value: number }>
 >;
 
 export type Violations = {
