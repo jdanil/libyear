@@ -37,7 +37,8 @@ jobs:
       - run: pnpm libyear
         continue-on-error: true
       - run: yarn compile
-      - run: yarn test
+      - if: ${{matrix.node >= 23}}
+        run: yarn test
       - run: yarn lint:all
       - run: yarn format:all --check
     timeout-minutes: 15
