@@ -46,7 +46,9 @@ export const styleTable = (data: unknown): string => {
         if (dependency != null) {
           row = row.replace(
             dependency,
-            terminalLink(dependency, `https://npm.im/${dependency}`),
+            terminalLink(dependency, `https://npm.im/${dependency}`, {
+              fallback: false,
+            }),
           );
         }
       }
