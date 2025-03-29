@@ -94,15 +94,8 @@ export const print = (
   const totals = getTotals(dependencies);
 
   console.log(
-    styleTable(
-      [
-        ...dependencies,
-        {
-          dependency: "total",
-          ...totals,
-          available: null,
-        },
-      ].map(
+    styleTable([
+      ...dependencies.map(
         ({
           dependency,
           drift,
@@ -113,7 +106,10 @@ export const print = (
           patch,
           available,
         }) => ({
-          dependency,
+          dependency: {
+            href: `https://npm.im/${dependency}`,
+            value: dependency,
+          },
           drift: clipFloat(drift),
           pulse: clipFloat(pulse),
           releases,
@@ -123,7 +119,17 @@ export const print = (
           available: available ?? "—",
         }),
       ),
-    ),
+      {
+        dependency: "total",
+        drift: clipFloat(totals.drift),
+        pulse: clipFloat(totals.pulse),
+        releases: totals.releases,
+        major: totals.major,
+        minor: totals.minor,
+        patch: totals.patch,
+        available: "—",
+      },
+    ]),
   );
 
   const violations = getViolations(dependencies, totals, limit, overrides);

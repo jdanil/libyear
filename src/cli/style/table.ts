@@ -1,76 +1,104 @@
-import { Console } from "node:console";
-import { Transform } from "node:stream";
+import { stripVTControlCharacters } from "node:util";
 
 import terminalLink from "terminal-link";
 
-import { PACKAGE_NAME_REGEXP } from "../../constants.ts";
+import { styleText } from "./text.ts";
 
-const stdout = new Transform({
-  transform(chunk, _encoding, callback) {
-    callback(null, chunk);
-  },
-});
+type Schema = Record<string, number>;
 
-const logger = new Console({ stdout });
+type Metadata = { format?: Parameters<typeof styleText>[0]; href?: string };
 
-/**
- * Transforms the output of console.table()
- * to remove the index column,
- * strip quotes from strings,
- * add hyperlinks,
- * and add footer.
- */
-export const styleTable = (data: unknown): string => {
-  logger.table(data);
+type Cell = unknown;
 
-  const table = (stdout.read() as Buffer)?.toString() ?? "";
-  const rows = table.trim().split(/[\r\n]+/);
+type Row = Record<string, Cell>;
 
-  return rows
-    .reduce((accumulator, row, index) => {
-      // remove index column
-      row = row
-        .replace(/[^┬]*┬/, "┌")
-        .replace(/^├─*┼/, "├")
-        .replace(/│[^│]*/, "")
-        .replace(/^└─*┴/, "└");
+type Table = Array<Row>;
 
-      // strip quotes from strings
-      row = row.replace(/'/g, " ");
+const compact = process.stdout.columns < 110;
+const cellSeparator = compact ? " " : " │ ";
+const rowStart = compact ? "" : "│ ";
+const rowEnd = compact ? "" : " │";
 
-      // add hyperlink
-      if (index > 1 && index < rows.length - 2) {
-        const dependency = row
-          .match(new RegExp(`│\\s*(${PACKAGE_NAME_REGEXP.source})\\s*│`))
-          ?.at(1);
-        if (dependency != null) {
-          row = row.replace(
-            dependency,
-            terminalLink(dependency, `https://npm.im/${dependency}`, {
-              fallback: false,
-            }),
-          );
-        }
-      }
+const styleCell = (cell: Cell, length: number): string => {
+  const { format, href, value } =
+    typeof cell === "object"
+      ? (cell as { value: unknown } & Metadata)
+      : { value: cell };
 
-      // add footer
-      if (index === rows.length - 2) {
-        row = `${[...row.replace(/^│/, "├").replace(/│$/, "┤")]
-          .map((character) => {
-            switch (character) {
-              case "│":
-                return "┼";
-              case "├":
-              case "┤":
-                return character;
-              default:
-                return "─";
-            }
-          })
-          .join("")}\n${row}`;
-      }
+  let text = String(value);
 
-      return `${accumulator}${row}\n`;
-    }, "")
-    .trim();
+  if (href) {
+    text = terminalLink(text, href, { fallback: false });
+  }
+
+  const maxLength =
+    length + (text.length - stripVTControlCharacters(text).length);
+
+  switch (typeof value) {
+    case "number":
+      text = text.padStart(maxLength, " ");
+      break;
+    default:
+      text = text.padEnd(maxLength, " ");
+  }
+
+  if (format) {
+    text = styleText(format, text);
+  }
+
+  return text;
+};
+
+const styleRow = (cells: string[]) =>
+  `${rowStart}${cells.join(cellSeparator)}${rowEnd}`;
+
+const styleBodyRow = (data: Row, schema: Schema): string =>
+  styleRow(
+    Object.entries(data).map(([key, cell]) =>
+      styleCell(cell, schema[key] ?? 0),
+    ),
+  );
+
+const styleHeaderRow = (schema: Schema) =>
+  styleRow(
+    Object.entries(schema).map(([key, value]) => key.padEnd(value, " ")),
+  );
+
+const styleDivider = (type: "top" | "middle" | "bottom", schema: Schema) => {
+  const spacer = "─";
+  const [start, middle, end] = compact
+    ? (["", "─", ""] as const)
+    : {
+        top: ["┌", "┬", "┐"] as const,
+        middle: ["├", "┼", "┤"] as const,
+        bottom: ["└", "┴", "┘"] as const,
+      }[type];
+
+  return `${start}${Object.values(schema)
+    .map((length) => spacer.repeat(length + (cellSeparator.length - 1)))
+    .join(middle)}${end}`;
+};
+
+export const styleTable = (data: Table): string => {
+  const schema: Schema = {};
+
+  data.forEach((row) => {
+    Object.entries(row).forEach(([key, cell]) => {
+      schema[key] = Math.max(
+        schema[key] ?? 0,
+        key.length,
+        String((cell as { value: unknown })?.value ?? cell).length,
+      );
+    });
+  });
+
+  return [
+    styleDivider("top", schema),
+    styleHeaderRow(schema),
+    styleDivider("middle", schema),
+    ...data
+      .map((row) => styleBodyRow(row, schema))
+      .toSpliced(data.length - 1, 0, styleDivider("middle", schema)),
+    styleDivider("bottom", schema),
+  ].join("\n");
 };
