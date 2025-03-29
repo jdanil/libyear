@@ -58,26 +58,26 @@ If dependencies are already up-to-date, `libyear` tracks upcoming versions of de
 
 ### `npm`
 
-```bash
+```sh
 npx libyear
 ```
 
 ### `pnpm`
 
-```bash
+```sh
 pnpx libyear
 ```
 
 ### `yarn@1` (`yarn classic`)
 
-```bash
+```sh
 yarn add --dev libyear
 yarn libyear
 ```
 
 ### `yarn@>=2` (`yarn berry`)
 
-```bash
+```sh
 yarn dlx libyear
 ```
 
@@ -339,7 +339,7 @@ Packages can be temporarily excused from complying to limits by setting a date t
 
 ## Contributing
 
-```bash
+```sh
 corepack enable
 yarn install
 ```

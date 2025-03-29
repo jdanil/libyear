@@ -5,13 +5,13 @@ import terminalLink from "terminal-link";
 
 import { PACKAGE_NAME_REGEXP } from "../../constants.ts";
 
-const transform = new Transform({
+const stdout = new Transform({
   transform(chunk, _encoding, callback) {
     callback(null, chunk);
   },
 });
 
-const logger = new Console({ stdout: transform });
+const logger = new Console({ stdout });
 
 /**
  * Transforms the output of console.table()
@@ -23,7 +23,7 @@ const logger = new Console({ stdout: transform });
 export const styleTable = (data: unknown): string => {
   logger.table(data);
 
-  const table = (transform.read() as Buffer)?.toString() ?? "";
+  const table = (stdout.read() as Buffer)?.toString() ?? "";
   const rows = table.trim().split(/[\r\n]+/);
 
   return rows

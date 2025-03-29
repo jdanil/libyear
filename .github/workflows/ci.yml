@@ -36,6 +36,8 @@ jobs:
         continue-on-error: true
       - run: pnpm libyear
         continue-on-error: true
+        env:
+          COREPACK_ENABLE_PROJECT_SPEC: 0
       - run: yarn compile
       - if: ${{matrix.node >= 23}}
         run: yarn test
