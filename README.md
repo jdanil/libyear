@@ -325,7 +325,6 @@ Packages can be temporarily excused from complying to limits by setting a date t
 ### Next
 
 - enforce deprecations
-- style table w/ status colours
 - ci semantic release
 
 ### RFC

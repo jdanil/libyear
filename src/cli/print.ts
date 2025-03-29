@@ -1,4 +1,4 @@
-import { partial } from "lodash-es";
+import { omit, partial } from "lodash-es";
 
 import { METRICS } from "../constants.ts";
 import type {
@@ -7,6 +7,7 @@ import type {
   Metric,
   Overrides,
   Totals,
+  Violations,
   ViolationsCollective,
   ViolationsIndividual,
 } from "../types.ts";
@@ -14,6 +15,45 @@ import { getTotals, getViolations } from "../validate.ts";
 import { clipFloat, printFloat } from "./style/number.ts";
 import { styleTable } from "./style/table.ts";
 import { styleText } from "./style/text.ts";
+
+const getMetricFormat = ({
+  dependency,
+  metric,
+  violations,
+}: {
+  dependency?: string;
+  metric: Metric;
+  violations: Violations;
+}): Parameters<typeof styleText>[0] | undefined => {
+  const isBreach =
+    dependency != null
+      ? violations.individual[metric]?.[dependency]
+      : violations.collective[metric];
+  return isBreach ? "red" : undefined;
+};
+
+const getFormattedMetrics = ({
+  dependency,
+  metrics,
+  violations,
+}: {
+  dependency?: string;
+  metrics: Record<Metric, number>;
+  violations: Violations;
+}) =>
+  Object.fromEntries(
+    Object.entries(metrics).map(([key, value]) => [
+      key,
+      {
+        format: getMetricFormat({
+          dependency,
+          metric: key as Metric,
+          violations,
+        }),
+        value: clipFloat(value),
+      },
+    ]),
+  );
 
 const ntext = (text: string, plural: string, count: number) =>
   Math.abs(count) === 1 ? text : plural;
@@ -92,47 +132,33 @@ export const print = (
   overrides?: Overrides,
 ): void => {
   const totals = getTotals(dependencies);
+  const violations = getViolations(dependencies, totals, limit, overrides);
 
   console.log(
     styleTable([
-      ...dependencies.map(
-        ({
+      ...dependencies.map(({ dependency, available, ...rest }) => ({
+        dependency: {
+          href: `https://npm.im/${dependency}`,
+          value: dependency,
+        },
+        ...getFormattedMetrics({
           dependency,
-          drift,
-          pulse,
-          releases,
-          major,
-          minor,
-          patch,
-          available,
-        }) => ({
-          dependency: {
-            href: `https://npm.im/${dependency}`,
-            value: dependency,
-          },
-          drift: clipFloat(drift),
-          pulse: clipFloat(pulse),
-          releases,
-          major,
-          minor,
-          patch,
-          available: available ?? "—",
+          metrics: omit(rest, "deprecated"),
+          violations,
         }),
-      ),
+        available: available ?? "—",
+      })),
       {
         dependency: "total",
-        drift: clipFloat(totals.drift),
-        pulse: clipFloat(totals.pulse),
-        releases: totals.releases,
-        major: totals.major,
-        minor: totals.minor,
-        patch: totals.patch,
+        ...getFormattedMetrics({
+          metrics: totals,
+          violations,
+        }),
         available: "—",
       },
     ]),
   );
 
-  const violations = getViolations(dependencies, totals, limit, overrides);
   const hasIndividualViolations =
     Object.values(violations.individual).reduce(
       (acc, cur) => acc + Object.keys(cur).length,
