@@ -1,0 +1,20 @@
+name: publish
+on:
+  release:
+    types: [published]
+jobs:
+  publish:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-node@v4.3.0
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+      - run: npm ci
+      - run: npm publish --provenance --tag ${{github.event.release.prerelease && "next" || "latest"}}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

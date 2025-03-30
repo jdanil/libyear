@@ -22,12 +22,10 @@
   "type": "module",
   "types": "./src",
   "files": [
-    "bin/**/*.d.ts",
-    "bin/**/*.js",
-    "src/**/*.d.ts",
-    "src/**/*.js",
-    "!src/**/*test.d.ts",
-    "!src/**/*test.js"
+    "{bin,src}/**/*.d.ts",
+    "{bin,src}/**/*.js",
+    "!{bin,src}/**/*.test.d.ts",
+    "!{bin,src}/**/*.test.{js,ts}"
   ],
   "keywords": [
     "debt",
@@ -40,7 +38,7 @@
   "engines": {
     "node": "^18.19 || ^20 || >=22"
   },
-  "packageManager": "yarn@4.7.0",
+  "packageManager": "yarn@4.8.0",
   "scripts": {
     "clean": "tsc --build --clean",
     "compile": "tsc --build",
