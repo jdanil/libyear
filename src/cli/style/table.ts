@@ -1,8 +1,6 @@
-import { stripVTControlCharacters } from "node:util";
+import { stripVTControlCharacters, styleText } from "node:util";
 
 import terminalLink from "terminal-link";
-
-import { styleText } from "./text.ts";
 
 type Schema = Record<string, number>;
 

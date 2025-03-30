@@ -1,3 +1,5 @@
+import { styleText } from "node:util";
+
 import { omit, partial } from "lodash-es";
 
 import { METRICS } from "../constants.ts";
@@ -14,7 +16,6 @@ import type {
 import { getTotals, getViolations } from "../validate.ts";
 import { clipFloat, printFloat } from "./style/number.ts";
 import { styleTable } from "./style/table.ts";
-import { styleText } from "./style/text.ts";
 
 const getMetricFormat = ({
   dependency,
