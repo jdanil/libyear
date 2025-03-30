@@ -1,25 +1,20 @@
 import { diff, prerelease, valid, type ReleaseType } from "semver";
 
 /**
- * Filter versions by release type.
- */
-export const getReleasesByType = (
-  versions: string[],
-  type: ReleaseType,
-): string[] =>
-  versions.filter(
-    (value: string, index: number, array: string[]) =>
-      diff(array[index - 1] ?? value, value) === type,
-  );
-
-/**
- * Filter out "time" metadata about the package.
+ * Filter out "time" metadata about the package
+ * and deprecated versions.
  */
 export const getSanitisedReleases = (
-  releases: Record<string, string>,
+  versions: Record<string, { deprecated?: string; time: string }>,
+  currentVersion: string,
 ): Record<string, string> =>
   Object.fromEntries(
-    Object.entries(releases).filter(([version]) => valid(version)),
+    Object.entries(versions)
+      .filter(
+        ([version, { deprecated }]) =>
+          valid(version) && (deprecated == null || version === currentVersion),
+      )
+      .map(([version, { time }]) => [version, time]),
   );
 
 /**
@@ -30,4 +25,16 @@ export const getStableReleases = (
 ): Record<string, string> =>
   Object.fromEntries(
     Object.entries(releases).filter(([version]) => prerelease(version) == null),
+  );
+
+/**
+ * Filter versions by release type.
+ */
+export const getReleasesByType = (
+  versions: string[],
+  type: ReleaseType,
+): string[] =>
+  versions.filter(
+    (value: string, index: number, array: string[]) =>
+      diff(array[index - 1] ?? value, value) === type,
   );

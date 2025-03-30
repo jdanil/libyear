@@ -14,6 +14,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - remove unnecessary semver option
 - expose libyear in package.json exports
 - avoid "stopping-the-world" with concurrency limits
+- ignore deprecated versions
 
 ### Features
 

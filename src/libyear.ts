@@ -30,8 +30,11 @@ export const libyear = async (
       ([dependency, currentVersion]) =>
         limit(() =>
           getPackageInfo(packageManager, dependency).then(
-            ({ deprecated, releaseTime = {} }) => {
-              const allVersionsMap = getSanitisedReleases(releaseTime);
+            ({ deprecated, versions = {} }) => {
+              const allVersionsMap = getSanitisedReleases(
+                versions,
+                currentVersion,
+              );
               const stableVersionsMap = getStableReleases(allVersionsMap);
               const allVersions = Object.keys(allVersionsMap);
               const stableVersions = Object.keys(stableVersionsMap);
@@ -82,7 +85,7 @@ export const libyear = async (
 
               return {
                 dependency,
-                deprecated,
+                deprecated: deprecated ?? versions[currentVersion]?.deprecated,
                 drift,
                 pulse,
                 releases,

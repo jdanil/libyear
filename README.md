@@ -329,10 +329,7 @@ Packages can be temporarily excused from complying to limits by setting a date t
 
 ### RFC
 
-- batch queries / use npm REST API instead of cli (for release times)
 - audit vulnerabilities
-- include resolutions
-- programmatic use
 - include collective metrics in JSON report
 - include violations in JSON report
 
