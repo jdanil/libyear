@@ -1,13 +1,13 @@
 import type { PackageManager } from "../types.ts";
 import { execute } from "./execute.ts";
 
-export const getPackageInfo = async (
-  packageManager: PackageManager,
-  packageName: string,
-): Promise<{
-  deprecated?: string;
-  versions?: Record<string, { deprecated?: string; time: string }>;
-}> => {
+let registry: string;
+
+const getRegistry = async (packageManager: PackageManager): Promise<string> => {
+  if (registry != null) {
+    return Promise.resolve(registry);
+  }
+
   const cmd = {
     berry: "yarn config get npmRegistryServer",
     npm: "npm config get registry",
@@ -15,7 +15,19 @@ export const getPackageInfo = async (
     yarn: "yarn config get registry",
   }[packageManager].replace(/\/$/, "");
 
-  const registry = await execute(cmd);
+  registry = await execute(cmd);
+
+  return registry;
+};
+
+const getPackageInfoFromRegistry = async (
+  packageManager: PackageManager,
+  packageName: string,
+): Promise<{
+  deprecated?: string;
+  versions?: Record<string, { deprecated?: string; time: string }>;
+}> => {
+  const registry = await getRegistry(packageManager);
 
   const { deprecated, time, versions } = (await (
     await fetch(`${registry}/${packageName}`)
@@ -37,4 +49,80 @@ export const getPackageInfo = async (
       ]),
     ),
   };
+};
+
+export const getPackageInfoFromPackageManager = async (
+  packageManager: PackageManager,
+  packageName: string,
+): Promise<{
+  deprecated?: string;
+  versions?: Record<string, { deprecated?: string; time: string }>;
+}> => {
+  const cmd = {
+    berry: `yarn npm info ${packageName} --fields deprecated,time,versions --json`,
+    npm: `npm view ${packageName} deprecated time versions --json`,
+    pnpm: `npm view ${packageName} deprecated time versions --json`,
+    yarn: `yarn info ${packageName} --json`,
+  }[packageManager];
+
+  return execute(cmd).then((stdout) => {
+    if (!stdout) {
+      return {};
+    }
+
+    const json = JSON.parse(stdout) as unknown;
+
+    switch (packageManager) {
+      case "yarn": {
+        const {
+          data: { deprecated, time, versions },
+        } = json as {
+          data: {
+            deprecated?: string;
+            time: Record<string, string>;
+            versions: string[];
+          };
+        };
+        return {
+          deprecated,
+          versions: Object.fromEntries(
+            versions.map((version) => [
+              version,
+              { time: time[version] as string },
+            ]),
+          ),
+        };
+      }
+      default: {
+        const { deprecated, time, versions } = json as {
+          deprecated?: string;
+          time: Record<string, string>;
+          versions: string[];
+        };
+        return {
+          deprecated,
+          versions: Object.fromEntries(
+            versions.map((version) => [
+              version,
+              { time: time[version] as string },
+            ]),
+          ),
+        };
+      }
+    }
+  });
+};
+
+export const getPackageInfo = async (
+  packageManager: PackageManager,
+  packageName: string,
+): Promise<{
+  deprecated?: string;
+  versions?: Record<string, { deprecated?: string; time: string }>;
+}> => {
+  try {
+    return await getPackageInfoFromRegistry(packageManager, packageName);
+  } catch {
+    return await getPackageInfoFromPackageManager(packageManager, packageName);
+  }
 };
