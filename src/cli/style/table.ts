@@ -13,6 +13,14 @@ type Row = Record<string, Cell>;
 
 type Table = Array<Row>;
 
+const FILTERS = {
+  major: 0,
+  minor: 0,
+  patch: 0,
+  deprecated: false,
+  latest: "—",
+};
+
 const compact = process.stdout.columns < 110;
 const cellSeparator = compact ? " " : " │ ";
 const rowStart = compact ? "" : "│ ";
@@ -80,13 +88,14 @@ const styleDivider = (type: "top" | "middle" | "bottom", schema: Schema) => {
 
 export const styleTable = (data: Table): string => {
   const table = compact
-    ? ["major", "minor", "patch"].reduce(
-        (accumulator, metric) =>
+    ? Object.entries(FILTERS).reduce(
+        (accumulator, [column, empty]) =>
           accumulator.every(
             (row) =>
-              ((row[metric] as { value: unknown })?.value ?? row[metric]) === 0,
+              ((row[column] as { value: unknown })?.value ?? row[column]) ===
+              empty,
           )
-            ? accumulator.map((row) => omit(row, metric))
+            ? accumulator.map((row) => omit(row, column))
             : accumulator,
         data,
       )

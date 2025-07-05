@@ -1,6 +1,6 @@
 import { styleText } from "node:util";
 
-import { omit, partial } from "lodash-es";
+import { partial } from "lodash-es";
 
 import { METRICS } from "../constants.ts";
 import type {
@@ -137,16 +137,17 @@ export const print = (
 
   console.log(
     styleTable([
-      ...dependencies.map(({ dependency, latest, ...rest }) => ({
+      ...dependencies.map(({ dependency, deprecated, latest, ...metrics }) => ({
         dependency: {
           href: `https://npm.im/${dependency}`,
           value: dependency,
         },
         ...getFormattedMetrics({
           dependency,
-          metrics: omit(rest, "deprecated"),
+          metrics,
           violations,
         }),
+        deprecated: deprecated ? { format: "red", value: true } : false,
         latest: latest ?? "—",
       })),
       {
@@ -155,6 +156,7 @@ export const print = (
           metrics: totals,
           violations,
         }),
+        deprecated: false,
         latest: "—",
       },
     ]),
