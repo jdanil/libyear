@@ -1,5 +1,6 @@
 import { stripVTControlCharacters, styleText } from "node:util";
 
+import { omit } from "lodash-es";
 import terminalLink from "terminal-link";
 
 type Schema = Record<string, number>;
@@ -78,9 +79,22 @@ const styleDivider = (type: "top" | "middle" | "bottom", schema: Schema) => {
 };
 
 export const styleTable = (data: Table): string => {
+  const table = compact
+    ? ["major", "minor", "patch"].reduce(
+        (accumulator, metric) =>
+          accumulator.every(
+            (row) =>
+              ((row[metric] as { value: unknown })?.value ?? row[metric]) === 0,
+          )
+            ? accumulator.map((row) => omit(row, metric))
+            : accumulator,
+        data,
+      )
+    : data;
+
   const schema: Schema = {};
 
-  data.forEach((row) => {
+  table.forEach((row) => {
     Object.entries(row).forEach(([key, cell]) => {
       schema[key] = Math.max(
         schema[key] ?? 0,
@@ -94,9 +108,9 @@ export const styleTable = (data: Table): string => {
     styleDivider("top", schema),
     styleHeaderRow(schema),
     styleDivider("middle", schema),
-    ...data
+    ...table
       .map((row) => styleBodyRow(row, schema))
-      .toSpliced(data.length - 1, 0, styleDivider("middle", schema)),
+      .toSpliced(table.length - 1, 0, styleDivider("middle", schema)),
     styleDivider("bottom", schema),
   ].join("\n");
 };
