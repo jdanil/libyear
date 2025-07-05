@@ -195,6 +195,12 @@ Throws an error if any individual patch metric surpasses the limit.
 Accepts `berry`, `npm`, `pnpm`, `yarn`.
 Default is inferred.
 
+### `--pre-releases`
+
+Include pre-releases in latest versions.
+Can be disabled with `--no-pre-releases`.
+Default `true`.
+
 ### `--quiet` (`-q`)
 
 Exclude up-to-date dependencies from results.

@@ -8,6 +8,7 @@ export const getArgs = (): Args => {
   const args = process.argv.slice(2);
 
   const { values } = parseArgs({
+    allowNegative: true,
     args,
     options: {
       all: {
@@ -73,6 +74,10 @@ export const getArgs = (): Args => {
       },
       "package-manager": {
         type: "string",
+      },
+      "pre-releases": {
+        default: true,
+        type: "boolean",
       },
       quiet: {
         short: "q",

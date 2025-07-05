@@ -49,6 +49,7 @@ export type Args = {
   limitPatchCollective?: string;
   limitPatchIndividual?: string;
   packageManager?: PackageManager;
+  preReleases?: boolean;
   quiet?: boolean;
   sort?: Metric;
 };

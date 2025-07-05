@@ -13,7 +13,8 @@ const validateLimit = (limit: unknown): number | undefined =>
 export const cli = async (): Promise<void> => {
   const args = getArgs();
 
-  const { all, help, json, packageManager, quiet, sort, ...rest } = args;
+  const { all, help, json, packageManager, preReleases, quiet, sort, ...rest } =
+    args;
 
   if (help) {
     console.log(
@@ -26,6 +27,7 @@ export const cli = async (): Promise<void> => {
         "--help, -h                       Show help.",
         "--json                           Outputs the report to the console as valid JSON.",
         '--package-manager                Accepts "berry", "npm", "pnpm", "yarn"',
+        "--pre-releases                   Include pre-releases in latest versions.",
         "--quiet, -q                      Exclude up-to-date dependencies from results.",
         "--sort                           Column to sort individual results by.",
         "--limit-drift-collective, -D     Drift limit to warn on for all dependencies.",
@@ -52,7 +54,7 @@ export const cli = async (): Promise<void> => {
       getParsedPackageManager(
         packageManager ?? (await getInferredPackageManager()),
       ),
-      { all, quiet, sort },
+      { all, preReleases, quiet, sort },
     );
 
     if (json) {

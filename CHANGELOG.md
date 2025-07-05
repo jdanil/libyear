@@ -22,6 +22,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - upgrade `cosmiconfig` to support `.config` directory and `.mjs` and `.ts` configuration files
 - add help option
+- add pre-releases option
 - add quiet option
 - sort results by column
 - remove index column

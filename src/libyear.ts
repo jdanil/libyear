@@ -23,7 +23,12 @@ const limit = pLimit(availableParallelism());
 
 export const libyear = async (
   packageManager: PackageManager,
-  flags?: { all?: boolean; quiet?: boolean; sort?: Metric },
+  flags?: {
+    all?: boolean;
+    preReleases?: boolean;
+    quiet?: boolean;
+    sort?: Metric;
+  },
 ): Promise<Dependencies> =>
   Promise.all(
     Object.entries(await getDependencies(packageManager, flags)).map(
@@ -74,7 +79,10 @@ export const libyear = async (
                 "patch",
               ).length;
               const latest =
-                [latestStableVersion, latestAllVersion]
+                [
+                  latestStableVersion,
+                  flags?.preReleases ? latestAllVersion : "",
+                ]
                   .filter((version) => valid(version))
                   .find((version) => compare(currentVersion, version) < 0) ??
                 null;
