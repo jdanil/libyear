@@ -3,13 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# 0.9.0 (Unreleased)
-
-### BREAKING CHANGES
-
-- drop support for node 18, <20.18, <22.8, 23
-- rename "threshold" to "limit"
-- rename "available" to "latest"
+# 0.9.0 (2025-07-05)
 
 ### Bug Fixes
 
@@ -34,7 +28,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-- drop support for node <18.19, 19, 21
+- drop support for node 18, 19, <20.18, 21, <22.8, 23
+- rename "threshold" to "limit"
+- rename "available" to "latest"
 
 # 0.8.0 (2022-05-31)
 
