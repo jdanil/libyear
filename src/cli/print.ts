@@ -137,7 +137,7 @@ export const print = (
 
   console.log(
     styleTable([
-      ...dependencies.map(({ dependency, available, ...rest }) => ({
+      ...dependencies.map(({ dependency, latest, ...rest }) => ({
         dependency: {
           href: `https://npm.im/${dependency}`,
           value: dependency,
@@ -147,7 +147,7 @@ export const print = (
           metrics: omit(rest, "deprecated"),
           violations,
         }),
-        available: available ?? "—",
+        latest: latest ?? "—",
       })),
       {
         dependency: "total",
@@ -155,7 +155,7 @@ export const print = (
           metrics: totals,
           violations,
         }),
-        available: "—",
+        latest: "—",
       },
     ]),
   );

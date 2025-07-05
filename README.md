@@ -7,12 +7,12 @@ It is a single number telling you how up-to-date your dependencies are.
 
 ## Metrics
 
-- `drift` representing "dependency drift"; the time between the release of the currently used and latest (stable) available versions of a dependency. Measured in "libyears".
-- `pulse` representing "pulse check", an indication of a dependency's activity; the time since the release of the latest available version of a dependency (including pre-release). Measured in "libyears".
-- `releases` the number of stable releases between the currently used and latest (stable) available versions of a dependency.
-- `major` the number of major releases between the currently used and latest (stable) available versions of a dependency.
-- `minor` the number of minor releases between the currently used and latest (stable) available versions of a dependency.
-- `patch` the number of patch releases between the currently used and latest (stable) available versions of a dependency.
+- `drift` representing "dependency drift"; the time between the release of the currently used and latest (stable) versions of a dependency. Measured in "libyears".
+- `pulse` representing "pulse check", an indication of a dependency's activity; the time since the release of the latest version of a dependency (including pre-release). Measured in "libyears".
+- `releases` the number of stable releases between the currently used and latest (stable) versions of a dependency.
+- `major` the number of major releases between the currently used and latest (stable) versions of a dependency.
+- `minor` the number of minor releases between the currently used and latest (stable) versions of a dependency.
+- `patch` the number of patch releases between the currently used and latest (stable) versions of a dependency.
 
 All metrics are calculated against dependencies both collectively and individually.
 

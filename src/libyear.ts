@@ -73,7 +73,7 @@ export const libyear = async (
                 [currentVersion, ...diffStableVersions],
                 "patch",
               ).length;
-              const available =
+              const latest =
                 [latestStableVersion, latestAllVersion]
                   .filter((version) => valid(version))
                   .find((version) => compare(currentVersion, version) < 0) ??
@@ -92,7 +92,7 @@ export const libyear = async (
                 major,
                 minor,
                 patch,
-                available,
+                latest,
               };
             },
           ),

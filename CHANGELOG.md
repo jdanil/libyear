@@ -9,6 +9,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - drop support for node 18, <20.18, <22.8, 23
 - rename "threshold" to "limit"
+- rename "available" to "latest"
 
 ### Bug Fixes
 
