@@ -7,7 +7,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-- drop support for node 18, <20.18, <22.8
+- drop support for node 18, <20.18, <22.8, 23
 - rename "threshold" to "limit"
 
 ### Bug Fixes
