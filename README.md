@@ -102,7 +102,7 @@ Include dev dependencies.
 Default `true`.
 Can be disabled with `--no-dev`.
 
-_Note: Disabling this option is only supported when using `pnpm` package manager._
+_Note: Disabling this option is only supported when using `npm` or `pnpm` package managers._
 
 ### `--help` (`-h`)
 
@@ -340,6 +340,7 @@ Packages can be temporarily excused from complying to limits by setting a date t
 
 - enforce deprecations
 - ci semantic release
+- support npm workspaces
 
 ### RFC
 

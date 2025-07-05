@@ -68,7 +68,8 @@ export const getDependencies = async (
         berry: `yarn info ${flags?.all ? "--all" : ""} --json`,
         pnpm: `pnpm list ${flags?.all ? "--recursive" : ""} --json`,
       } as Record<PackageManager, string>
-    )[packageManager] ?? "npm ls --depth=0 --json --silent";
+    )[packageManager] ??
+    `npm ls --depth=0 --json ${flags?.dev ? "" : "--omit=dev"} --silent ${flags?.all ? "--workspaces" : ""}`;
 
   return getParsedDependencies(packageManager, cmd).then((json) =>
     Object.fromEntries(
