@@ -13,8 +13,17 @@ const validateLimit = (limit: unknown): number | undefined =>
 export const cli = async (): Promise<void> => {
   const args = getArgs();
 
-  const { all, help, json, packageManager, preReleases, quiet, sort, ...rest } =
-    args;
+  const {
+    all,
+    dev,
+    help,
+    json,
+    packageManager,
+    preReleases,
+    quiet,
+    sort,
+    ...rest
+  } = args;
 
   if (help) {
     console.log(
@@ -24,6 +33,7 @@ export const cli = async (): Promise<void> => {
         "─── Options ".padEnd(80, "─"),
         "--all                            Include dependencies from the whole project.",
         "--config                         Path to a libyear configuration file.",
+        "--dev                            Include dev dependencies.",
         "--help, -h                       Show help.",
         "--json                           Outputs the report to the console as valid JSON.",
         '--package-manager                Accepts "berry", "npm", "pnpm", "yarn"',
@@ -54,7 +64,7 @@ export const cli = async (): Promise<void> => {
       getParsedPackageManager(
         packageManager ?? (await getInferredPackageManager()),
       ),
-      { all, preReleases, quiet, sort },
+      { all, dev, preReleases, quiet, sort },
     );
 
     if (json) {

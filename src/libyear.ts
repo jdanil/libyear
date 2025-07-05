@@ -25,6 +25,7 @@ export const libyear = async (
   packageManager: PackageManager,
   flags?: {
     all?: boolean;
+    dev?: boolean;
     preReleases?: boolean;
     quiet?: boolean;
     sort?: Metric;

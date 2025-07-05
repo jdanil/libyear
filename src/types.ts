@@ -34,6 +34,7 @@ export type Configuration = {
 export type Args = {
   all?: boolean;
   config?: string;
+  dev?: boolean;
   help?: boolean;
   json?: boolean;
   limitDriftCollective?: string;

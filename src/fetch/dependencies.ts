@@ -60,13 +60,13 @@ const getParsedDependencies = async (
 
 export const getDependencies = async (
   packageManager: PackageManager,
-  flags?: { all?: boolean },
+  flags?: { all?: boolean; dev?: boolean },
 ): Promise<Record<string, string>> => {
   const cmd =
     (
       {
         berry: `yarn info ${flags?.all ? "--all" : ""} --json`,
-        pnpm: `pnpm ${flags?.all ? "recursive" : ""} list --depth=0 --json`,
+        pnpm: `pnpm list ${flags?.all ? "--recursive" : ""} --json`,
       } as Record<PackageManager, string>
     )[packageManager] ?? "npm ls --depth=0 --json --silent";
 
@@ -74,7 +74,7 @@ export const getDependencies = async (
     Object.fromEntries(
       Object.entries({
         ...json.dependencies,
-        ...json.devDependencies,
+        ...(flags?.dev ? json.devDependencies : {}),
       })
         .map(([dependency, data]) => [
           dependency,

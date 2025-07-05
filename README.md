@@ -96,6 +96,14 @@ Path to a libyear configuration file.
 Default is automatically resolved by [cosmiconfig](https://github.com/davidtheclark/cosmiconfig).
 See [configuration](#configuration).
 
+### `--dev`
+
+Include dev dependencies.
+Default `true`.
+Can be disabled with `--no-dev`.
+
+_Note: Disabling this option is only supported when using `pnpm` package manager._
+
 ### `--help` (`-h`)
 
 Show help.

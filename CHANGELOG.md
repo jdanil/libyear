@@ -21,6 +21,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - upgrade `cosmiconfig` to support `.config` directory and `.mjs` and `.ts` configuration files
+- add dev option
 - add help option
 - add pre-releases option
 - add quiet option

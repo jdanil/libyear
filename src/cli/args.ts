@@ -17,6 +17,10 @@ export const getArgs = (): Args => {
       config: {
         type: "string",
       },
+      dev: {
+        default: true,
+        type: "boolean",
+      },
       help: {
         short: "h",
         type: "boolean",
