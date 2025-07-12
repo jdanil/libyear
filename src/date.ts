@@ -18,9 +18,13 @@ const differenceInDays = (
 export const calculateDrift = (
   currentVersion: string,
   latestVersion: string,
-): number =>
-  differenceInDays(parseISO(latestVersion), parseISO(currentVersion)) /
-  DAYS_IN_YEAR;
+): number => {
+  if (currentVersion === '' || latestVersion === '') {
+    return 0;
+  }
+  return differenceInDays(parseISO(latestVersion), parseISO(currentVersion)) /
+    DAYS_IN_YEAR;
+};
 
 /**
  * Time since latest version release.

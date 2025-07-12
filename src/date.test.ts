@@ -32,6 +32,14 @@ await describe("date", async () => {
         expect(calculateDrift(current, latest)).toBeCloseTo(expected, 2);
       });
     }
+
+    await it('should return 0 when the latest is not there', () => {
+      expect(calculateDrift(EPOCH, '')).toEqual(0);
+    })
+
+    await it('should return 0 when the current is not there', () => {
+      expect(calculateDrift('', EPOCH)).toEqual(0);
+    })
   });
 
   await describe("calculatePulse", async () => {
