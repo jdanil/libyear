@@ -33,13 +33,23 @@ await describe("date", async () => {
       });
     }
 
-    await it('should return 0 when the latest is not there', () => {
-      expect(calculateDrift(EPOCH, '')).toEqual(0);
-    })
+    for (const [title, current] of [
+      ["undefined", undefined],
+      ["empty", ""],
+    ] as const) {
+      await it(`returns 0 when current is ${title}`, () => {
+        expect(calculateDrift(current, EPOCH)).toEqual(0);
+      });
+    }
 
-    await it('should return 0 when the current is not there', () => {
-      expect(calculateDrift('', EPOCH)).toEqual(0);
-    })
+    for (const [title, latest] of [
+      ["undefined", undefined],
+      ["empty", ""],
+    ] as const) {
+      await it(`returns 0 when latest is ${title}`, () => {
+        expect(calculateDrift(EPOCH, latest)).toEqual(0);
+      });
+    }
   });
 
   await describe("calculatePulse", async () => {
@@ -58,6 +68,15 @@ await describe("date", async () => {
     ] as const) {
       await it(`calculates ${title}`, () => {
         expect(calculatePulse(latest)).toBeCloseTo(expected, 2);
+      });
+    }
+
+    for (const [title, latest] of [
+      ["undefined", undefined],
+      ["empty", ""],
+    ] as const) {
+      await it(`returns 0 when latest is ${title}`, () => {
+        expect(calculatePulse(latest)).toEqual(0);
       });
     }
   });

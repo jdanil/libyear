@@ -16,20 +16,22 @@ const differenceInDays = (
  * Measure of dependency drift.
  */
 export const calculateDrift = (
-  currentVersion: string,
-  latestVersion: string,
-): number => {
-  if (currentVersion === '' || latestVersion === '') {
-    return 0;
-  }
-  return differenceInDays(parseISO(latestVersion), parseISO(currentVersion)) /
-    DAYS_IN_YEAR;
-};
+  currentVersion?: string,
+  latestVersion?: string,
+): number =>
+  currentVersion && latestVersion
+    ? differenceInDays(parseISO(latestVersion), parseISO(currentVersion)) /
+      DAYS_IN_YEAR
+    : 0;
 
 /**
  * Time since latest version release.
  * Pulse check of dependency activity and maintenance.
  */
-export const calculatePulse = (latestVersion: string): number =>
-  differenceInDays(Temporal.Now.plainDateTimeISO(), parseISO(latestVersion)) /
-  DAYS_IN_YEAR;
+export const calculatePulse = (latestVersion?: string): number =>
+  latestVersion
+    ? differenceInDays(
+        Temporal.Now.plainDateTimeISO(),
+        parseISO(latestVersion),
+      ) / DAYS_IN_YEAR
+    : 0;

@@ -1,6 +1,5 @@
 import { stripVTControlCharacters, styleText } from "node:util";
 
-import { omit } from "lodash-es";
 import terminalLink from "terminal-link";
 
 type Schema = Record<string, number>;
@@ -12,14 +11,6 @@ type Cell = unknown;
 type Row = Record<string, Cell>;
 
 type Table = Array<Row>;
-
-const FILTERS = {
-  major: 0,
-  minor: 0,
-  patch: 0,
-  deprecated: false,
-  latest: "—",
-};
 
 const compact = process.stdout.columns < 110;
 const cellSeparator = compact ? " " : " │ ";
@@ -87,23 +78,9 @@ const styleDivider = (type: "top" | "middle" | "bottom", schema: Schema) => {
 };
 
 export const styleTable = (data: Table): string => {
-  const table = compact
-    ? Object.entries(FILTERS).reduce(
-        (accumulator, [column, empty]) =>
-          accumulator.every(
-            (row) =>
-              ((row[column] as { value: unknown })?.value ?? row[column]) ===
-              empty,
-          )
-            ? accumulator.map((row) => omit(row, column))
-            : accumulator,
-        data,
-      )
-    : data;
-
   const schema: Schema = {};
 
-  table.forEach((row) => {
+  data.forEach((row) => {
     Object.entries(row).forEach(([key, cell]) => {
       schema[key] = Math.max(
         schema[key] ?? 0,
@@ -117,9 +94,9 @@ export const styleTable = (data: Table): string => {
     styleDivider("top", schema),
     styleHeaderRow(schema),
     styleDivider("middle", schema),
-    ...table
+    ...data
       .map((row) => styleBodyRow(row, schema))
-      .toSpliced(table.length - 1, 0, styleDivider("middle", schema)),
+      .toSpliced(data.length - 1, 0, styleDivider("middle", schema)),
     styleDivider("bottom", schema),
   ].join("\n");
 };

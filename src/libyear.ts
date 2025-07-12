@@ -60,11 +60,11 @@ export const libyear = async (
               );
 
               const drift = calculateDrift(
-                allVersionsMap[currentVersion] ?? "",
-                allVersionsMap[latestStableVersion] ?? "",
+                allVersionsMap[currentVersion],
+                allVersionsMap[latestStableVersion],
               );
               const pulse = calculatePulse(
-                Object.values(allVersionsMap).sort().at(-1) ?? "",
+                Object.values(allVersionsMap).sort().at(-1),
               );
               const releases = diffStableVersions.length;
               const major = getReleasesByType(
@@ -79,14 +79,12 @@ export const libyear = async (
                 [currentVersion, ...diffStableVersions],
                 "patch",
               ).length;
-              const latest =
-                [
-                  latestStableVersion,
-                  flags?.preReleases ? latestAllVersion : "",
-                ]
-                  .filter((version) => valid(version))
-                  .find((version) => compare(currentVersion, version) < 0) ??
-                null;
+              const latest = [
+                latestStableVersion,
+                flags?.preReleases ? latestAllVersion : "",
+              ]
+                .filter((version) => valid(version))
+                .find((version) => compare(currentVersion, version) < 0);
 
               if (flags?.quiet && drift <= 0) {
                 return null;
@@ -107,11 +105,12 @@ export const libyear = async (
           ),
         ),
     ),
-  ).then(
-    (dependencies) =>
-      orderBy<Dependency>(
-        dependencies.filter(Boolean) as Dependencies,
-        flags?.sort,
-        "desc",
-      ) as Dependencies,
-  );
+  )
+    .then((dependencies) =>
+      dependencies.filter((dependency) => dependency != null),
+    )
+    .then((dependencies) =>
+      flags?.sort != null
+        ? orderBy<Dependency>(dependencies, flags.sort, "desc")
+        : dependencies,
+    );

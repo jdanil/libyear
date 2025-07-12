@@ -23,7 +23,7 @@ const isBreach = (
   limit?: number,
   dependency?: string,
   overrides?: Overrides,
-) =>
+): boolean =>
   limit != null &&
   value > limit &&
   (dependency == null || !isExcused(dependency, overrides ?? {}));

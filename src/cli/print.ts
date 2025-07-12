@@ -1,6 +1,6 @@
 import { styleText } from "node:util";
 
-import { partial } from "lodash-es";
+import { omit, partial } from "lodash-es";
 
 import { METRICS } from "../constants.ts";
 import type {
@@ -16,6 +16,14 @@ import type {
 import { getTotals, getViolations } from "../validate.ts";
 import { clipFloat, printFloat } from "./style/number.ts";
 import { styleTable } from "./style/table.ts";
+
+const COLUMN_FILTERS = {
+  major: 0,
+  minor: 0,
+  patch: 0,
+  deprecated: false,
+  latest: "—",
+};
 
 const getMetricFormat = ({
   dependency,
@@ -54,12 +62,15 @@ const getFormattedMetrics = ({
         value: clipFloat(value),
       },
     ]),
-  );
+  ) as Record<
+    Metric,
+    { format: ReturnType<typeof getMetricFormat>; value: number }
+  >;
 
 const ntext = (text: string, plural: string, count: number) =>
   Math.abs(count) === 1 ? text : plural;
 
-const getMetricUnit = (metric: Metric, count: number) => {
+const getMetricUnit = (metric: Metric, count: number): string => {
   switch (metric) {
     case "releases":
     case "major":
@@ -73,7 +84,7 @@ const getMetricUnit = (metric: Metric, count: number) => {
   }
 };
 
-const printIndividual = (violations: ViolationsIndividual) => {
+const printIndividual = (violations: ViolationsIndividual): void => {
   Object.entries(violations).forEach(([metric, dependencies]) => {
     Object.entries(dependencies).forEach(([dependency, { limit, value }]) => {
       console.error(
@@ -87,7 +98,7 @@ const printCollective = (
   totals: Totals,
   violations: ViolationsCollective,
   limit?: Limit,
-) => {
+): void => {
   const isBreach = (metric: Metric) => Object.hasOwn(violations, metric);
   const logger = (metric: Metric) =>
     isBreach(metric) ? console.error : console.log;
@@ -121,7 +132,7 @@ const printCollective = (
   });
 };
 
-const printDeprecations = (deprecations: Record<string, string>) => {
+const printDeprecations = (deprecations: Record<string, string>): void => {
   Object.entries(deprecations).forEach(([dependency, deprecation]) => {
     console.warn(`${styleText("yellow", dependency)}: ${deprecation}`);
   });
@@ -135,31 +146,50 @@ export const print = (
   const totals = getTotals(dependencies);
   const violations = getViolations(dependencies, totals, limit, overrides);
 
-  console.log(
-    styleTable([
-      ...dependencies.map(({ dependency, deprecated, latest, ...metrics }) => ({
-        dependency: {
-          href: `https://npm.im/${dependency}`,
-          value: dependency,
-        },
-        ...getFormattedMetrics({
-          dependency,
-          metrics,
-          violations,
-        }),
-        deprecated: deprecated ? { format: "red", value: true } : false,
-        latest: latest ?? "—",
-      })),
-      {
-        dependency: "total",
-        ...getFormattedMetrics({
-          metrics: totals,
-          violations,
-        }),
-        deprecated: false,
-        latest: "—",
+  const table = [
+    ...dependencies.map(({ dependency, deprecated, latest, ...metrics }) => ({
+      dependency: {
+        href: `https://npm.im/${dependency}`,
+        value: dependency,
       },
-    ]),
+      ...getFormattedMetrics({
+        dependency,
+        metrics,
+        violations,
+      }),
+      deprecated: deprecated ? { format: "red", value: true } : false,
+      latest: latest ?? "—",
+    })),
+    {
+      dependency: "total",
+      ...getFormattedMetrics({
+        metrics: totals,
+        violations,
+      }),
+      deprecated: false,
+      latest: "—",
+    },
+  ];
+
+  const emptyColumns = new Set(
+    Object.keys(COLUMN_FILTERS) as [
+      "major" | "minor" | "patch" | "deprecated" | "latest",
+    ],
+  );
+
+  table.forEach((row) => {
+    emptyColumns.forEach((column) => {
+      if (
+        ((row[column] as { value: unknown })?.value ?? row[column]) !==
+        COLUMN_FILTERS[column]
+      ) {
+        emptyColumns.delete(column);
+      }
+    });
+  });
+
+  console.log(
+    styleTable(table.map((row) => omit(row, Array.from(emptyColumns)))),
   );
 
   const hasIndividualViolations =

@@ -58,7 +58,7 @@ export type Args = {
 export type Dependency = Record<Metric, number> & {
   dependency: string;
   deprecated?: string;
-  latest: string;
+  latest?: string;
 };
 
 export type Dependencies = Dependency[];
