@@ -11,8 +11,6 @@ const validateLimit = (limit: unknown): number | undefined =>
   Number.isNaN(Number(limit)) ? undefined : Number(limit);
 
 export const cli = async (): Promise<void> => {
-  const args = getArgs();
-
   const {
     all,
     dev,
@@ -23,14 +21,14 @@ export const cli = async (): Promise<void> => {
     quiet,
     sort,
     ...rest
-  } = args;
+  } = getArgs();
 
   if (help) {
     console.log(
       [
-        "─── Usage ".padEnd(80, "─"),
+        "─── Usage ".padEnd(Math.min(process.stdout.columns, 100), "─"),
         "$ libyear <options>",
-        "─── Options ".padEnd(80, "─"),
+        "─── Options ".padEnd(Math.min(process.stdout.columns, 100), "─"),
         "--all                            Include dependencies from the whole project.",
         "--config                         Path to a libyear configuration file.",
         "--dev                            Include dev dependencies.",

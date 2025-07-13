@@ -1,3 +1,4 @@
+import * as assert from "node:assert";
 import { describe, it } from "node:test";
 
 // TODO[engine:node@>=24]: drop @js-temporal/polyfill
@@ -38,7 +39,7 @@ await describe("date", async () => {
       ["empty", ""],
     ] as const) {
       await it(`returns 0 when current is ${title}`, () => {
-        expect(calculateDrift(current, EPOCH)).toEqual(0);
+        assert.equal(calculateDrift(current, EPOCH), 0);
       });
     }
 
@@ -47,7 +48,7 @@ await describe("date", async () => {
       ["empty", ""],
     ] as const) {
       await it(`returns 0 when latest is ${title}`, () => {
-        expect(calculateDrift(EPOCH, latest)).toEqual(0);
+        assert.equal(calculateDrift(EPOCH, latest), 0);
       });
     }
   });
@@ -76,7 +77,7 @@ await describe("date", async () => {
       ["empty", ""],
     ] as const) {
       await it(`returns 0 when latest is ${title}`, () => {
-        expect(calculatePulse(latest)).toEqual(0);
+        assert.equal(calculatePulse(latest), 0);
       });
     }
   });

@@ -1,0 +1,14 @@
+[
+  {
+    "dependencies": {
+      "package-a": {
+        "version": "1.0.0"
+      },
+      "package-b": {
+        "version": ""
+      },
+      "package-c": {}
+    },
+    "devDependencies": {}
+  }
+]

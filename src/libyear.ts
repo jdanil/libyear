@@ -67,18 +67,10 @@ export const libyear = async (
                 Object.values(allVersionsMap).sort().at(-1),
               );
               const releases = diffStableVersions.length;
-              const major = getReleasesByType(
-                [currentVersion, ...diffStableVersions],
-                "major",
-              ).length;
-              const minor = getReleasesByType(
-                [currentVersion, ...diffStableVersions],
-                "minor",
-              ).length;
-              const patch = getReleasesByType(
-                [currentVersion, ...diffStableVersions],
-                "patch",
-              ).length;
+              const { major, minor, patch } = getReleasesByType([
+                currentVersion,
+                ...diffStableVersions,
+              ]);
               const latest = [
                 latestStableVersion,
                 flags?.preReleases ? latestAllVersion : "",

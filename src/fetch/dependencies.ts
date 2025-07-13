@@ -83,7 +83,7 @@ export const getDependencies = async (
             (
               (data.required as { version?: string })?.version ||
               (data.required as string)
-            ).replace(/[<=>^~]+/u, ""),
+            )?.replace(/[<=>^~]+/u, ""),
         ])
         .filter(([, version]) => valid(version)) as [[string, string]],
     ),

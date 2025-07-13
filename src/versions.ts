@@ -1,4 +1,4 @@
-import { diff, prerelease, valid, type ReleaseType } from "semver";
+import { diff, prerelease, valid } from "semver";
 
 /**
  * Filter out "time" metadata about the package
@@ -28,13 +28,24 @@ export const getStableReleases = (
   );
 
 /**
- * Filter versions by release type.
+ * Tally releases by type.
  */
 export const getReleasesByType = (
   versions: string[],
-  type: ReleaseType,
-): string[] =>
-  versions.filter(
-    (value: string, index: number, array: string[]) =>
-      diff(array[index - 1] ?? value, value) === type,
-  );
+): Record<"major" | "minor" | "patch", number> => {
+  const counts = {
+    major: 0,
+    minor: 0,
+    patch: 0,
+  };
+
+  versions.forEach((value, index, array) => {
+    const type = diff(array[index - 1] ?? value, value);
+
+    if (type != null && Object.hasOwn(counts, type)) {
+      counts[type as keyof typeof counts]++;
+    }
+  });
+
+  return counts;
+};

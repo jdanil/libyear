@@ -1,6 +1,6 @@
 {
   "name": "libyear",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "A simple measure of software dependency freshness",
   "author": "Joshua David <@jdanil>",
   "contributors": [
@@ -52,7 +52,7 @@
     "lint:diff": "FILES=$(git diff --diff-filter=ACMRTUB --name-only --relative master); [ -z ${FILES} ] || yarn lint --no-error-on-unmatched-pattern ${FILES}",
     "prepack": "tsc --build --force",
     "prepare": "[ -n ${CI:-} ] || husky",
-    "test": "node --test ./src/**/*.ts"
+    "test": "node --experimental-test-module-mocks --test ./src/**/*.ts"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",
