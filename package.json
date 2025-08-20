@@ -59,7 +59,7 @@
     "cosmiconfig": "^9.0.0",
     "execa": "^9.6.0",
     "lodash-es": "^4.17.21",
-    "p-limit": "^6.2.0",
+    "p-limit": "^7.1.0",
     "semver": "^7.7.2",
     "terminal-link": "^4.0.0"
   },
