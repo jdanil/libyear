@@ -12,7 +12,7 @@ jobs:
     env:
       YARN_NODE_LINKER: node-modules
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v5.0.0
       - name: Use Node.js
         uses: actions/setup-node@v4.4.0
         with:
