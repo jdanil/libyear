@@ -90,10 +90,18 @@ export const getArgs = (): Args => {
       sort: {
         type: "string",
       },
+      include: {
+        type: "string",
+        multiple: true,
+      },
+      exclude: {
+        type: "string",
+        multiple: true,
+      },
     },
   });
 
-  return Object.fromEntries<boolean | string>(
+  return Object.fromEntries<boolean | string | string[]>(
     Object.entries(values).map(([key, value]) => [camelCase(key), value]),
   );
 };

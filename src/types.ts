@@ -29,6 +29,10 @@ export type Configuration = {
       individual?: Pick<Limit, `${Metric}Individual`>;
     }
   >;
+  filtering?: {
+    include?: string[];
+    exclude?: string[];
+  };
 };
 
 export type Args = {
@@ -53,6 +57,8 @@ export type Args = {
   preReleases?: boolean;
   quiet?: boolean;
   sort?: Metric;
+  include?: string[];
+  exclude?: string[];
 };
 
 export type Dependency = Record<Metric, number> & {

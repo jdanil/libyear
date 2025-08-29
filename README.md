@@ -219,11 +219,60 @@ Default `false`.
 Column to sort individual results by.
 Default `null`.
 
+## Filtering
+
+### `--include=<pattern>`
+
+Include only dependencies matching the specified regex pattern(s).
+Can be specified multiple times for multiple patterns.
+If no include patterns are specified, all dependencies are included (subject to exclude patterns).
+
+### `--exclude=<pattern>`
+
+Exclude dependencies matching the specified regex pattern(s).
+Can be specified multiple times for multiple patterns.
+Exclude patterns are applied before include patterns.
+
+**Note**: Filtering can also be configured via configuration files. See [Configuration](#configuration) for details.
+
+## Examples
+
+### Filtering Dependencies
+
+Filter to show only TypeScript type definitions:
+
+```sh
+npx libyear --include "^@types/"
+```
+
+Exclude all type definitions from the analysis:
+
+```sh
+npx libyear --exclude "^@types/"
+```
+
+Show only ESLint-related packages:
+
+```sh
+npx libyear --include ".*eslint.*"
+```
+
+Combine include and exclude patterns:
+
+```sh
+npx libyear --include "^@types/" --exclude "^@types/node"
+```
+
+Show multiple specific package types:
+
+```sh
+npx libyear --include "^@types/" --include "^eslint"
+```
+
 ## Configuration
 
-`libyear` can be configured via [cosmiconfig-supported](https://github.com/davidtheclark/cosmiconfig) formats.
+`libyear` can be configured via [cosmiconfig-supported](https://github.com/davidtheclark/cosmiconfig) formats. Configuration files are searched in the following order (first found wins):
 
-- `package.json` (under `{ "configs": { "libyear": { ... } } }`)
 - `.libyearrc`
 - `.libyearrc.cjs`
 - `.libyearrc.js`
@@ -236,6 +285,9 @@ Default `null`.
 - `libyear.config.js`
 - `libyear.config.mjs`
 - `libyear.config.ts`
+- `package.json` (under `{ "configs": { "libyear": { ... } } }`)
+
+**Note**: If any of the above configuration files exist in your project, the `package.json` configuration will not be read. This is the expected behavior of cosmiconfig.
 
 Custom configuration files can be provided via the [`--config`](#--configpath) CLI option.
 
@@ -243,6 +295,10 @@ Configuration is expected in the following structure.
 
 ```json5
 {
+  filtering: {
+    include: ["^@types/", "^eslint"], // array of regex patterns to include
+    exclude: ["^@types/node"], // array of regex patterns to exclude
+  },
   overrides: {
     "^@types/": {
       defer: "2020-01-01", // string (ISO formatted Date)
@@ -280,6 +336,24 @@ Configuration is expected in the following structure.
       individual: null, // integer (default: null)
     },
   },
+}
+```
+
+### Filtering
+
+Configuration files support a `filtering` property for persistent dependency filtering rules.
+
+- `include` - Array of regex patterns to include only matching dependencies
+- `exclude` - Array of regex patterns to exclude matching dependencies
+
+**Note**: CLI filtering options take precedence over configuration-based filtering.
+
+```json
+{
+  "filtering": {
+    "include": ["^@types/", "^eslint"],
+    "exclude": ["^@types/node"]
+  }
 }
 ```
 
