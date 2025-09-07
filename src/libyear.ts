@@ -31,73 +31,71 @@ export const libyear = async (
     sort?: Metric;
   },
 ): Promise<Dependencies> =>
-  Promise.all(
-    Object.entries(await getDependencies(packageManager, flags)).map(
+  limit
+    .map(
+      Object.entries(await getDependencies(packageManager, flags)),
       ([dependency, currentVersion]) =>
-        limit(() =>
-          getPackageInfo(packageManager, dependency).then(
-            ({ deprecated, versions = {} }) => {
-              const allVersionsMap = getSanitisedReleases(
-                versions,
-                currentVersion,
-              );
-              const stableVersionsMap = getStableReleases(allVersionsMap);
-              const allVersions = Object.keys(allVersionsMap);
-              const stableVersions = Object.keys(stableVersionsMap);
+        getPackageInfo(packageManager, dependency).then(
+          ({ deprecated, versions = {} }) => {
+            const allVersionsMap = getSanitisedReleases(
+              versions,
+              currentVersion,
+            );
+            const stableVersionsMap = getStableReleases(allVersionsMap);
+            const allVersions = Object.keys(allVersionsMap);
+            const stableVersions = Object.keys(stableVersionsMap);
 
-              const latestAllVersion = sort(allVersions).at(-1) ?? "";
-              const latestStableVersion = sort(stableVersions).at(-1) ?? "";
+            const latestAllVersion = sort(allVersions).at(-1) ?? "";
+            const latestStableVersion = sort(stableVersions).at(-1) ?? "";
 
-              const diffAllVersions = allVersions.slice(
-                allVersions.findIndex((version) => version === currentVersion) +
-                  1,
-                allVersions.findIndex(
-                  (version) => version === latestStableVersion,
-                ) + 1,
-              );
-              const diffStableVersions = diffAllVersions.filter((version) =>
-                stableVersions.includes(version),
-              );
+            const diffAllVersions = allVersions.slice(
+              allVersions.findIndex((version) => version === currentVersion) +
+                1,
+              allVersions.findIndex(
+                (version) => version === latestStableVersion,
+              ) + 1,
+            );
+            const diffStableVersions = diffAllVersions.filter((version) =>
+              stableVersions.includes(version),
+            );
 
-              const drift = calculateDrift(
-                allVersionsMap[currentVersion],
-                allVersionsMap[latestStableVersion],
-              );
-              const pulse = calculatePulse(
-                Object.values(allVersionsMap).sort().at(-1),
-              );
-              const releases = diffStableVersions.length;
-              const { major, minor, patch } = getReleasesByType([
-                currentVersion,
-                ...diffStableVersions,
-              ]);
-              const latest = [
-                latestStableVersion,
-                flags?.preReleases ? latestAllVersion : "",
-              ]
-                .filter((version) => valid(version))
-                .find((version) => compare(currentVersion, version) < 0);
+            const drift = calculateDrift(
+              allVersionsMap[currentVersion],
+              allVersionsMap[latestStableVersion],
+            );
+            const pulse = calculatePulse(
+              Object.values(allVersionsMap).sort().at(-1),
+            );
+            const releases = diffStableVersions.length;
+            const { major, minor, patch } = getReleasesByType([
+              currentVersion,
+              ...diffStableVersions,
+            ]);
+            const latest = [
+              latestStableVersion,
+              flags?.preReleases ? latestAllVersion : "",
+            ]
+              .filter((version) => valid(version))
+              .find((version) => compare(currentVersion, version) < 0);
 
-              if (flags?.quiet && drift <= 0) {
-                return null;
-              }
+            if (flags?.quiet && drift <= 0) {
+              return null;
+            }
 
-              return {
-                dependency,
-                deprecated: deprecated ?? versions[currentVersion]?.deprecated,
-                drift,
-                pulse,
-                releases,
-                major,
-                minor,
-                patch,
-                latest,
-              };
-            },
-          ),
+            return {
+              dependency,
+              deprecated: deprecated ?? versions[currentVersion]?.deprecated,
+              drift,
+              pulse,
+              releases,
+              major,
+              minor,
+              patch,
+              latest,
+            };
+          },
         ),
-    ),
-  )
+    )
     .then((dependencies) =>
       dependencies.filter((dependency) => dependency != null),
     )
