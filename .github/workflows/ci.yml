@@ -22,7 +22,7 @@ jobs:
       YARN_NODE_LINKER: node-modules
     steps:
       - uses: actions/checkout@v5.0.0
-      - uses: actions/setup-node@v4.4.0
+      - uses: actions/setup-node@v5.0.0
         with:
           node-version: ${{matrix.node}}
       - run: corepack enable
