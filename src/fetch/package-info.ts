@@ -51,6 +51,18 @@ const getPackageInfoFromRegistry = async (
   };
 };
 
+type PackageInfo = {
+  deprecated?: string;
+  time: Record<string, string>;
+  versions: string[];
+};
+
+type PackageError = {
+  error: {
+    code: string;
+  };
+};
+
 export const getPackageInfoFromPackageManager = async (
   packageManager: PackageManager,
   packageName: string,
@@ -70,19 +82,21 @@ export const getPackageInfoFromPackageManager = async (
       return {};
     }
 
-    const json = JSON.parse(stdout) as unknown;
+    const json = JSON.parse(stdout) as
+      | { data: PackageInfo }
+      | PackageInfo
+      | PackageError;
+
+    if ((json as PackageError).error) {
+      console.error("error", (json as PackageError).error);
+      return {};
+    }
 
     switch (packageManager) {
       case "yarn": {
         const {
           data: { deprecated, time, versions },
-        } = json as {
-          data: {
-            deprecated?: string;
-            time: Record<string, string>;
-            versions: string[];
-          };
-        };
+        } = json as { data: PackageInfo };
         return {
           deprecated,
           versions: Object.fromEntries(
@@ -94,11 +108,7 @@ export const getPackageInfoFromPackageManager = async (
         };
       }
       default: {
-        const { deprecated, time, versions } = json as {
-          deprecated?: string;
-          time: Record<string, string>;
-          versions: string[];
-        };
+        const { deprecated, time, versions } = json as PackageInfo;
         return {
           deprecated,
           versions: Object.fromEntries(
