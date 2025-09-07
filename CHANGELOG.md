@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.9.3 (2025-09-07)
+
+### Bug Fixes
+
+- catch error if fetching package info fails
+
 # 0.9.2 (2025-07-13)
 
 ### Bug Fixes

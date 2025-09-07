@@ -54,7 +54,7 @@ const getPackageInfoFromRegistry = async (
 type PackageInfo = {
   deprecated?: string;
   time: Record<string, string>;
-  versions: string[];
+  versions?: string[];
 };
 
 type PackageError = {
@@ -100,10 +100,10 @@ export const getPackageInfoFromPackageManager = async (
         return {
           deprecated,
           versions: Object.fromEntries(
-            versions.map((version) => [
+            versions?.map((version) => [
               version,
               { time: time[version] as string },
-            ]),
+            ]) ?? [],
           ),
         };
       }
@@ -112,10 +112,10 @@ export const getPackageInfoFromPackageManager = async (
         return {
           deprecated,
           versions: Object.fromEntries(
-            versions.map((version) => [
+            versions?.map((version) => [
               version,
               { time: time[version] as string },
-            ]),
+            ]) ?? [],
           ),
         };
       }

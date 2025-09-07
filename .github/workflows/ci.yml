@@ -38,7 +38,7 @@ jobs:
         env:
           COREPACK_ENABLE_PROJECT_SPEC: 0
       - run: yarn compile
-      - if: ${{matrix.node >= 23}}
+      - if: ${{matrix.node >= 22}}
         run: yarn test
       - run: yarn lint:all
       - run: yarn format:all --check
