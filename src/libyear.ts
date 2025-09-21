@@ -30,8 +30,7 @@ export const libyear = async (
     preReleases?: boolean;
     quiet?: boolean;
     sort?: Metric;
-    include?: string[];
-    exclude?: string[];
+    includeOnly?: string[];
   },
 ): Promise<Dependencies> =>
   Promise.all(
@@ -110,5 +109,5 @@ export const libyear = async (
         : dependencies,
     )
     .then((dependencies) =>
-      filterDependencies(dependencies, flags?.include, flags?.exclude),
+      filterDependencies(dependencies, flags?.includeOnly),
     );

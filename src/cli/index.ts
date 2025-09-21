@@ -20,8 +20,7 @@ export const cli = async (): Promise<void> => {
     preReleases,
     quiet,
     sort,
-    include,
-    exclude,
+    includeOnly,
     ...rest
   } = getArgs();
 
@@ -40,8 +39,7 @@ export const cli = async (): Promise<void> => {
         "--pre-releases                   Include pre-releases in latest versions.",
         "--quiet, -q                      Exclude up-to-date dependencies from results.",
         "--sort                           Column to sort individual results by.",
-        "--include                        Include only dependencies matching regex pattern(s).",
-        "--exclude                        Exclude dependencies matching regex pattern(s).",
+        "--include-only                   Include only dependencies matching regex pattern(s).",
         "--limit-drift-collective, -D     Drift limit to warn on for all dependencies.",
         "--limit-drift-individual, -d     Drift limit to warn on for individual dependencies.",
         "--limit-pulse-collective, -P     Pulse limit to warn on for all dependencies.",
@@ -64,14 +62,6 @@ export const cli = async (): Promise<void> => {
   try {
     const configuration = await getConfiguration(rest);
 
-    // Merge CLI filtering with config filtering (CLI takes precedence)
-    const mergedInclude = include?.length
-      ? include
-      : configuration.filtering?.include;
-    const mergedExclude = exclude?.length
-      ? exclude
-      : configuration.filtering?.exclude;
-
     const report = await libyear(
       getParsedPackageManager(
         packageManager ?? (await getInferredPackageManager()),
@@ -82,8 +72,7 @@ export const cli = async (): Promise<void> => {
         preReleases,
         quiet,
         sort,
-        include: mergedInclude,
-        exclude: mergedExclude,
+        includeOnly,
       },
     );
 

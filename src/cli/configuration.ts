@@ -17,8 +17,6 @@ const getCliConfiguration = ({
   limitMinorIndividual,
   limitPatchCollective,
   limitPatchIndividual,
-  include,
-  exclude,
 }: Args) => ({
   limit: {
     drift: {
@@ -45,10 +43,6 @@ const getCliConfiguration = ({
       collective: safeParseInt(limitPatchCollective),
       individual: safeParseInt(limitPatchIndividual),
     },
-  },
-  filtering: {
-    include,
-    exclude,
   },
 });
 

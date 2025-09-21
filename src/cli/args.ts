@@ -90,11 +90,7 @@ export const getArgs = (): Args => {
       sort: {
         type: "string",
       },
-      include: {
-        type: "string",
-        multiple: true,
-      },
-      exclude: {
+      "include-only": {
         type: "string",
         multiple: true,
       },

@@ -221,19 +221,11 @@ Default `null`.
 
 ## Filtering
 
-### `--include=<pattern>`
+### `--include-only=<pattern>`
 
 Include only dependencies matching the specified regex pattern(s).
 Can be specified multiple times for multiple patterns.
-If no include patterns are specified, all dependencies are included (subject to exclude patterns).
-
-### `--exclude=<pattern>`
-
-Exclude dependencies matching the specified regex pattern(s).
-Can be specified multiple times for multiple patterns.
-Exclude patterns are applied before include patterns.
-
-**Note**: Filtering can also be configured via configuration files. See [Configuration](#configuration) for details.
+If no patterns are specified, all dependencies are included.
 
 ## Examples
 
@@ -242,31 +234,25 @@ Exclude patterns are applied before include patterns.
 Filter to show only TypeScript type definitions:
 
 ```sh
-npx libyear --include "^@types/"
-```
-
-Exclude all type definitions from the analysis:
-
-```sh
-npx libyear --exclude "^@types/"
+npx libyear --include-only "^@types/"
 ```
 
 Show only ESLint-related packages:
 
 ```sh
-npx libyear --include ".*eslint.*"
+npx libyear --include-only ".*eslint.*"
 ```
 
-Combine include and exclude patterns:
+Filter to show only packages from a specific scope:
 
 ```sh
-npx libyear --include "^@types/" --exclude "^@types/node"
+npx libyear --include-only "^@myorg/"
 ```
 
 Show multiple specific package types:
 
 ```sh
-npx libyear --include "^@types/" --include "^eslint"
+npx libyear --include-only "^@types/" --include-only "^eslint"
 ```
 
 ## Configuration
@@ -295,10 +281,6 @@ Configuration is expected in the following structure.
 
 ```json5
 {
-  filtering: {
-    include: ["^@types/", "^eslint"], // array of regex patterns to include
-    exclude: ["^@types/node"], // array of regex patterns to exclude
-  },
   overrides: {
     "^@types/": {
       defer: "2020-01-01", // string (ISO formatted Date)
@@ -339,23 +321,7 @@ Configuration is expected in the following structure.
 }
 ```
 
-### Filtering
-
-Configuration files support a `filtering` property for persistent dependency filtering rules.
-
-- `include` - Array of regex patterns to include only matching dependencies
-- `exclude` - Array of regex patterns to exclude matching dependencies
-
-**Note**: CLI filtering options take precedence over configuration-based filtering.
-
-```json
-{
-  "filtering": {
-    "include": ["^@types/", "^eslint"],
-    "exclude": ["^@types/node"]
-  }
-}
-```
+````
 
 ### Overrides
 
@@ -378,7 +344,7 @@ To match a specific dependency, make sure to include the starts with (`^`) and e
     "^libyear$": {}
   }
 }
-```
+````
 
 There may be cases where matching many dependencies is desired.
 For instance, type definitions are often updated less regularly than source code.

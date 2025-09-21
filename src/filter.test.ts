@@ -48,14 +48,14 @@ describe("filterDependencies", () => {
     assert.deepStrictEqual(result, mockDependencies);
   });
 
-  test("filters by include pattern", () => {
+  test("filters by include-only pattern", () => {
     const result = filterDependencies(mockDependencies, ["^@types/"]);
     assert.strictEqual(result.length, 2);
     assert.strictEqual(result[0]!.dependency, "@types/node");
     assert.strictEqual(result[1]!.dependency, "@types/lodash-es");
   });
 
-  test("filters by multiple include patterns", () => {
+  test("filters by multiple include-only patterns", () => {
     const result = filterDependencies(mockDependencies, [
       "^@types/",
       "^eslint",
@@ -64,34 +64,6 @@ describe("filterDependencies", () => {
     assert.strictEqual(result[0]!.dependency, "@types/node");
     assert.strictEqual(result[1]!.dependency, "eslint");
     assert.strictEqual(result[2]!.dependency, "@types/lodash-es");
-  });
-
-  test("filters by exclude pattern", () => {
-    const result = filterDependencies(mockDependencies, undefined, [
-      "^@types/",
-    ]);
-    assert.strictEqual(result.length, 2);
-    assert.strictEqual(result[0]!.dependency, "eslint");
-    assert.strictEqual(result[1]!.dependency, "typescript");
-  });
-
-  test("filters by multiple exclude patterns", () => {
-    const result = filterDependencies(mockDependencies, undefined, [
-      "^@types/",
-      "^eslint",
-    ]);
-    assert.strictEqual(result.length, 1);
-    assert.strictEqual(result[0]!.dependency, "typescript");
-  });
-
-  test("combines include and exclude patterns", () => {
-    const result = filterDependencies(
-      mockDependencies,
-      ["^@types/"],
-      ["^@types/node"],
-    );
-    assert.strictEqual(result.length, 1);
-    assert.strictEqual(result[0]!.dependency, "@types/lodash-es");
   });
 
   test("handles exact match patterns", () => {
@@ -106,17 +78,13 @@ describe("filterDependencies", () => {
     assert.strictEqual(result[0]!.dependency, "typescript");
   });
 
-  test("handles empty include array", () => {
-    const result = filterDependencies(mockDependencies, [], ["^@types/"]);
-    assert.strictEqual(result.length, 2);
-    assert.strictEqual(result[0]!.dependency, "eslint");
-    assert.strictEqual(result[1]!.dependency, "typescript");
+  test("handles empty include-only array", () => {
+    const result = filterDependencies(mockDependencies, []);
+    assert.deepStrictEqual(result, mockDependencies);
   });
 
-  test("handles empty exclude array", () => {
-    const result = filterDependencies(mockDependencies, ["^@types/"], []);
-    assert.strictEqual(result.length, 2);
-    assert.strictEqual(result[0]!.dependency, "@types/node");
-    assert.strictEqual(result[1]!.dependency, "@types/lodash-es");
+  test("handles invalid regex patterns gracefully", () => {
+    const result = filterDependencies(mockDependencies, ["[invalid"]);
+    assert.strictEqual(result.length, 0);
   });
 });
