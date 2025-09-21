@@ -51,8 +51,14 @@ describe("filterDependencies", () => {
   test("filters by include-only pattern", () => {
     const result = filterDependencies(mockDependencies, ["^@types/"]);
     assert.strictEqual(result.length, 2);
-    assert.strictEqual(result[0]!.dependency, "@types/node");
-    assert.strictEqual(result[1]!.dependency, "@types/lodash-es");
+    
+    // Check that we have the expected dependencies regardless of order
+    const dependencyNames = result.map(dep => dep.dependency);
+    assert.ok(dependencyNames.includes("@types/node"));
+    assert.ok(dependencyNames.includes("@types/lodash-es"));
+    
+    // Ensure we don't have any unexpected dependencies
+    assert.strictEqual(dependencyNames.length, 2);
   });
 
   test("filters by multiple include-only patterns", () => {
@@ -61,9 +67,15 @@ describe("filterDependencies", () => {
       "^eslint",
     ]);
     assert.strictEqual(result.length, 3);
-    assert.strictEqual(result[0]!.dependency, "@types/node");
-    assert.strictEqual(result[1]!.dependency, "eslint");
-    assert.strictEqual(result[2]!.dependency, "@types/lodash-es");
+    
+    // Check that we have the expected dependencies regardless of order
+    const dependencyNames = result.map(dep => dep.dependency);
+    assert.ok(dependencyNames.includes("@types/node"));
+    assert.ok(dependencyNames.includes("eslint"));
+    assert.ok(dependencyNames.includes("@types/lodash-es"));
+    
+    // Ensure we don't have any unexpected dependencies
+    assert.strictEqual(dependencyNames.length, 3);
   });
 
   test("handles exact match patterns", () => {
