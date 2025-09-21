@@ -20,6 +20,7 @@ export const cli = async (): Promise<void> => {
     preReleases,
     quiet,
     sort,
+    includeOnly,
     ...rest
   } = getArgs();
 
@@ -38,6 +39,7 @@ export const cli = async (): Promise<void> => {
         "--pre-releases                   Include pre-releases in latest versions.",
         "--quiet, -q                      Exclude up-to-date dependencies from results.",
         "--sort                           Column to sort individual results by.",
+        "--include-only                   Include only dependencies matching regex pattern(s).",
         "--limit-drift-collective, -D     Drift limit to warn on for all dependencies.",
         "--limit-drift-individual, -d     Drift limit to warn on for individual dependencies.",
         "--limit-pulse-collective, -P     Pulse limit to warn on for all dependencies.",
@@ -58,40 +60,42 @@ export const cli = async (): Promise<void> => {
 
   // run libyear
   try {
+    const configuration = await getConfiguration(rest);
+
     const report = await libyear(
       getParsedPackageManager(
         packageManager ?? (await getInferredPackageManager()),
       ),
-      { all, dev, preReleases, quiet, sort },
+      {
+        all,
+        dev,
+        preReleases,
+        quiet,
+        sort,
+        includeOnly,
+      },
     );
 
     if (json) {
       console.log(JSON.stringify(report));
     } else {
-      const { overrides, limit } = await getConfiguration(rest).then(
-        ({
-          overrides,
-          limit: { drift, pulse, releases, major, minor, patch } = {},
-        }) => ({
-          overrides,
-          limit: {
-            driftCollective: validateLimit(drift?.collective),
-            driftIndividual: validateLimit(drift?.individual),
-            pulseCollective: validateLimit(pulse?.collective),
-            pulseIndividual: validateLimit(pulse?.individual),
-            releasesCollective: validateLimit(releases?.collective),
-            releasesIndividual: validateLimit(releases?.individual),
-            majorCollective: validateLimit(major?.collective),
-            majorIndividual: validateLimit(major?.individual),
-            minorCollective: validateLimit(minor?.collective),
-            minorIndividual: validateLimit(minor?.individual),
-            patchCollective: validateLimit(patch?.collective),
-            patchIndividual: validateLimit(patch?.individual),
-          },
-        }),
-      );
+      const { overrides, limit } = configuration;
+      const processedLimit = {
+        driftCollective: validateLimit(limit?.drift?.collective),
+        driftIndividual: validateLimit(limit?.drift?.individual),
+        pulseCollective: validateLimit(limit?.pulse?.collective),
+        pulseIndividual: validateLimit(limit?.pulse?.individual),
+        releasesCollective: validateLimit(limit?.releases?.collective),
+        releasesIndividual: validateLimit(limit?.releases?.individual),
+        majorCollective: validateLimit(limit?.major?.collective),
+        majorIndividual: validateLimit(limit?.major?.individual),
+        minorCollective: validateLimit(limit?.minor?.collective),
+        minorIndividual: validateLimit(limit?.minor?.individual),
+        patchCollective: validateLimit(limit?.patch?.collective),
+        patchIndividual: validateLimit(limit?.patch?.individual),
+      };
 
-      print(report, limit, overrides);
+      print(report, processedLimit, overrides);
     }
   } catch (error) {
     if (json) {

@@ -219,11 +219,46 @@ Default `false`.
 Column to sort individual results by.
 Default `null`.
 
+## Filtering
+
+### `--include-only=<pattern>`
+
+Include only dependencies matching the specified regex pattern(s).
+Can be specified multiple times for multiple patterns.
+If no patterns are specified, all dependencies are included.
+
+## Examples
+
+### Filtering Dependencies
+
+Filter to show only TypeScript type definitions:
+
+```sh
+npx libyear --include-only "^@types/"
+```
+
+Show only ESLint-related packages:
+
+```sh
+npx libyear --include-only ".*eslint.*"
+```
+
+Filter to show only packages from a specific scope:
+
+```sh
+npx libyear --include-only "^@myorg/"
+```
+
+Show multiple specific package types:
+
+```sh
+npx libyear --include-only "^@types/" --include-only "^eslint"
+```
+
 ## Configuration
 
-`libyear` can be configured via [cosmiconfig-supported](https://github.com/davidtheclark/cosmiconfig) formats.
+`libyear` can be configured via [cosmiconfig-supported](https://github.com/davidtheclark/cosmiconfig) formats. Configuration files are searched in the following order (first found wins):
 
-- `package.json` (under `{ "configs": { "libyear": { ... } } }`)
 - `.libyearrc`
 - `.libyearrc.cjs`
 - `.libyearrc.js`
@@ -236,6 +271,9 @@ Default `null`.
 - `libyear.config.js`
 - `libyear.config.mjs`
 - `libyear.config.ts`
+- `package.json` (under `{ "configs": { "libyear": { ... } } }`)
+
+**Note**: If any of the above configuration files exist in your project, the `package.json` configuration will not be read. This is the expected behavior of cosmiconfig.
 
 Custom configuration files can be provided via the [`--config`](#--configpath) CLI option.
 
@@ -283,6 +321,8 @@ Configuration is expected in the following structure.
 }
 ```
 
+````
+
 ### Overrides
 
 Configuration files support an `overrides` property.
@@ -304,7 +344,7 @@ To match a specific dependency, make sure to include the starts with (`^`) and e
     "^libyear$": {}
   }
 }
-```
+````
 
 There may be cases where matching many dependencies is desired.
 For instance, type definitions are often updated less regularly than source code.

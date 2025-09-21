@@ -53,6 +53,7 @@ export type Args = {
   preReleases?: boolean;
   quiet?: boolean;
   sort?: Metric;
+  includeOnly?: string[];
 };
 
 export type Dependency = Record<Metric, number> & {

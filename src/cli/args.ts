@@ -90,10 +90,14 @@ export const getArgs = (): Args => {
       sort: {
         type: "string",
       },
+      "include-only": {
+        type: "string",
+        multiple: true,
+      },
     },
   });
 
-  return Object.fromEntries<boolean | string>(
+  return Object.fromEntries<boolean | string | string[]>(
     Object.entries(values).map(([key, value]) => [camelCase(key), value]),
   );
 };

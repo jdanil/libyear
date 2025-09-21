@@ -7,6 +7,7 @@ import { compare, sort, valid } from "semver";
 import { calculateDrift, calculatePulse } from "./date.ts";
 import { getDependencies } from "./fetch/dependencies.ts";
 import { getPackageInfo } from "./fetch/package-info.ts";
+import { filterDependencies } from "./filter.ts";
 import type {
   Dependencies,
   Dependency,
@@ -29,6 +30,7 @@ export const libyear = async (
     preReleases?: boolean;
     quiet?: boolean;
     sort?: Metric;
+    includeOnly?: string[];
   },
 ): Promise<Dependencies> =>
   limit
@@ -103,4 +105,7 @@ export const libyear = async (
       flags?.sort != null
         ? orderBy<Dependency>(dependencies, flags.sort, "desc")
         : dependencies,
+    )
+    .then((dependencies) =>
+      filterDependencies(dependencies, flags?.includeOnly),
     );
