@@ -7,7 +7,7 @@ import type { PackageManager } from "../types.ts";
 
 const getFixture = async (
   packageManager: PackageManager,
-  modifier: "default" | "sans-version",
+  modifier: "alias" | "default" | "sans-version",
 ) =>
   readFile(
     fileURLToPath(
@@ -24,7 +24,7 @@ await describe("dependencies", async () => {
   let getDependencies: (
     packageManager: PackageManager,
     flags?: { all?: boolean; dev?: boolean },
-  ) => Promise<Record<string, string>>;
+  ) => Promise<Record<string, { name: string; version: string }>>;
 
   before(async () => {
     mock.module("./execute.ts", {
@@ -44,9 +44,9 @@ await describe("dependencies", async () => {
         );
 
         assert.deepEqual(await getDependencies(packageManager), {
-          "package-a": "1.0.0",
-          "package-b": "2.1.0",
-          "package-c": "3.2.1",
+          "package-a": { name: "package-a", version: "1.0.0" },
+          "package-b": { name: "package-b", version: "2.1.0" },
+          "package-c": { name: "package-c", version: "3.2.1" },
         });
       });
     }
@@ -59,9 +59,20 @@ await describe("dependencies", async () => {
         );
 
         assert.deepEqual(await getDependencies(packageManager), {
-          "package-a": "1.0.0",
+          "package-a": { name: "package-a", version: "1.0.0" },
         });
       });
     }
+
+    await it("returns aliased package names for pnpm", async () => {
+      execute.mock.mockImplementationOnce(
+        () => getFixture("pnpm", "alias") as unknown as undefined,
+      );
+
+      assert.deepEqual(await getDependencies("pnpm"), {
+        "package-a": { name: "package-a", version: "1.0.0" },
+        "package-a-v0": { name: "package-a", version: "0.9.0" },
+      });
+    });
   });
 });

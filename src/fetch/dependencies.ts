@@ -6,7 +6,11 @@ import { execute } from "./execute.ts";
 
 type ParsedDependency = Record<
   string,
-  { required?: { version?: string } | string; version?: string }
+  {
+    from?: string;
+    required?: { version?: string } | string;
+    version?: string;
+  }
 >;
 type ParsedDependencies = Record<
   "dependencies" | "devDependencies",
@@ -61,7 +65,7 @@ const getParsedDependencies = async (
 export const getDependencies = async (
   packageManager: PackageManager,
   flags?: { all?: boolean; dev?: boolean },
-): Promise<Record<string, string>> => {
+): Promise<Record<string, { name: string; version: string }>> => {
   const cmd =
     (
       {
@@ -77,15 +81,27 @@ export const getDependencies = async (
         ...json.dependencies,
         ...(flags?.dev ? json.devDependencies : {}),
       })
-        .map(([dependency, data]) => [
-          dependency,
-          data.version ??
-            (
-              (data.required as { version?: string })?.version ||
-              (data.required as string)
-            )?.replace(/[<=>^~]+/u, ""),
-        ])
-        .filter(([, version]) => valid(version)) as [[string, string]],
+        .map(
+          ([dependency, data]): [
+            string,
+            { name: string; version?: string },
+          ] => [
+            dependency,
+            {
+              // for `npm:` aliases, pnpm reports the real package name in `from`
+              name: data.from ?? dependency,
+              version:
+                data.version ??
+                (
+                  (data.required as { version?: string })?.version ||
+                  (data.required as string)
+                )?.replace(/[<=>^~]+/u, ""),
+            },
+          ],
+        )
+        .filter(([, { version }]) => valid(version)) as [
+        [string, { name: string; version: string }],
+      ],
     ),
   );
 };

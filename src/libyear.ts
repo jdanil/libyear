@@ -34,8 +34,8 @@ export const libyear = async (
   limit
     .map(
       Object.entries(await getDependencies(packageManager, flags)),
-      ([dependency, currentVersion]) =>
-        getPackageInfo(packageManager, dependency).then(
+      ([dependency, { name, version: currentVersion }]) =>
+        getPackageInfo(packageManager, name).then(
           ({ deprecated, versions = {} }) => {
             const allVersionsMap = getSanitisedReleases(
               versions,
